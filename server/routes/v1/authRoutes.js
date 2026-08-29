@@ -13,6 +13,7 @@ import authCheck from "../../middleware/authCheck.js";
 
 const router = Router();
 
+
 router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout);
