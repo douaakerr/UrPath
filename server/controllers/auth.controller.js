@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 import crypto from "crypto";
+import { sendEmail } from "../utils/sendEmails.js";
 
 export const register = async (req, res) => {
   try {
@@ -221,8 +222,8 @@ export const forgotPassword = async (req, res) => {
     await user.save();
 
     
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+console.log(resetUrl);
     await sendEmail({
       to: user.email,
       subject: "Reset your SkillForge password",
@@ -271,7 +272,7 @@ export const forgotPassword = async (req, res) => {
 
     return res.status(200).json({
       message:
-        "If an account exists with this email, a password reset link has been sent.",
+        " A password reset link has been sent.",
     });
 
   } catch (error) {

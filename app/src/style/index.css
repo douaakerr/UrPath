@@ -1,0 +1,162 @@
+/* =========================================================
+   URPATH GLOBAL THEME
+   ========================================================= */
+
+:root {
+  /* Brand */
+  --color-primary: #5ca9ff;
+  --color-primary-light: #79bbff;
+  --color-primary-dark: #3f8fe8;
+
+  /* Background */
+  --bg-main: #f4f7fb;
+  --bg-surface: rgba(255, 255, 255, 0.55);
+
+  /* Text */
+  --text-primary: #10233f;
+  --text-secondary: #5d6b7d;
+  --text-muted: #8491a1;
+
+  /* Borders */
+  --border: rgba(16, 35, 63, 0.1);
+  --border-glass: rgba(255, 255, 255, 0.65);
+
+  /* Effects */
+  --shadow-soft: 0 20px 60px rgba(38, 65, 95, 0.12);
+
+  /* Theme */
+  color-scheme: light;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-theme="dark"] {
+  /* Brand */
+  --color-primary: #65adff;
+  --color-primary-light: #8bc5ff;
+  --color-primary-dark: #438fe8;
+
+  /* Background */
+  --bg-main: #071426;
+  --bg-surface: rgba(10, 27, 50, 0.55);
+
+  /* Text */
+  --text-primary: #f4f8ff;
+  --text-secondary: #b8c6d8;
+  --text-muted: #8293a8;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.09);
+  --border-glass: rgba(255, 255, 255, 0.16);
+
+  /* Effects */
+  --shadow-soft: 0 20px 70px rgba(0, 0, 0, 0.3);
+
+  color-scheme: dark;
+}
+
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: var(--bg-main);
+  color: var(--text-primary);
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+/* =========================================================
+   DASHBOARD LAYOUT
+   ========================================================= */
+
+.dashboard-layout {
+  min-height: 100vh;
+
+  display: flex;
+
+  background: var(--bg-main);
+
+  transition:
+    background-color 0.3s ease;
+}
+
+
+.dashboard-layout__content {
+  min-width: 0;
+  min-height: 100vh;
+
+  flex: 1;
+
+  overflow-x: hidden;
+
+  padding: 32px;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(92, 169, 255, 0.06),
+      transparent 28%
+    );
+}
+
+
+[data-theme="dark"] .dashboard-layout__content {
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(92, 169, 255, 0.07),
+      transparent 30%
+    );
+}

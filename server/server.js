@@ -6,6 +6,7 @@ import morgan from "morgan";
 import dns from "dns";
 import router from "./routes/index.js"
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -21,8 +22,14 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-//rouring
+//routing
 app.use('/api', router );
 
 // Connect to MongoDB
