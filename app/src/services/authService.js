@@ -27,9 +27,10 @@ export const forgotPassword = async (email) => {
 
 export const resetPassword = async (token, password) => {
   const { data } = await authApi.post(
-    `/auth/reset-password/${token}`,
+    `/v1/auth/reset-password/${token}`,
     {
       password,
+      newPassword: password,
     }
   );
 
@@ -37,15 +38,20 @@ export const resetPassword = async (token, password) => {
 };
 
 export const logoutUser = async () => {
-  const { data } = await authApi.post("/users/logout");
+  const { data } = await authApi.post("/v1/auth/logout");
   return data;
 };
 
 export const changePassword = async (passwordData) => {
   const { data } = await authApi.put(
-    "v1/auth/change-password",
+    "/v1/auth/change-password",
     passwordData
   );
 
+  return data;
+};
+
+export const getCurrentUser = async () => {
+  const { data } = await authApi.get("/v1/auth/me");
   return data;
 };

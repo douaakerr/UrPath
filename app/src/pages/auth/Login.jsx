@@ -1,173 +1,213 @@
 import "../../style/auth.css";
+
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+
 import Navbar from "../../components/layout/Navbar";
 import { loginUser } from "../../services/authService";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const data = await loginUser({
-      email,
-      password,
-    });
+    setErrorMessage("");
+    setLoading(true);
 
-    console.log("Login successful:", data);
+    try {
+      const data = await loginUser({
+        email,
+        password,
+      });
 
+      console.log("Login successful:", data);
 
-  } catch (error) {
-    console.error(
-      error.response?.data?.message || "Login failed"
-    );
-  }
-};
+      // Login successful → Dashboard
+      navigate("/dashboard");
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        "Unable to sign in. Please check your email and password.";
 
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
+      setErrorMessage(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <><Navbar />
-    <main className="auth-page">
+    <>
+      <Navbar />
 
-      <div className="auth-overlay" />
+      <main className="auth-page">
+        <div className="auth-overlay" />
 
-      {/* Brand */}
-      <div className="auth-brand">
-        <Link to="/" className="auth-logo">
-          Ur<span>Path</span>
-        </Link>
+        {/* Brand */}
+        <div className="auth-brand">
+          <Link to="/" className="auth-logo">
+            Ur<span>Path</span>
+          </Link>
 
-        <p>Develop yourself. Build your path.</p>
-      </div>
+          <p>Develop yourself. Build your path.</p>
+        </div>
 
-      {/* Glass authentication panel */}
-      <section className="auth-glass">
-        <div className="auth-content">
+        {/* Authentication panel */}
+        <section className="auth-glass">
+          <div className="auth-content">
 
-          {/* Header */}
-          <div className="auth-heading">
-            <span className="auth-eyebrow">
-              WELCOME BACK
-            </span>
+            {/* Header */}
+            <div className="auth-heading">
+              <span className="auth-eyebrow">
+                WELCOME BACK
+              </span>
 
-            <h1>Continue your journey.</h1>
+              <h1>Continue your journey.</h1>
 
-            <p>
-              Pick up where you left off and keep moving
-              toward your goals.
-            </p>
-          </div>
-
-          {/* Form */}
-          <form
-            className="auth-form"
-            onSubmit={handleSubmit}
-          >
-            {/* Email */}
-            <div className="form-group">
-              <label htmlFor="email">
-                Email
-              </label>
-
-             <input
-  id="email"
-  name="email"
-  type="email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  placeholder="you@example.com"
-  autoComplete="email"
-  required
-/>
+              <p>
+                Pick up where you left off and keep moving
+                toward your goals.
+              </p>
             </div>
 
-            {/* Password */}
-            <div className="form-group">
-              <div className="password-label">
-                <label htmlFor="password">
-                  Password
+            {/* Error */}
+            {errorMessage && (
+              <div className="auth-error" role="alert">
+                {errorMessage}
+              </div>
+            )}
+
+            {/* Form */}
+            <form
+              className="auth-form"
+              onSubmit={handleSubmit}
+            >
+              {/* Email */}
+              <div className="form-group">
+                <label htmlFor="email">
+                  Email
                 </label>
 
-                <Link to="/forgot-password">
-                  Forgot password?
-                </Link>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                  disabled={loading}
+                />
               </div>
 
-              <div className="password-input">
-               <input
-  id="password"
-  name="password"
-  type={showPassword ? "text" : "password"}
-  value={password}
-  onChange={(e) => setPassword(e.target.value)}
-  placeholder="Enter your password"
-  autoComplete="current-password"
-  required
-/>
+              {/* Password */}
+              <div className="form-group">
+                <div className="password-label">
+                  <label htmlFor="password">
+                    Password
+                  </label>
 
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() =>
-                    setShowPassword(!showPassword)
-                  }
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
-                >
-                  {showPassword ? (
-                    <EyeOff
-                      size={18}
-                      strokeWidth={1.8}
-                    />
-                  ) : (
-                    <Eye
-                      size={18}
-                      strokeWidth={1.8}
-                    />
-                  )}
-                </button>
+                  <Link to="/forgot-password">
+                    Forgot password?
+                  </Link>
+                </div>
+
+                <div className="password-input">
+                  <input
+                    id="password"
+                    name="password"
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
+                    value={password}
+                    onChange={(e) =>
+                      setPassword(e.target.value)
+                    }
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    required
+                    disabled={loading}
+                  />
+
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() =>
+                      setShowPassword((current) => !current)
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
+                    disabled={loading}
+                  >
+                    {showPassword ? (
+                      <EyeOff
+                        size={18}
+                        strokeWidth={1.8}
+                      />
+                    ) : (
+                      <Eye
+                        size={18}
+                        strokeWidth={1.8}
+                      />
+                    )}
+                  </button>
+                </div>
               </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                className="auth-button"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Sign in
+                    <span>→</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Register */}
+            <div className="auth-divider">
+              <span>or</span>
             </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              className="auth-button"
-            >
-              Sign in
-              <span>→</span>
-            </button>
-          </form>
+            <p className="auth-switch">
+              Don't have an account?{" "}
+              <Link to="/register">
+                Create one
+              </Link>
+            </p>
 
-          {/* Register */}
-          <div className="auth-divider">
-            <span>or</span>
           </div>
+        </section>
 
-          <p className="auth-switch">
-            Don't have an account?{" "}
-            <Link to="/register">
-              Create one
-            </Link>
-          </p>
-
+        {/* Footer */}
+        <div className="auth-footer">
+          <span>© 2026 UrPath</span>
+          <span>Learn · Build · Grow</span>
         </div>
-      </section>
-
-      {/* Footer */}
-      <div className="auth-footer">
-        <span>© 2026 UrPath</span>
-        <span>Learn · Build · Grow</span>
-      </div>
-    </main>
+      </main>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { forgotPassword } from "../../services/authService";
 import "../../style/auth.css";
+import Navbar from "../../components/layout/Navbar";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -35,6 +36,7 @@ function ForgotPassword() {
 
   return (
     <main className="auth-page">
+        <Navbar />
       <div className="auth-overlay" />
 
       <div className="auth-brand">

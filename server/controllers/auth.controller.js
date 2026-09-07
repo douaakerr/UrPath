@@ -223,7 +223,7 @@ export const forgotPassword = async (req, res) => {
 
     
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-console.log(resetUrl);
+
     await sendEmail({
       to: user.email,
       subject: "Reset your SkillForge password",
@@ -289,7 +289,7 @@ console.log(resetUrl);
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
-    const { newPassword } = req.body;
+    const newPassword = req.body.newPassword || req.body.password;
 
     if (!token) {
       return res.status(400).json({
@@ -353,4 +353,16 @@ export const resetPassword = async (req, res) => {
       message: "Failed to reset password",
     });
   }
+};
+
+// GET CURRENT USER
+export const getMe = async (req, res) => {
+  return res.status(200).json({
+    user: {
+      id: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+      role: req.user.role,
+    },
+  });
 };

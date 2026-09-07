@@ -6,7 +6,8 @@ import {
   logout,
   register,
   resetPassword,
-  changePassword
+  changePassword,
+  getMe
 } from "../../controllers/auth.controller.js";
 
 import authCheck from "../../middleware/authCheck.js";
@@ -20,5 +21,6 @@ router.post("/logout", logout);
 router.put("/change-password", authCheck, changePassword);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
+router.get("/me", authCheck, getMe);
 
 export default router;

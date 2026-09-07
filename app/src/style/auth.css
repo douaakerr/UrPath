@@ -1,25 +1,19 @@
-
-
-
-/* ---------------------------------------------------------
-   AUTH PAGE
-   --------------------------------------------------------- */
-
 .auth-page {
   position: relative;
 
-  min-height: 100vh;
   width: 100%;
+  min-height: 100vh;
+  height: auto;
 
   display: flex;
   align-items: center;
   justify-content: flex-end;
 
-  padding: 40px 7vw;
+  padding: 100px 7vw 90px;
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 
-  /* Light mountain */
   background-image: url("../assets/image/mountains_light.png");
   background-size: cover;
   background-position: center;
@@ -29,24 +23,24 @@
 }
 
 
-/* Dark mountain */
+/* Dark theme */
 
 [data-theme="dark"] .auth-page {
   background-image: url("../assets/image/mountains_dark.png");
 }
 
 
-/* ---------------------------------------------------------
-   ATMOSPHERIC OVERLAY
-   --------------------------------------------------------- */
+/* =========================================================
+   2. ATMOSPHERIC OVERLAY
+   ========================================================= */
 
 .auth-overlay {
   position: absolute;
   inset: 0;
 
-  pointer-events: none;
-
   z-index: 0;
+
+  pointer-events: none;
 
   background:
     linear-gradient(
@@ -71,14 +65,14 @@
 }
 
 
-/* ---------------------------------------------------------
-   BRAND
-   --------------------------------------------------------- */
+/* =========================================================
+   3. BRAND
+   ========================================================= */
 
 .auth-brand {
   position: absolute;
 
-  top: 29px;
+  top: 23px;
   left: 7vw;
 
   z-index: 3;
@@ -87,7 +81,7 @@
 
 .auth-logo {
   display: inline-block;
- 
+
   color: var(--text-primary);
 
   font-size: 1.55rem;
@@ -122,13 +116,13 @@
 }
 
 
-/* ---------------------------------------------------------
-   GLASS CONTAINER
-   --------------------------------------------------------- */
+/* =========================================================
+   4. GLASS CARD
+   ========================================================= */
 
 .auth-glass {
   position: relative;
-  top:50px;
+
   z-index: 2;
 
   width: min(470px, 100%);
@@ -136,7 +130,6 @@
   padding: 50px 46px;
 
   border-radius: 30px;
-
 
   background: rgba(255, 255, 255, 0.34);
 
@@ -166,9 +159,7 @@
 }
 
 
-/* ---------------------------------------------------------
-   GLASS HIGHLIGHT
-   --------------------------------------------------------- */
+/* Glass highlight */
 
 .auth-glass::before {
   content: "";
@@ -181,30 +172,34 @@
   width: 72%;
   height: 1px;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--color-primary-light),
-    transparent
-  );
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--color-primary-light),
+      transparent
+    );
 
   opacity: 0.45;
 }
 
 
-/* ---------------------------------------------------------
-   AUTH CONTENT
-   --------------------------------------------------------- */
+/* =========================================================
+   5. AUTH CONTENT
+   ========================================================= */
 
 .auth-content {
   position: relative;
+
   z-index: 1;
+
+  width: 100%;
 }
 
 
-/* ---------------------------------------------------------
-   HEADING
-   --------------------------------------------------------- */
+/* =========================================================
+   6. HEADING
+   ========================================================= */
 
 .auth-heading {
   margin-bottom: 32px;
@@ -253,9 +248,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   FORM
-   --------------------------------------------------------- */
+/* =========================================================
+   7. FORM
+   ========================================================= */
 
 .auth-form {
   display: flex;
@@ -282,9 +277,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   PASSWORD LABEL
-   --------------------------------------------------------- */
+/* =========================================================
+   8. PASSWORD LABEL
+   ========================================================= */
 
 .password-label {
   display: flex;
@@ -314,9 +309,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   INPUTS
-   --------------------------------------------------------- */
+/* =========================================================
+   9. INPUTS
+   ========================================================= */
 
 .form-group input {
   width: 100%;
@@ -325,7 +320,6 @@
   padding: 0 16px;
 
   border: 1px solid var(--border);
-
   border-radius: 13px;
 
   outline: none;
@@ -344,6 +338,8 @@
 }
 
 
+/* Dark inputs */
+
 [data-theme="dark"] .form-group input {
   background: rgba(255, 255, 255, 0.065);
 
@@ -351,12 +347,16 @@
 }
 
 
+/* Placeholder */
+
 .form-group input::placeholder {
   color: var(--text-muted);
 
   opacity: 0.75;
 }
 
+
+/* Hover */
 
 .form-group input:hover {
   background: rgba(255, 255, 255, 0.48);
@@ -367,6 +367,8 @@
   background: rgba(255, 255, 255, 0.09);
 }
 
+
+/* Focus */
 
 .form-group input:focus {
   border-color: var(--color-primary);
@@ -384,9 +386,53 @@
 }
 
 
-/* ---------------------------------------------------------
-   AUTH BUTTON
-   --------------------------------------------------------- */
+/* =========================================================
+   10. PASSWORD INPUT
+   ========================================================= */
+
+.password-input {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+}
+
+
+.password-input input {
+  padding-right: 65px;
+}
+
+
+.password-toggle {
+  position: absolute;
+
+  right: 13px;
+
+  padding: 5px;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--color-primary);
+
+  font-size: 0.7rem;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition: opacity 0.2s ease;
+}
+
+
+.password-toggle:hover {
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   11. AUTH BUTTON
+   ========================================================= */
 
 .auth-button {
   position: relative;
@@ -407,14 +453,14 @@
 
   color: #ffffff;
 
-  background: linear-gradient(
-    135deg,
-    var(--color-primary-dark),
-    var(--color-primary)
-  );
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-primary-dark),
+      var(--color-primary)
+    );
 
   font-size: 0.86rem;
-
   font-weight: 700;
 
   cursor: pointer;
@@ -456,9 +502,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   DIVIDER
-   --------------------------------------------------------- */
+/* =========================================================
+   12. DIVIDER
+   ========================================================= */
 
 .auth-divider {
   display: flex;
@@ -486,9 +532,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   SWITCH
-   --------------------------------------------------------- */
+/* =========================================================
+   13. AUTH SWITCH
+   ========================================================= */
 
 .auth-switch {
   margin: 0;
@@ -508,9 +554,7 @@
 
   text-decoration: none;
 
-  transition:
-    opacity 0.2s ease,
-    color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 
@@ -519,9 +563,9 @@
 }
 
 
-/* ---------------------------------------------------------
-   FOOTER
-   --------------------------------------------------------- */
+/* =========================================================
+   14. FOOTER
+   ========================================================= */
 
 .auth-footer {
   position: absolute;
@@ -543,12 +587,45 @@
   letter-spacing: 0.05em;
 
   opacity: 0.75;
+
+  pointer-events: none;
 }
 
+.auth-error {
+  margin-bottom: 20px;
+  padding: 12px 14px;
 
-/* ---------------------------------------------------------
-   ANIMATION
-   --------------------------------------------------------- */
+  border: 1px solid rgba(220, 70, 70, 0.2);
+  border-radius: 12px;
+
+  background: rgba(220, 70, 70, 0.08);
+  color: #c94b4b;
+
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .auth-error {
+  border-color: rgba(255, 100, 100, 0.2);
+  background: rgba(255, 100, 100, 0.08);
+  color: #ff9a9a;
+}
+
+.auth-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+  filter: none;
+}
+
+.form-group input:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* =========================================================
+   15. ANIMATION
+   ========================================================= */
 
 @keyframes authAppear {
   from {
@@ -568,71 +645,73 @@
   }
 }
 
-.password-input {
-  position: relative;
-  display: flex;
-  align-items: center;
+
+/* =========================================================
+   16. DESKTOP — SHORT VIEWPORT
+   ========================================================= */
+
+@media (max-height: 750px) and (min-width: 901px) {
+  .auth-page {
+    align-items: flex-start;
+
+    padding-top: 95px;
+  }
 }
 
-.password-input input {
-  padding-right: 65px;
-}
 
-.password-toggle {
-  position: absolute;
-  right: 13px;
-
-  border: none;
-  background: transparent;
-
-  color: var(--color-primary);
-
-  font-size: 0.7rem;
-  font-weight: 650;
-
-  cursor: pointer;
-
-  padding: 5px;
-
-  transition: opacity 0.2s ease;
-}
-
-.password-toggle:hover {
-  opacity: 0.7;
-}
-/* ---------------------------------------------------------
-   RESPONSIVE
-   --------------------------------------------------------- */
+/* =========================================================
+   17. TABLET
+   ========================================================= */
 
 @media (max-width: 900px) {
   .auth-page {
+    min-height: 100vh;
+
+    align-items: flex-start;
     justify-content: center;
 
-    padding: 110px 24px 90px;
+    padding: 110px 24px 100px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 
     background-position: center;
   }
+
 
   .auth-brand {
     top: 28px;
     left: 24px;
   }
 
+
   .auth-glass {
     width: min(470px, 100%);
   }
 
+
   .auth-footer {
     left: 24px;
     right: 24px;
+
+    bottom: 24px;
   }
 }
 
 
+/* =========================================================
+   18. MOBILE
+   ========================================================= */
+
 @media (max-width: 520px) {
   .auth-page {
-    padding: 100px 16px 75px;
+    min-height: 100vh;
+
+    padding: 100px 16px 85px;
+
+    align-items: flex-start;
   }
+
 
   .auth-glass {
     padding: 36px 23px;
@@ -643,15 +722,23 @@
     -webkit-backdrop-filter: blur(20px);
   }
 
+
   .auth-heading h1 {
     font-size: 2rem;
   }
+
 
   .auth-heading p {
     font-size: 0.84rem;
   }
 
+
   .auth-footer {
+    left: 16px;
+    right: 16px;
+
     font-size: 0.56rem;
+
+    text-align: center;
   }
 }
