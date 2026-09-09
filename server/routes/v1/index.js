@@ -1,11 +1,15 @@
 import { Router } from "express";
 import auth from "./authRoutes.js";
-import roadmap from "./roadmapRoutes.js"
+import ai from "./aiRoutes.js"
+import learningDomainRoutes from "./learningDomainRoutes.js";
+
+
 const router = Router();
 
 
 
 router.use("/auth", auth);
-router.use("/roadmaps", roadmap);
+router.use("/ai", ai);
+router.use("/learning-domains", learningDomainRoutes);
 
 export default router;
