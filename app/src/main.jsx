@@ -15,8 +15,7 @@ import ResetPassword from "./pages/auth/ResetPassword";
 
 import Dashboard from "./pages/app/Dashboard";
 import Roadmap from "./pages/app/Roadmap";
-
-
+import SetUpLearning from "./pages/app/SetUpLearning";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +38,10 @@ const router = createBrowserRouter([
         path: "reset-password",
         element: <ResetPassword />,
       },
+      {
+        path: "onboarding",
+        element: <SetUpLearning />,
+      },
 
       {
         element: <ProtectedRoute />,
@@ -55,6 +58,15 @@ const router = createBrowserRouter([
                 element: <Roadmap />,
               },
             ],
+          },
+          // Setup wizard routes — outside DashboardLayout (no sidebar/navbar)
+          {
+            path: "create-roadmap",
+            element: <SetUpLearning />,
+          },
+          {
+            path: "onboarding",
+            element: <SetUpLearning />,
           },
         ],
       },

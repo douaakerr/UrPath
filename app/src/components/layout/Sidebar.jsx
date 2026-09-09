@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Map,
+  PlusCircle,
   BookOpen,
   FolderKanban,
   ChartNoAxesCombined,
@@ -33,6 +34,11 @@ const navigation = [
         label: "My Roadmap",
         path: "/roadmap",
         icon: Map,
+      },
+      {
+        label: "Create Roadmap",
+        path: "/create-roadmap",
+        icon: PlusCircle,
       },
       {
         label: "Courses",
