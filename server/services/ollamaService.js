@@ -6,13 +6,16 @@ const getConfig = () => {
   return { url: url.replace(/\/$/, ""), model };
 };
 
-export const askOllama = async ({
-  messages,
-  temperature = 0.2,
-  maxTokens = 300,
-  timeout = 180000,
-  format,
-} = {}) => {
+export const askOllama = async (params = {}) => {
+  const normalized = Array.isArray(params) ? { messages: params } : params;
+  const {
+    messages,
+    temperature = 0.2,
+    maxTokens = 300,
+    timeout = 180000,
+    format,
+  } = normalized;
+
   if (!Array.isArray(messages) || messages.length === 0) {
     throw new Error("Ollama messages are required");
   }
@@ -24,7 +27,6 @@ export const askOllama = async ({
     stream: false,
     options: { temperature, num_predict: maxTokens },
   };
-
   if (format) body.format = format;
 
   try {
