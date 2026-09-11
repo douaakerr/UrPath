@@ -3,6 +3,7 @@ import Assessment from "../models/Assessment.js";
 import AssessmentBlueprint from "../models/AssessmentBlueprint.js";
 import LearningSkill from "../models/LearningSkill.js";
 import { retrieveKnowledge } from "../ai/rag/retriever.js";
+import { ensureCollection } from "../ai/rag/vectorstore/qdrantStore.js";
 import { generateText } from "../ai/aiService.js";
 import { assessmentBatchSchema } from "../utils/assessmentSchema.js";
 import { validateAssessmentBatch, validateBlueprint } from "../utils/assessmentValidation.js";
@@ -122,6 +123,7 @@ export const createAssessment = async ({ userId, domain, subdomain, goal = "" })
 
   try {
     const slots = buildSlots(blueprint);
+    await ensureCollection();
     const knowledge = await retrieveKnowledge({
       query: `${domain} ${subdomain} core concepts skills fundamentals assessment`,
       domain,
