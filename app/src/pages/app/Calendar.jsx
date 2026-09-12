@@ -1,352 +1,622 @@
+import { useMemo, useState } from "react";
+import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
 import {
-  ArrowUpRight,
-  BookOpen,
-  CalendarDays,
-  CheckCircle2,
-  Clock3,
-  Flame,
-  FolderKanban,
-  MoreHorizontal,
-  Play,
-  Sparkles,
-  Target,
-  TrendingUp,
-} from "lucide-react";
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  isSameDay,
+} from "date-fns";
+import { enUS } from "date-fns/locale";
 
-import "../../style/dashboard.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../../style/calendar.css";
 
-function Dashboard() {
+const locales = {
+  "en-US": enUS,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
+
+const initialSessions = [
+  {
+    id: 1,
+    title: "React Components",
+    start: new Date(2026, 8, 12, 10, 0),
+    end: new Date(2026, 8, 12, 11, 30),
+    type: "learning",
+    category: "Frontend",
+  },
+  {
+    id: 2,
+    title: "JavaScript Quiz",
+    start: new Date(2026, 8, 15, 18, 0),
+    end: new Date(2026, 8, 15, 18, 30),
+    type: "quiz",
+    category: "JavaScript",
+  },
+  {
+    id: 3,
+    title: "MongoDB Review",
+    start: new Date(2026, 8, 18, 16, 0),
+    end: new Date(2026, 8, 18, 17, 0),
+    type: "review",
+    category: "Backend",
+  },
+  {
+    id: 4,
+    title: "API Architecture",
+    start: new Date(2026, 8, 22, 14, 0),
+    end: new Date(2026, 8, 22, 15, 30),
+    type: "project",
+    category: "Full Stack",
+  },
+  {
+    id: 5,
+    title: "Node.js Practice",
+    start: new Date(2026, 8, 25, 17, 0),
+    end: new Date(2026, 8, 25, 18, 30),
+    type: "learning",
+    category: "Backend",
+  },
+  {
+    id: 6,
+    title: "Weekly Review",
+    start: new Date(2026, 8, 28, 19, 0),
+    end: new Date(2026, 8, 28, 20, 0),
+    type: "review",
+    category: "Progress",
+  },
+];
+
+function Calendar() {
+  const [sessions, setSessions] = useState(initialSessions);
+
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(2026, 8, 12)
+  );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [newSession, setNewSession] = useState({
+    title: "",
+    time: "10:00",
+    duration: "60",
+    type: "learning",
+    category: "Frontend",
+  });
+
+  const selectedSessions = useMemo(
+    () =>
+      sessions.filter((session) =>
+        isSameDay(session.start, selectedDate)
+      ),
+    [sessions, selectedDate]
+  );
+
+  const upcomingSessions = useMemo(() => {
+    return [...sessions]
+      .filter((session) => session.start >= selectedDate)
+      .sort((a, b) => a.start - b.start)
+      .slice(0, 3);
+  }, [sessions, selectedDate]);
+
+  const eventPropGetter = (event) => {
+    return {
+      className: `calendar-event event-${event.type}`,
+    };
+  };
+
+  const dayPropGetter = (date) => {
+    const hasSession = sessions.some((session) =>
+      isSameDay(session.start, date)
+    );
+
+    const isSelected = isSameDay(date, selectedDate);
+
+    return {
+      className: [
+        hasSession ? "has-session" : "",
+        isSelected ? "selected-day" : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
+    };
+  };
+
+  // Click empty day
+  const handleSelectSlot = ({ start }) => {
+    setSelectedDate(start);
+    setNewSession({
+      title: "",
+      time: "10:00",
+      duration: "60",
+      type: "learning",
+      category: "Frontend",
+    });
+    setIsModalOpen(true);
+  };
+
+  // Click existing session
+  const handleSelectEvent = (event) => {
+    setSelectedDate(event.start);
+  };
+
+  const handleAddSession = (event) => {
+    event.preventDefault();
+
+    if (!newSession.title.trim()) return;
+
+    const [hours, minutes] = newSession.time
+      .split(":")
+      .map(Number);
+
+    const start = new Date(selectedDate);
+    start.setHours(hours, minutes, 0, 0);
+
+    const end = new Date(
+      start.getTime() + Number(newSession.duration) * 60000
+    );
+
+    const session = {
+      id: Date.now(),
+      title: newSession.title,
+      start,
+      end,
+      type: newSession.type,
+      category: newSession.category,
+    };
+
+    setSessions((current) => [...current, session]);
+
+    setIsModalOpen(false);
+
+    setNewSession({
+      title: "",
+      time: "10:00",
+      duration: "60",
+      type: "learning",
+      category: "Frontend",
+    });
+  };
+
   return (
-    <div className="dashboard-page">
-      {/* Header */}
-      <header className="dashboard-header">
+    <section className="calendar-page">
+
+      {/* HEADER */}
+      <header className="calendar-header">
         <div>
-          <p className="dashboard-eyebrow">YOUR LEARNING SPACE</p>
+          <span className="calendar-eyebrow">
+            YOUR RHYTHM
+          </span>
 
-          <h1>
-            Welcome back<span>.</span>
-          </h1>
+          <h1>Calendar</h1>
 
-          <p className="dashboard-subtitle">
-            Keep moving forward. Your path is waiting for you.
+          <p>
+            Plan your learning, one day at a time.
           </p>
         </div>
 
-        <button className="dashboard-ai-button">
-          <Sparkles size={17} />
-          Ask AI
-          <ArrowUpRight size={16} />
-        </button>
+        <div className="calendar-stat">
+          <strong>12h 40m</strong>
+          <span>Learning this month</span>
+        </div>
       </header>
 
-      {/* Stats */}
-      <section className="dashboard-stats">
-        <article className="stat-card stat-card--progress">
-          <div className="stat-card__top">
-            <div className="stat-icon">
-              <TrendingUp size={18} />
-            </div>
+      {/* MAIN CARD */}
+      <div className="calendar-card">
 
-            <span className="stat-label">OVERALL PROGRESS</span>
-          </div>
+        {/* CALENDAR */}
+        <div className="calendar-main">
 
-          <div className="stat-card__value">
-            <strong>68</strong>
-            <span>%</span>
-          </div>
-
-          <div className="progress-bar">
-            <span style={{ width: "68%" }} />
-          </div>
-
-          <p>+8% from last week</p>
-        </article>
-
-        <article className="stat-card">
-          <div className="stat-card__top">
-            <div className="stat-icon">
-              <Flame size={18} />
-            </div>
-
-            <span className="stat-label">CURRENT STREAK</span>
-          </div>
-
-          <div className="stat-card__value">
-            <strong>12</strong>
-            <span>days</span>
-          </div>
-
-          <p>You're building a habit.</p>
-        </article>
-
-        <article className="stat-card">
-          <div className="stat-card__top">
-            <div className="stat-icon">
-              <Target size={18} />
-            </div>
-
-            <span className="stat-label">THIS WEEK</span>
-          </div>
-
-          <div className="stat-card__value">
-            <strong>7</strong>
-            <span>/ 10</span>
-          </div>
-
-          <p>Weekly learning goals</p>
-        </article>
-
-        <article className="stat-card">
-          <div className="stat-card__top">
-            <div className="stat-icon">
-              <Clock3 size={18} />
-            </div>
-
-            <span className="stat-label">LEARNING TIME</span>
-          </div>
-
-          <div className="stat-card__value">
-            <strong>14</strong>
-            <span>h</span>
-          </div>
-
-          <p>This week</p>
-        </article>
-      </section>
-
-      {/* Main grid */}
-      <section className="dashboard-grid">
-        {/* Roadmap */}
-        <article className="dashboard-panel dashboard-roadmap">
-          <div className="panel-header">
+          <div className="calendar-topbar">
             <div>
-              <span className="panel-kicker">YOUR PATH</span>
-              <h2>Learning roadmap</h2>
+              <span className="calendar-label">
+                LEARNING PLAN
+              </span>
+
+              <h2>
+                September <span>2026</span>
+              </h2>
             </div>
 
-            <button className="panel-action">
-              View roadmap
-              <ArrowUpRight size={15} />
-            </button>
+            <div className="calendar-legend">
+              <span>
+                <i className="legend-dot learning-dot" />
+                Learning
+              </span>
+
+              <span>
+                <i className="legend-dot quiz-dot" />
+                Quiz
+              </span>
+
+              <span>
+                <i className="legend-dot project-dot" />
+                Project
+              </span>
+            </div>
           </div>
 
-          <div className="roadmap-preview">
-            <div className="roadmap-line" />
+          <div className="calendar-wrapper">
+            <BigCalendar
+              localizer={localizer}
+              events={sessions}
+              startAccessor="start"
+              endAccessor="end"
+              defaultView="month"
+              views={["month"]}
+              defaultDate={new Date(2026, 8, 12)}
+              selectable
+              popup
+              eventPropGetter={eventPropGetter}
+              dayPropGetter={dayPropGetter}
+              onSelectSlot={handleSelectSlot}
+              onSelectEvent={handleSelectEvent}
+              toolbar
+            />
+          </div>
 
-            <div className="roadmap-node roadmap-node--complete">
-              <div className="roadmap-node__dot">
-                <CheckCircle2 size={15} />
+          {/* SMALL HINT */}
+          <div className="calendar-hint">
+            <span>+</span>
+            Click an empty day to schedule a learning session
+          </div>
+        </div>
+
+        {/* SIDEBAR */}
+        <aside className="calendar-sidebar">
+
+          <div className="selected-section">
+
+            <span className="calendar-label">
+              SELECTED DAY
+            </span>
+
+            <div className="selected-date">
+              <div className="selected-number">
+                {format(selectedDate, "dd")}
               </div>
 
               <div>
-                <span>COMPLETED</span>
-                <strong>Python Fundamentals</strong>
+                <h3>
+                  {format(selectedDate, "EEEE")}
+                </h3>
+
+                <p>
+                  {format(selectedDate, "MMMM yyyy")}
+                </p>
               </div>
             </div>
 
-            <div className="roadmap-node roadmap-node--complete">
-              <div className="roadmap-node__dot">
-                <CheckCircle2 size={15} />
+            <div className="progress-box">
+              <div className="progress-heading">
+                <span>Today's progress</span>
+
+                <strong>
+                  {selectedSessions.length} / 3
+                </strong>
               </div>
 
-              <div>
-                <span>COMPLETED</span>
-                <strong>Data Analysis</strong>
+              <div className="progress-track">
+                <div
+                  className="progress-fill"
+                  style={{
+                    width: `${Math.min(
+                      selectedSessions.length / 3,
+                      1
+                    ) * 100}%`,
+                  }}
+                />
               </div>
             </div>
 
-            <div className="roadmap-node roadmap-node--current">
-              <div className="roadmap-node__dot">
-                <span />
+          </div>
+
+          {/* SESSIONS */}
+          <div className="sessions-section">
+
+            <div className="section-heading">
+              <span>SESSIONS</span>
+
+              <span className="session-count">
+                {selectedSessions.length}
+              </span>
+            </div>
+
+            {selectedSessions.length > 0 ? (
+              selectedSessions.map((session) => (
+                <div
+                  className={`session-card session-${session.type}`}
+                  key={session.id}
+                >
+                  <div className="session-icon">
+                    {session.type === "quiz"
+                      ? "?"
+                      : session.type === "project"
+                      ? "↗"
+                      : "●"}
+                  </div>
+
+                  <div className="session-info">
+                    <span>{session.category}</span>
+
+                    <h4>{session.title}</h4>
+
+                    <p>
+                      {format(session.start, "HH:mm")}
+                      {" — "}
+                      {format(session.end, "HH:mm")}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="empty-session">
+                <div>✦</div>
+
+                <h4>Nothing scheduled</h4>
+
+                <p>
+                  Click a day to plan your next session.
+                </p>
               </div>
+            )}
 
-              <div>
-                <span>IN PROGRESS</span>
-                <strong>Machine Learning</strong>
+          </div>
 
-                <div className="node-progress">
-                  <span style={{ width: "64%" }} />
+          {/* UPCOMING */}
+          <div className="upcoming-section">
+
+            <div className="section-heading">
+              <span>UP NEXT</span>
+            </div>
+
+            {upcomingSessions.map((session) => (
+              <button
+                className="upcoming-item"
+                key={session.id}
+                onClick={() =>
+                  setSelectedDate(session.start)
+                }
+              >
+                <div className="upcoming-date">
+                  <strong>
+                    {format(session.start, "dd")}
+                  </strong>
+
+                  <span>
+                    {format(session.start, "MMM")}
+                  </span>
                 </div>
 
-                <small>64% complete</small>
-              </div>
-            </div>
-
-            <div className="roadmap-node roadmap-node--locked">
-              <div className="roadmap-node__dot" />
-
-              <div>
-                <span>UP NEXT</span>
-                <strong>Deep Learning</strong>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        {/* Continue */}
-        <article className="dashboard-panel continue-panel">
-          <div className="panel-header">
-            <div>
-              <span className="panel-kicker">KEEP GOING</span>
-              <h2>Continue learning</h2>
-            </div>
-
-            <button className="icon-button">
-              <MoreHorizontal size={19} />
-            </button>
-          </div>
-
-          <div className="course-preview">
-            <div className="course-preview__visual">
-              <BookOpen size={27} />
-            </div>
-
-            <div className="course-preview__content">
-              <span>COURSE</span>
-              <h3>Machine Learning Foundations</h3>
-
-              <div className="course-progress">
                 <div>
-                  <span>64% complete</span>
-                  <span>8 / 12 lessons</span>
+                  <h4>{session.title}</h4>
+
+                  <p>
+                    {format(session.start, "HH:mm")}
+                    {" · "}
+                    {session.category}
+                  </p>
                 </div>
 
-                <div className="progress-bar">
-                  <span style={{ width: "64%" }} />
-                </div>
-              </div>
-            </div>
+                <span className="upcoming-arrow">
+                  →
+                </span>
+              </button>
+            ))}
+
           </div>
 
-          <button className="continue-button">
-            <Play size={16} fill="currentColor" />
-            Continue learning
+          <button
+            className="continue-button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add learning session
+            <span>+</span>
           </button>
-        </article>
 
-        {/* Upcoming */}
-        <article className="dashboard-panel upcoming-panel">
-          <div className="panel-header">
-            <div>
-              <span className="panel-kicker">YOUR SCHEDULE</span>
-              <h2>Upcoming</h2>
-            </div>
+        </aside>
+      </div>
 
-            <button className="panel-action">
-              Calendar
-              <ArrowUpRight size={15} />
+      {/* =====================================================
+          ADD SESSION MODAL
+          ===================================================== */}
+
+      {isModalOpen && (
+        <div
+          className="calendar-modal-overlay"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setIsModalOpen(false);
+            }
+          }}
+        >
+          <div className="calendar-modal">
+
+            <button
+              className="modal-close"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ×
             </button>
-          </div>
 
-          <div className="upcoming-list">
-            <div className="upcoming-item">
-              <div className="upcoming-date">
-                <span>SEP</span>
-                <strong>04</strong>
+            <span className="calendar-label">
+              NEW SESSION
+            </span>
+
+            <h2>
+              Plan your next step
+            </h2>
+
+            <p className="modal-date">
+              {format(selectedDate, "EEEE, MMMM d, yyyy")}
+            </p>
+
+            <form onSubmit={handleAddSession}>
+
+              <label>
+                Session name
+                <input
+                  type="text"
+                  placeholder="e.g. Learn React Hooks"
+                  value={newSession.title}
+                  onChange={(event) =>
+                    setNewSession({
+                      ...newSession,
+                      title: event.target.value,
+                    })
+                  }
+                  autoFocus
+                />
+              </label>
+
+              <div className="modal-grid">
+
+                <label>
+                  Time
+                  <input
+                    type="time"
+                    value={newSession.time}
+                    onChange={(event) =>
+                      setNewSession({
+                        ...newSession,
+                        time: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+
+                <label>
+                  Duration
+                  <select
+                    value={newSession.duration}
+                    onChange={(event) =>
+                      setNewSession({
+                        ...newSession,
+                        duration: event.target.value,
+                      })
+                    }
+                  >
+                    <option value="30">30 min</option>
+                    <option value="45">45 min</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1h 30</option>
+                    <option value="120">2 hours</option>
+                  </select>
+                </label>
+
               </div>
 
-              <div>
-                <span>COURSE</span>
-                <strong>ML — Decision Trees</strong>
-                <small>Tomorrow · 1 hour</small>
-              </div>
-            </div>
+              <label>
+                Session type
+                <div className="session-type-picker">
 
-            <div className="upcoming-item">
-              <div className="upcoming-date">
-                <span>SEP</span>
-                <strong>06</strong>
-              </div>
+                  <button
+                    type="button"
+                    className={
+                      newSession.type === "learning"
+                        ? "type-option active learning-option"
+                        : "type-option"
+                    }
+                    onClick={() =>
+                      setNewSession({
+                        ...newSession,
+                        type: "learning",
+                      })
+                    }
+                  >
+                    <span>●</span>
+                    Learning
+                  </button>
 
-              <div>
-                <span>PROJECT</span>
-                <strong>Data Analysis Project</strong>
-                <small>In 3 days · Deadline</small>
-              </div>
-            </div>
+                  <button
+                    type="button"
+                    className={
+                      newSession.type === "quiz"
+                        ? "type-option active quiz-option"
+                        : "type-option"
+                    }
+                    onClick={() =>
+                      setNewSession({
+                        ...newSession,
+                        type: "quiz",
+                      })
+                    }
+                  >
+                    <span>?</span>
+                    Quiz
+                  </button>
 
-            <div className="upcoming-item">
-              <div className="upcoming-date">
-                <span>SEP</span>
-                <strong>08</strong>
-              </div>
+                  <button
+                    type="button"
+                    className={
+                      newSession.type === "project"
+                        ? "type-option active project-option"
+                        : "type-option"
+                    }
+                    onClick={() =>
+                      setNewSession({
+                        ...newSession,
+                        type: "project",
+                      })
+                    }
+                  >
+                    <span>↗</span>
+                    Project
+                  </button>
 
-              <div>
-                <span>LEARNING</span>
-                <strong>Deep Learning Module</strong>
-                <small>Next week</small>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        {/* Projects */}
-        <article className="dashboard-panel projects-panel">
-          <div className="panel-header">
-            <div>
-              <span className="panel-kicker">BUILD SOMETHING</span>
-              <h2>Active projects</h2>
-            </div>
-
-            <button className="panel-action">
-              View all
-              <ArrowUpRight size={15} />
-            </button>
-          </div>
-
-          <div className="project-list">
-            <div className="project-item">
-              <div className="project-icon">
-                <FolderKanban size={18} />
-              </div>
-
-              <div className="project-info">
-                <strong>Data Visualization Dashboard</strong>
-
-                <div className="project-progress">
-                  <span style={{ width: "72%" }} />
                 </div>
+              </label>
+
+              <label>
+                Category
+                <input
+                  type="text"
+                  placeholder="e.g. Frontend"
+                  value={newSession.category}
+                  onChange={(event) =>
+                    setNewSession({
+                      ...newSession,
+                      category: event.target.value,
+                    })
+                  }
+                />
+              </label>
+
+              <div className="modal-actions">
+
+                <button
+                  type="button"
+                  className="modal-cancel"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="modal-save"
+                >
+                  Add session
+                  <span>→</span>
+                </button>
+
               </div>
 
-              <span>72%</span>
-            </div>
-
-            <div className="project-item">
-              <div className="project-icon">
-                <FolderKanban size={18} />
-              </div>
-
-              <div className="project-info">
-                <strong>ML Prediction Model</strong>
-
-                <div className="project-progress">
-                  <span style={{ width: "38%" }} />
-                </div>
-              </div>
-
-              <span>38%</span>
-            </div>
+            </form>
           </div>
-        </article>
-      </section>
-
-      {/* Bottom motivation */}
-      <section className="dashboard-quote">
-        <div className="dashboard-quote__icon">
-          <Sparkles size={18} />
         </div>
+      )}
 
-        <div>
-          <span>YOUR PATH · TODAY</span>
-          <p>
-            Progress doesn't need to be perfect. It just needs to keep moving.
-          </p>
-        </div>
-
-        <CalendarDays size={20} />
-      </section>
-    </div>
+    </section>
   );
 }
 
-export default Dashboard;
+export default Calendar;

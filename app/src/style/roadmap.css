@@ -7,6 +7,212 @@
   color: var(--text-primary);
 }
 
+.roadmap-flow {
+  width: 100%;
+  height: 700px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--background-secondary);
+}
+
+.roadmap-node {
+  width: 300px;
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--card-background);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.roadmap-node h3 {
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.roadmap-node p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+.roadmap-node-number {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.55;
+}
+
+.roadmap-node-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.roadmap-node.completed {
+  border-color: #7aa987;
+}
+
+.roadmap-node.current {
+  border-color: #5c8fba;
+}
+
+.roadmap-node.locked {
+  opacity: 0.5;
+}
+
+/* =========================================
+   LEARNING MAP
+========================================= */
+
+.learning-map {
+  width: 100%;
+  height: 680px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--bg-soft);
+  position: relative;
+}
+
+.learning-map .react-flow__background {
+  opacity: 0.35;
+}
+
+.learning-map .react-flow__edge-path {
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+}
+
+.learning-map .react-flow__edge {
+  opacity: 0.65;
+}
+
+.learning-map .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  border: 0;
+  background: var(--text-muted);
+}
+
+.learning-map-node {
+  position: relative;
+  min-width: 150px;
+  padding: 15px 18px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.learning-map-node:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+}
+
+.learning-map-node--goal {
+  min-width: 260px;
+  padding: 22px;
+  border-radius: 22px;
+}
+
+.learning-map-node--domain {
+  min-width: 170px;
+  text-align: center;
+}
+
+.learning-map-node--topic {
+  min-width: 145px;
+}
+
+.learning-map-node.is-current {
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 0 1px var(--color-primary),
+    var(--shadow-soft);
+}
+
+.learning-map-node.is-completed {
+  border-color: rgba(66, 194, 159, 0.45);
+}
+
+.learning-map-node__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.learning-map-node h3 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.learning-map-node--goal h3 {
+  font-size: 18px;
+}
+
+.learning-map-node__check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--color-primary);
+  color: white;
+}
+
+.learning-map-node__progress {
+  width: 100%;
+  height: 3px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--border);
+}
+
+.learning-map-node__progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.learning-map .react-flow__controls {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.learning-map .react-flow__controls-button {
+  width: 30px;
+  height: 30px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.learning-map .react-flow__controls-button:hover {
+  background: var(--bg-soft);
+}
 
 /* =========================================================
    HEADER

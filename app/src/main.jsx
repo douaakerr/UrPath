@@ -16,6 +16,7 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/app/Dashboard";
 import Roadmap from "./pages/app/Roadmap";
 import SetUpLearning from "./pages/app/SetUpLearning";
+import Calendar from "./pages/app/Calendar";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
               {
                 path: "roadmap",
                 element: <Roadmap />,
+              },
+              {
+                path:"calendar",
+                element: <Calendar />,
               },
             ],
           },

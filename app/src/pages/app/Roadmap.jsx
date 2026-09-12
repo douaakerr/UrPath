@@ -1,23 +1,19 @@
-import { useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
-  Check,
   CheckCircle2,
   Circle,
   Clock3,
-  Code2,
-  Lock,
   MoreHorizontal,
   Plus,
   RotateCcw,
   Sparkles,
   Target,
   Trash2,
-  Trophy,
   X,
 } from "lucide-react";
+import { useState } from "react";
+import RoadmapFlow from "../../components/Roadmap/RoadmapFlow";
 import { useRoadmapStore } from "../../stores/roadmapStore";
 import "../../style/roadmap.css";
 
@@ -32,7 +28,7 @@ function Roadmap() {
     updateMilestoneProgress,
     addMilestone,
     editMilestone,
-    deleteMilestone,
+   
     toggleFocusGoal,
     addFocusGoal,
     deleteFocusGoal,
@@ -48,7 +44,7 @@ function Roadmap() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showCreateRoadmapModal, setShowCreateRoadmapModal] = useState(false);
-  const [activeMenuMilestoneId, setActiveMenuMilestoneId] = useState(null);
+  
   const [activeLearningMilestone, setActiveLearningMilestone] = useState(null);
 
   // New Milestone Form State
@@ -156,7 +152,14 @@ function Roadmap() {
         <div className="roadmap-header__content">
           <p className="roadmap-eyebrow">YOUR LEARNING JOURNEY</p>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              flexWrap: "wrap",
+            }}
+          >
             <h1>
               My <span>Roadmap</span>
             </h1>
@@ -204,7 +207,10 @@ function Roadmap() {
             <MoreHorizontal size={17} />
           </button>
 
-          <button className="roadmap-ai-button" onClick={() => setShowAiModal(true)}>
+          <button
+            className="roadmap-ai-button"
+            onClick={() => setShowAiModal(true)}
+          >
             <Sparkles size={16} />
             Ask AI
             <ArrowUpRight size={15} />
@@ -228,7 +234,12 @@ function Roadmap() {
           </div>
 
           <div className="roadmap-overview__bar">
-            <span style={{ width: `${overallProgress}%`, transition: "width 0.4s ease" }} />
+            <span
+              style={{
+                width: `${overallProgress}%`,
+                transition: "width 0.4s ease",
+              }}
+            />
           </div>
 
           <div className="roadmap-overview__bottom">
@@ -296,252 +307,17 @@ function Roadmap() {
                 Add Milestone
               </button>
 
-              <button className="roadmap-view-button" onClick={() => setShowSettingsModal(true)}>
+              <button
+                className="roadmap-view-button"
+                onClick={() => setShowSettingsModal(true)}
+              >
                 Roadmap settings
                 <ArrowUpRight size={14} />
               </button>
             </div>
           </div>
 
-          <div className="roadmap-timeline">
-            {activeRoadmap?.milestones?.map((step) => {
-              const isCompleted = step.status === "completed";
-              const isCurrent = step.status === "current";
-              const isLocked = step.status === "locked";
-
-              return (
-                <article
-                  key={step.id}
-                  className={`roadmap-step roadmap-step--${step.status}`}
-                >
-                  <div className="roadmap-step__rail">
-                    <div
-                      className="roadmap-step__node"
-                      style={{ cursor: "pointer" }}
-                      title="Click to toggle status"
-                      onClick={() => {
-                        const statusCycle = {
-                          upcoming: "current",
-                          current: "completed",
-                          completed: "locked",
-                          locked: "upcoming",
-                        };
-                        setMilestoneStatus(step.id, statusCycle[step.status] || "upcoming");
-                      }}
-                    >
-                      {isCompleted ? (
-                        <Check size={15} strokeWidth={2.5} />
-                      ) : isCurrent ? (
-                        <span />
-                      ) : isLocked ? (
-                        <Lock size={12} />
-                      ) : (
-                        <Circle size={11} />
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="roadmap-step__card">
-                    <div className="roadmap-step__top">
-                      <div>
-                        <span className="roadmap-step__status">
-                          {isCompleted
-                            ? "COMPLETED"
-                            : isCurrent
-                            ? "CURRENT MILESTONE"
-                            : isLocked
-                            ? "LOCKED"
-                            : "UP NEXT"}
-                        </span>
-                        <h3>{step.title}</h3>
-                      </div>
-
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span className="roadmap-step__number">{step.number}</span>
-                        <div style={{ position: "relative" }}>
-                          <button
-                            className="roadmap-step-more"
-                            style={{ width: "24px", height: "24px" }}
-                            onClick={() =>
-                              setActiveMenuMilestoneId(
-                                activeMenuMilestoneId === step.id ? null : step.id
-                              )
-                            }
-                          >
-                            <MoreHorizontal size={14} />
-                          </button>
-
-                          {activeMenuMilestoneId === step.id && (
-                            <div
-                              style={{
-                                position: "absolute",
-                                right: 0,
-                                top: "28px",
-                                background: "var(--bg-surface)",
-                                border: "1px solid var(--border)",
-                                borderRadius: "8px",
-                                boxShadow: "var(--shadow-soft)",
-                                zIndex: 10,
-                                width: "160px",
-                                overflow: "hidden",
-                              }}
-                            >
-                              <button
-                                style={{
-                                  width: "100%",
-                                  textAlign: "left",
-                                  padding: "8px 12px",
-                                  fontSize: "10px",
-                                  background: "none",
-                                  border: "none",
-                                  color: "var(--text-primary)",
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  setEditingMilestone(step);
-                                  setActiveMenuMilestoneId(null);
-                                }}
-                              >
-                                ✏️ Edit Details
-                              </button>
-                              <button
-                                style={{
-                                  width: "100%",
-                                  textAlign: "left",
-                                  padding: "8px 12px",
-                                  fontSize: "10px",
-                                  background: "none",
-                                  border: "none",
-                                  color: "var(--text-primary)",
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  setMilestoneStatus(step.id, "completed");
-                                  setActiveMenuMilestoneId(null);
-                                }}
-                              >
-                                ✅ Mark Completed
-                              </button>
-                              <button
-                                style={{
-                                  width: "100%",
-                                  textAlign: "left",
-                                  padding: "8px 12px",
-                                  fontSize: "10px",
-                                  background: "none",
-                                  border: "none",
-                                  color: "var(--text-primary)",
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  setMilestoneStatus(step.id, "current");
-                                  setActiveMenuMilestoneId(null);
-                                }}
-                              >
-                                🎯 Set as Current
-                              </button>
-                              <button
-                                style={{
-                                  width: "100%",
-                                  textAlign: "left",
-                                  padding: "8px 12px",
-                                  fontSize: "10px",
-                                  background: "none",
-                                  border: "none",
-                                  color: "#ef4444",
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  deleteMilestone(step.id);
-                                  setActiveMenuMilestoneId(null);
-                                }}
-                              >
-                                🗑️ Delete
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <p>{step.description}</p>
-
-                    {(isCurrent || step.progress > 0) && (
-                      <div className="roadmap-step__progress">
-                        <div className="roadmap-step__progress-top">
-                          <span>Progress</span>
-                          <strong>{step.progress}%</strong>
-                        </div>
-                        <div className="roadmap-progress-bar">
-                          <span
-                            style={{
-                              width: `${step.progress}%`,
-                              transition: "width 0.3s ease",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="roadmap-step__meta">
-                      <span>
-                        <BookOpen size={13} />
-                        {step.lessonsCount} lessons
-                      </span>
-                      <span>
-                        <Clock3 size={13} />
-                        {step.hours}h
-                      </span>
-                      {step.projectsCount && (
-                        <span>
-                          <Code2 size={13} />
-                          {step.projectsCount} project{step.projectsCount > 1 ? "s" : ""}
-                        </span>
-                      )}
-                      {isCompleted && (
-                        <span>
-                          <Trophy size={13} />
-                          Completed
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="roadmap-step__actions">
-                      <button
-                        className="roadmap-continue-button"
-                        onClick={() => setActiveLearningMilestone(step)}
-                      >
-                        {isCompleted
-                          ? "Review lessons"
-                          : isCurrent
-                          ? "Continue learning"
-                          : "Start milestone"}
-                        <ArrowRight size={15} />
-                      </button>
-
-                      {/* Interactive quick progress slider / controls */}
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        step="10"
-                        value={step.progress || 0}
-                        onChange={(e) =>
-                          updateMilestoneProgress(step.id, Number(e.target.value))
-                        }
-                        title={`Adjust progress (${step.progress || 0}%)`}
-                        style={{
-                          width: "90px",
-                          accentColor: "var(--color-primary)",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+          <RoadmapFlow roadmap={activeRoadmap} />
         </main>
 
         {/* RIGHT SIDEBAR */}
@@ -581,7 +357,10 @@ function Roadmap() {
             {(() => {
               const goals = activeRoadmap?.focusGoals || [];
               const doneCount = goals.filter((g) => g.done).length;
-              const focusPct = goals.length > 0 ? Math.round((doneCount / goals.length) * 100) : 0;
+              const focusPct =
+                goals.length > 0
+                  ? Math.round((doneCount / goals.length) * 100)
+                  : 0;
 
               return (
                 <>
@@ -594,7 +373,12 @@ function Roadmap() {
                     </div>
 
                     <div className="roadmap-focus-bar">
-                      <span style={{ width: `${focusPct}%`, transition: "width 0.3s ease" }} />
+                      <span
+                        style={{
+                          width: `${focusPct}%`,
+                          transition: "width 0.3s ease",
+                        }}
+                      />
                     </div>
                   </div>
 
@@ -605,16 +389,29 @@ function Roadmap() {
                         className={`roadmap-focus-item ${
                           goal.done ? "roadmap-focus-item--done" : ""
                         }`}
-                        style={{ cursor: "pointer", justifyContent: "space-between" }}
+                        style={{
+                          cursor: "pointer",
+                          justifyContent: "space-between",
+                        }}
                       >
                         <div
-                          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
                           onClick={() => toggleFocusGoal(goal.id)}
                         >
-                          {goal.done ? <CheckCircle2 size={15} /> : <Circle size={15} />}
+                          {goal.done ? (
+                            <CheckCircle2 size={15} />
+                          ) : (
+                            <Circle size={15} />
+                          )}
                           <span
                             style={{
-                              textDecoration: goal.done ? "line-through" : "none",
+                              textDecoration: goal.done
+                                ? "line-through"
+                                : "none",
                             }}
                           >
                             {goal.text}
@@ -739,14 +536,29 @@ function Roadmap() {
               boxShadow: "var(--shadow-soft)",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <Sparkles size={18} color="var(--color-primary)" />
-                <h3 style={{ margin: 0, fontSize: "16px" }}>UrPath AI Learning Assistant</h3>
+                <h3 style={{ margin: 0, fontSize: "16px" }}>
+                  UrPath AI Learning Assistant
+                </h3>
               </div>
               <button
                 onClick={() => setShowAiModal(false)}
-                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  cursor: "pointer",
+                }}
               >
                 <X size={18} />
               </button>
@@ -768,9 +580,14 @@ function Roadmap() {
                 <div
                   key={i}
                   style={{
-                    alignSelf: msg.sender === "user" ? "flex-end" : "flex-start",
-                    background: msg.sender === "user" ? "var(--color-primary)" : "var(--bg-surface)",
-                    color: msg.sender === "user" ? "white" : "var(--text-primary)",
+                    alignSelf:
+                      msg.sender === "user" ? "flex-end" : "flex-start",
+                    background:
+                      msg.sender === "user"
+                        ? "var(--color-primary)"
+                        : "var(--bg-surface)",
+                    color:
+                      msg.sender === "user" ? "white" : "var(--text-primary)",
                     padding: "8px 12px",
                     borderRadius: "10px",
                     fontSize: "11px",
@@ -783,7 +600,10 @@ function Roadmap() {
               ))}
             </div>
 
-            <form onSubmit={handleAskAi} style={{ display: "flex", gap: "8px" }}>
+            <form
+              onSubmit={handleAskAi}
+              style={{ display: "flex", gap: "8px" }}
+            >
               <input
                 type="text"
                 placeholder="Ask AI anything about your roadmap..."
@@ -847,19 +667,37 @@ function Roadmap() {
               gap: "12px",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <h3 style={{ margin: 0, fontSize: "15px" }}>Add New Milestone</h3>
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  cursor: "pointer",
+                }}
               >
                 <X size={18} />
               </button>
             </div>
 
             <div>
-              <label style={{ fontSize: "10px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Title
               </label>
               <input
@@ -882,7 +720,14 @@ function Roadmap() {
             </div>
 
             <div>
-              <label style={{ fontSize: "10px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Description
               </label>
               <textarea
@@ -904,9 +749,17 @@ function Roadmap() {
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: "8px",
+              }}
+            >
               <div>
-                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>Lessons</label>
+                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>
+                  Lessons
+                </label>
                 <input
                   type="number"
                   min="1"
@@ -924,7 +777,9 @@ function Roadmap() {
                 />
               </div>
               <div>
-                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>Hours</label>
+                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>
+                  Hours
+                </label>
                 <input
                   type="number"
                   min="1"
@@ -942,7 +797,9 @@ function Roadmap() {
                 />
               </div>
               <div>
-                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>Projects</label>
+                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>
+                  Projects
+                </label>
                 <input
                   type="number"
                   min="0"
@@ -1008,19 +865,37 @@ function Roadmap() {
               gap: "12px",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <h3 style={{ margin: 0, fontSize: "15px" }}>Edit Milestone</h3>
               <button
                 type="button"
                 onClick={() => setEditingMilestone(null)}
-                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  cursor: "pointer",
+                }}
               >
                 <X size={18} />
               </button>
             </div>
 
             <div>
-              <label style={{ fontSize: "10px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Title
               </label>
               <input
@@ -1028,7 +903,10 @@ function Roadmap() {
                 required
                 value={editingMilestone.title}
                 onChange={(e) =>
-                  setEditingMilestone({ ...editingMilestone, title: e.target.value })
+                  setEditingMilestone({
+                    ...editingMilestone,
+                    title: e.target.value,
+                  })
                 }
                 style={{
                   width: "100%",
@@ -1044,14 +922,24 @@ function Roadmap() {
             </div>
 
             <div>
-              <label style={{ fontSize: "10px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Description
               </label>
               <textarea
                 rows="3"
                 value={editingMilestone.description}
                 onChange={(e) =>
-                  setEditingMilestone({ ...editingMilestone, description: e.target.value })
+                  setEditingMilestone({
+                    ...editingMilestone,
+                    description: e.target.value,
+                  })
                 }
                 style={{
                   width: "100%",
@@ -1067,9 +955,17 @@ function Roadmap() {
               />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: "8px",
+              }}
+            >
               <div>
-                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>Lessons</label>
+                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>
+                  Lessons
+                </label>
                 <input
                   type="number"
                   value={editingMilestone.lessonsCount}
@@ -1091,7 +987,9 @@ function Roadmap() {
                 />
               </div>
               <div>
-                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>Hours</label>
+                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>
+                  Hours
+                </label>
                 <input
                   type="number"
                   value={editingMilestone.hours}
@@ -1113,7 +1011,9 @@ function Roadmap() {
                 />
               </div>
               <div>
-                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>Projects</label>
+                <label style={{ fontSize: "9px", color: "var(--text-muted)" }}>
+                  Projects
+                </label>
                 <input
                   type="number"
                   value={editingMilestone.projectsCount}
@@ -1183,19 +1083,39 @@ function Roadmap() {
               gap: "12px",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h3 style={{ margin: 0, fontSize: "15px" }}>Create Custom Roadmap</h3>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h3 style={{ margin: 0, fontSize: "15px" }}>
+                Create Custom Roadmap
+              </h3>
               <button
                 type="button"
                 onClick={() => setShowCreateRoadmapModal(false)}
-                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  cursor: "pointer",
+                }}
               >
                 <X size={18} />
               </button>
             </div>
 
             <div>
-              <label style={{ fontSize: "10px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Roadmap Title
               </label>
               <input
@@ -1218,7 +1138,14 @@ function Roadmap() {
             </div>
 
             <div>
-              <label style={{ fontSize: "10px", color: "var(--text-muted)", display: "block", marginBottom: "4px" }}>
+              <label
+                style={{
+                  fontSize: "10px",
+                  color: "var(--text-muted)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Subtitle / Description
               </label>
               <input
@@ -1285,18 +1212,37 @@ function Roadmap() {
               gap: "14px",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <h3 style={{ margin: 0, fontSize: "15px" }}>Roadmap Settings</h3>
               <button
                 onClick={() => setShowSettingsModal(false)}
-                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  cursor: "pointer",
+                }}
               >
                 <X size={18} />
               </button>
             </div>
 
-            <p style={{ margin: 0, fontSize: "11px", color: "var(--text-secondary)", lineHeight: "1.5" }}>
-              Manage your active roadmap configurations or reset all milestones and goals back to initial defaults.
+            <p
+              style={{
+                margin: 0,
+                fontSize: "11px",
+                color: "var(--text-secondary)",
+                lineHeight: "1.5",
+              }}
+            >
+              Manage your active roadmap configurations or reset all milestones
+              and goals back to initial defaults.
             </p>
 
             <button
@@ -1352,7 +1298,13 @@ function Roadmap() {
               gap: "14px",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <div>
                 <span className="roadmap-label">MILESTONE LESSONS</span>
                 <h3 style={{ margin: "4px 0 0", fontSize: "16px" }}>
@@ -1361,13 +1313,24 @@ function Roadmap() {
               </div>
               <button
                 onClick={() => setActiveLearningMilestone(null)}
-                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-muted)",
+                  cursor: "pointer",
+                }}
               >
                 <X size={18} />
               </button>
             </div>
 
-            <p style={{ margin: 0, fontSize: "11px", color: "var(--text-secondary)" }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "11px",
+                color: "var(--text-secondary)",
+              }}
+            >
               {activeLearningMilestone.description}
             </p>
 
@@ -1380,11 +1343,15 @@ function Roadmap() {
                 overflowY: "auto",
               }}
             >
-              {Array.from({ length: activeLearningMilestone.lessonsCount || 5 }).map((_, idx) => {
+              {Array.from({
+                length: activeLearningMilestone.lessonsCount || 5,
+              }).map((_, idx) => {
                 const lessonNum = idx + 1;
-                const pctPerLesson = 100 / (activeLearningMilestone.lessonsCount || 5);
+                const pctPerLesson =
+                  100 / (activeLearningMilestone.lessonsCount || 5);
                 const isLessonDone =
-                  (activeLearningMilestone.progress || 0) >= lessonNum * pctPerLesson - 1;
+                  (activeLearningMilestone.progress || 0) >=
+                  lessonNum * pctPerLesson - 1;
 
                 return (
                   <div
@@ -1393,7 +1360,9 @@ function Roadmap() {
                       const newProgress = Math.round(lessonNum * pctPerLesson);
                       updateMilestoneProgress(
                         activeLearningMilestone.id,
-                        isLessonDone ? Math.round((lessonNum - 1) * pctPerLesson) : newProgress
+                        isLessonDone
+                          ? Math.round((lessonNum - 1) * pctPerLesson)
+                          : newProgress,
                       );
                       // Update local ref
                       setActiveLearningMilestone((prev) => ({
@@ -1408,26 +1377,40 @@ function Roadmap() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       padding: "10px 12px",
-                      background: isLessonDone ? "rgba(66, 194, 159, 0.08)" : "var(--bg-soft)",
+                      background: isLessonDone
+                        ? "rgba(66, 194, 159, 0.08)"
+                        : "var(--bg-soft)",
                       border: "1px solid",
-                      borderColor: isLessonDone ? "rgba(66, 194, 159, 0.2)" : "var(--border)",
+                      borderColor: isLessonDone
+                        ? "rgba(66, 194, 159, 0.2)"
+                        : "var(--border)",
                       borderRadius: "10px",
                       cursor: "pointer",
                       fontSize: "11px",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
                       {isLessonDone ? (
                         <CheckCircle2 size={16} color="#39b38f" />
                       ) : (
                         <Circle size={16} color="var(--text-muted)" />
                       )}
-                      <span style={{ fontWeight: isLessonDone ? "600" : "400" }}>
+                      <span
+                        style={{ fontWeight: isLessonDone ? "600" : "400" }}
+                      >
                         Lesson {lessonNum}: Core Concepts & Exercises
                       </span>
                     </div>
 
-                    <span style={{ fontSize: "10px", color: "var(--text-muted)" }}>
+                    <span
+                      style={{ fontSize: "10px", color: "var(--text-muted)" }}
+                    >
                       {isLessonDone ? "Completed" : "Start"}
                     </span>
                   </div>
@@ -1435,7 +1418,13 @@ function Roadmap() {
               })}
             </div>
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <span style={{ fontSize: "11px", fontWeight: "600" }}>
                 Overall Progress: {activeLearningMilestone.progress || 0}%
               </span>
