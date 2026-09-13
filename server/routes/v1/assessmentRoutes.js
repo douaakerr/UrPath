@@ -1,43 +1,17 @@
 import { Router } from "express";
-import { generateAssessment } from "../../ai/agent/tools/assessmentTool.js";
+
+import {
+  createAssessment,
+  submitAssessment,
+  generateRoadmapFromAssessment,
+} from "../../controllers/assesmentController.js";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
-  try {
-    const {
-      domain,
-      subdomain,
-      goal,
-      learnerLevel = "unknown",
-    } = req.body;
+router.post("/", createAssessment);
 
-    if (!domain || !subdomain || !goal) {
-      return res.status(400).json({
-        success: false,
-        message: "domain, subdomain and goal are required",
-      });
-    }
+router.post("/submit", submitAssessment);
 
-    const assessment = await generateAssessment({
-      domain,
-      subdomain,
-      goal,
-      learnerLevel,
-    });
-
-    res.json({
-      success: true,
-      assessment,
-    });
-  } catch (error) {
-    console.error("Assessment generation error:", error);
-
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-});
+router.post("/:assessmentId/roadmap", generateRoadmapFromAssessment);
 
 export default router;

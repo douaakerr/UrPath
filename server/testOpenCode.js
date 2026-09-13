@@ -1,16 +1,29 @@
-import { generateText } from "./ai/aiService.js";
+import { scoreAssessment } from "./services/assessmentScoringService.js";
 
-const result = await generateText({
-  messages: [
+const assessment = {
+  questions: [
     {
-      role: "system",
-      content: "You are the UrPath AI assistant.",
+      id: "q1",
+      skill: "React",
+      correctAnswer: "A",
     },
     {
-      role: "user",
-      content: "Reply with exactly: URPATH_PROVIDER_OK",
+      id: "q2",
+      skill: "JavaScript",
+      correctAnswer: "B",
+    },
+    {
+      id: "q3",
+      skill: "React",
+      correctAnswer: "C",
     },
   ],
-});
+};
 
-console.log("AI RESPONSE:", result);
+const answers = {
+  q1: "A",
+  q2: "B",
+  q3: "A",
+};
+
+console.log(scoreAssessment(assessment, answers));
