@@ -1,16 +1,13 @@
 import express from "express";
-import { askOllama } from "../../services/ollamaService.js";
+import { askOpenCode } from "../../services/openCodeService.js";
 
 const router = express.Router();
 
 router.get("/test", async (req, res) => {
   try {
-    const answer = await askOllama([
-      {
-        role: "user",
-        content: "Say hello to UrPath in one short sentence.",
-      },
-    ]);
+    const answer = await askOpenCode(
+      "Say hello to UrPath in one short sentence."
+    );
 
     res.json({
       success: true,

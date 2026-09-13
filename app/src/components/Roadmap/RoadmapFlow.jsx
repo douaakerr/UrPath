@@ -1,13 +1,13 @@
-import { useCallback, useMemo } from "react";
 import {
-  ReactFlow,
-  ReactFlowProvider,
   Background,
   Controls,
   Handle,
   Position,
+  ReactFlow,
+  ReactFlowProvider,
   useReactFlow,
 } from "@xyflow/react";
+import { useCallback, useMemo } from "react";
 
 import "@xyflow/react/dist/style.css";
 
@@ -20,13 +20,9 @@ function MapNode({ data }) {
     >
       <Handle type="target" position={Position.Top} />
 
-      {data.completed && (
-        <span className="learning-map-node__check">✓</span>
-      )}
+      {data.completed && <span className="learning-map-node__check">✓</span>}
 
-      <span className="learning-map-node__label">
-        {data.label}
-      </span>
+      <span className="learning-map-node__label">{data.label}</span>
 
       <h3>{data.title}</h3>
 
@@ -195,21 +191,17 @@ function RoadmapFlowContent({ roadmap }) {
         type: "smoothstep",
       },
     ],
-    []
+    [],
   );
 
   const handleNodeClick = useCallback(
     (_, node) => {
-      setCenter(
-        node.position.x + 90,
-        node.position.y + 45,
-        {
-          zoom: node.data.type === "goal" ? 1.1 : 1.5,
-          duration: 700,
-        }
-      );
+      setCenter(node.position.x + 90, node.position.y + 45, {
+        zoom: node.data.type === "goal" ? 1.1 : 1.5,
+        duration: 700,
+      });
     },
-    [setCenter]
+    [setCenter],
   );
 
   return (
