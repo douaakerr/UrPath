@@ -17,6 +17,10 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const handleGoogleLogin = () => {
+  window.location.href = `${import.meta.env.VITE_API_URL}/v1/auth/google`;
+};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,18 +67,14 @@ function Login() {
         {/* Authentication panel */}
         <section className="auth-glass">
           <div className="auth-content">
-
             {/* Header */}
             <div className="auth-heading">
-              <span className="auth-eyebrow">
-                WELCOME BACK
-              </span>
+              <span className="auth-eyebrow">WELCOME BACK</span>
 
               <h1>Continue your journey.</h1>
 
               <p>
-                Pick up where you left off and keep moving
-                toward your goals.
+                Pick up where you left off and keep moving toward your goals.
               </p>
             </div>
 
@@ -86,15 +86,18 @@ function Login() {
             )}
 
             {/* Form */}
-            <form
-              className="auth-form"
-              onSubmit={handleSubmit}
-            >
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <button
+                type="button"
+                className="google-login-btn"
+                onClick={handleGoogleLogin}
+              >
+                <span>G</span>
+                Continue with Google
+              </button>
               {/* Email */}
               <div className="form-group">
-                <label htmlFor="email">
-                  Email
-                </label>
+                <label htmlFor="email">Email</label>
 
                 <input
                   id="email"
@@ -112,28 +115,18 @@ function Login() {
               {/* Password */}
               <div className="form-group">
                 <div className="password-label">
-                  <label htmlFor="password">
-                    Password
-                  </label>
+                  <label htmlFor="password">Password</label>
 
-                  <Link to="/forgot-password">
-                    Forgot password?
-                  </Link>
+                  <Link to="/forgot-password">Forgot password?</Link>
                 </div>
 
                 <div className="password-input">
                   <input
                     id="password"
                     name="password"
-                    type={
-                      showPassword
-                        ? "text"
-                        : "password"
-                    }
+                    type={showPassword ? "text" : "password"}
                     value={password}
-                    onChange={(e) =>
-                      setPassword(e.target.value)
-                    }
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     autoComplete="current-password"
                     required
@@ -143,41 +136,25 @@ function Login() {
                   <button
                     type="button"
                     className="password-toggle"
-                    onClick={() =>
-                      setShowPassword((current) => !current)
-                    }
+                    onClick={() => setShowPassword((current) => !current)}
                     aria-label={
-                      showPassword
-                        ? "Hide password"
-                        : "Show password"
+                      showPassword ? "Hide password" : "Show password"
                     }
                     disabled={loading}
                   >
                     {showPassword ? (
-                      <EyeOff
-                        size={18}
-                        strokeWidth={1.8}
-                      />
+                      <EyeOff size={18} strokeWidth={1.8} />
                     ) : (
-                      <Eye
-                        size={18}
-                        strokeWidth={1.8}
-                      />
+                      <Eye size={18} strokeWidth={1.8} />
                     )}
                   </button>
                 </div>
               </div>
 
               {/* Submit */}
-              <button
-                type="submit"
-                className="auth-button"
-                disabled={loading}
-              >
+              <button type="submit" className="auth-button" disabled={loading}>
                 {loading ? (
-                  <>
-                    Signing in...
-                  </>
+                  <>Signing in...</>
                 ) : (
                   <>
                     Sign in
@@ -193,12 +170,8 @@ function Login() {
             </div>
 
             <p className="auth-switch">
-              Don't have an account?{" "}
-              <Link to="/register">
-                Create one
-              </Link>
+              Don't have an account? <Link to="/register">Create one</Link>
             </p>
-
           </div>
         </section>
 

@@ -7,6 +7,8 @@ import dns from "dns";
 import router from "./routes/index.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import passport from "passport";
+import "./config/passport.js"
 
 dotenv.config();
 
@@ -28,6 +30,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(passport.initialize());
 
 //routing
 app.use('/api', router );
