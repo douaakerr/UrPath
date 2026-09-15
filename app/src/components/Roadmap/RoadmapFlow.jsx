@@ -1,17 +1,27 @@
 import { useMemo, useState } from "react";
-import { LockKeyhole, Check, Flag, Play } from "lucide-react";
+import { Check, Flag, LockKeyhole, Play, Sparkles } from "lucide-react";
 import "../../style/mountain-roadmap.css";
 
-const WIDTH = 1000;
-const HEIGHT = 1320;
+const WIDTH = 1100;
+const HEIGHT = 1450;
 
 const getPoint = (index, total) => {
-  const top = 150;
-  const bottom = 1160;
+  const top = 190;
+  const bottom = 1260;
   const gap = total > 1 ? (bottom - top) / (total - 1) : 0;
   const y = bottom - index * gap;
-  const xPattern = [180, 670, 330, 720, 250, 610, 390, 690];
-  return { x: xPattern[index % xPattern.length], y };
+  const patterns = [
+    { x: 190, yOffset: 0 },
+    { x: 720, yOffset: 0 },
+    { x: 355, yOffset: 0 },
+    { x: 820, yOffset: 0 },
+    { x: 275, yOffset: 0 },
+    { x: 650, yOffset: 0 },
+    { x: 445, yOffset: 0 },
+    { x: 760, yOffset: 0 },
+  ];
+  const point = patterns[index % patterns.length];
+  return { x: point.x, y: y + point.yOffset };
 };
 
 const buildCurve = (points) => {
@@ -20,8 +30,9 @@ const buildCurve = (points) => {
   for (let i = 1; i < points.length; i += 1) {
     const previous = points[i - 1];
     const current = points[i];
-    const midY = (previous.y + current.y) / 2;
-    d += ` C ${previous.x} ${midY}, ${current.x} ${midY}, ${current.x} ${current.y}`;
+    const bend = Math.min(150, Math.abs(current.x - previous.x) * 0.42);
+    const direction = current.x > previous.x ? 1 : -1;
+    d += ` C ${previous.x + bend * direction} ${previous.y - 70}, ${current.x - bend * direction} ${current.y + 70}, ${current.x} ${current.y}`;
   }
   return d;
 };
@@ -29,16 +40,30 @@ const buildCurve = (points) => {
 function MountainBackground() {
   return (
     <g className="mountain-art" aria-hidden="true">
-      <circle className="mountain-moon" cx="805" cy="170" r="58" />
-      <path className="mountain-back" d="M0 1190 L180 900 290 1040 470 720 630 1010 790 760 1000 1100 1000 1320 0 1320Z" />
-      <path className="mountain-mid" d="M0 1320 L150 1060 280 1140 420 830 570 1080 730 900 860 1110 1000 950 1000 1320Z" />
-      <path className="mountain-front" d="M0 1320 L190 1160 320 1210 490 1010 620 1190 770 1080 1000 1210 1000 1320Z" />
-      <path className="snow-line" d="M420 830 L455 905 490 850 520 910 570 1080" />
+      <circle className="sun-glow" cx="850" cy="220" r="115" />
+      <circle className="mountain-moon" cx="850" cy="220" r="47" />
+
+      <path className="cloud cloud-one" d="M90 300 C120 270 155 280 170 305 C195 275 250 290 255 325 C210 338 140 340 92 325Z" />
+      <path className="cloud cloud-two" d="M735 470 C765 440 805 450 818 475 C845 445 895 460 900 495 C850 505 790 505 738 495Z" />
+
+      <path className="mountain-back" d="M0 1270 L130 1010 245 1125 405 820 555 1080 720 790 900 1070 1035 920 1100 1040 1100 1450 0 1450Z" />
+      <path className="mountain-mid" d="M0 1450 L160 1170 300 1240 470 930 600 1150 770 900 925 1190 1040 1080 1100 1220 1100 1450Z" />
+      <path className="mountain-front" d="M0 1450 L170 1300 320 1340 505 1110 650 1300 805 1190 980 1330 1100 1250 1100 1450Z" />
+
+      <path className="snow-cap" d="M405 820 L455 905 L480 870 L505 930 L555 1080 L500 1025 L470 1045 L438 965 L400 940 L370 985 L350 945Z" />
+      <path className="snow-cap snow-cap-small" d="M720 790 L760 855 L790 820 L820 885 L860 970 L805 930 L775 945 L750 900 L715 915 L690 875Z" />
+
+      <g className="pine pine-a"><path d="M120 1160 l28 -65 28 65z M128 1130 l20 -58 20 58z" /><rect x="144" y="1160" width="8" height="32" /></g>
+      <g className="pine pine-b"><path d="M915 1130 l34 -82 34 82z M922 1090 l27 -68 27 68z" /><rect x="945" y="1130" width="9" height="34" /></g>
+      <g className="pine pine-c"><path d="M1030 1190 l26 -62 26 62z M1036 1160 l20 -52 20 52z" /><rect x="1052" y="1190" width="8" height="28" /></g>
+
       <g className="mountain-stars">
-        <circle cx="110" cy="160" r="2" /><circle cx="220" cy="245" r="2" /><circle cx="690" cy="105" r="2" />
-        <circle cx="870" cy="300" r="2" /><circle cx="770" cy="400" r="1.5" /><circle cx="130" cy="440" r="1.5" />
+        <circle cx="105" cy="170" r="2" /><circle cx="220" cy="245" r="1.7" /><circle cx="410" cy="130" r="1.5" />
+        <circle cx="620" cy="190" r="2" /><circle cx="965" cy="125" r="1.7" /><circle cx="1000" cy="320" r="1.5" />
+        <circle cx="590" cy="410" r="1.5" /><circle cx="130" cy="470" r="1.4" />
       </g>
-      <path className="mountain-birds" d="M90 300 q12 -10 24 0 q12 -10 24 0 M770 520 q10 -8 20 0 q10 -8 20 0" />
+
+      <path className="mountain-birds" d="M95 380 q12 -10 24 0 q12 -10 24 0 M820 610 q10 -8 20 0 q10 -8 20 0" />
     </g>
   );
 }
@@ -59,19 +84,20 @@ function Milestone({ milestone, point, index, onClick }) {
         if (!locked && (event.key === "Enter" || event.key === " ")) onClick?.(milestone);
       }}
     >
-      <circle className="milestone-halo" cx={point.x} cy={point.y} r={current ? 31 : 25} />
-      <circle className="milestone-ring" cx={point.x} cy={point.y} r={current ? 25 : 21} />
-      <circle className="milestone-core" cx={point.x} cy={point.y} r={current ? 18 : 15} />
-      <foreignObject x={point.x - 12} y={point.y - 12} width="24" height="24">
+      <circle className="milestone-halo" cx={point.x} cy={point.y} r={current ? 38 : 31} />
+      <circle className="milestone-ring" cx={point.x} cy={point.y} r={current ? 27 : 23} />
+      <circle className="milestone-core" cx={point.x} cy={point.y} r={current ? 19 : 16} />
+      <foreignObject x={point.x - 14} y={point.y - 14} width="28" height="28">
         <div className="milestone-icon">
-          {completed ? <Check size={15} /> : locked ? <LockKeyhole size={13} /> : current ? <Play size={12} fill="currentColor" /> : <span>{milestone.number || index + 1}</span>}
+          {completed ? <Check size={16} /> : locked ? <LockKeyhole size={14} /> : current ? <Play size={12} fill="currentColor" /> : <span>{milestone.number || index + 1}</span>}
         </div>
       </foreignObject>
-      <foreignObject x={point.x + (index % 2 ? -285 : 35)} y={point.y - 48} width="250" height="100">
+      <foreignObject x={index % 2 ? point.x - 330 : point.x + 45} y={point.y - 58} width="280" height="116">
         <div className="milestone-label">
-          <span>{completed ? "COMPLETED" : current ? "YOU ARE HERE" : locked ? "LOCKED" : "UP NEXT"}</span>
+          <span>{completed ? "SUMMIT CHECKPOINT" : current ? "● YOU ARE HERE" : locked ? "LOCKED CHECKPOINT" : "NEXT CHECKPOINT"}</span>
           <strong>{milestone.title}</strong>
-          {current && <small>{milestone.progress || 0}% complete</small>}
+          {current && <small>{milestone.progress || 0}% complete · keep climbing</small>}
+          {!current && !locked && <small>{milestone.lessonsCount || 0} lessons · {milestone.hours || 0}h</small>}
         </div>
       </foreignObject>
     </g>
@@ -82,14 +108,27 @@ function RoadmapFlow({ roadmap, onMilestoneClick }) {
   const [selected, setSelected] = useState(null);
   const milestones = roadmap?.milestones || [];
 
-  const points = useMemo(() => milestones.map((_, index) => getPoint(index, milestones.length)), [milestones.length]);
+  const points = useMemo(
+    () => milestones.map((_, index) => getPoint(index, milestones.length)),
+    [milestones.length]
+  );
   const path = useMemo(() => buildCurve(points), [points]);
   const completedCount = milestones.filter((item) => item.status === "completed").length;
   const currentIndex = Math.max(0, milestones.findIndex((item) => item.status === "current"));
-  const progressPoint = points[currentIndex] || points[points.length - 1];
+  const progressIndex = completedCount > 0 ? Math.min(completedCount, points.length - 1) : currentIndex;
+  const progressPoint = points[progressIndex];
+  const progressPercent = milestones.length
+    ? Math.round((completedCount / milestones.length) * 100)
+    : 0;
 
   if (!roadmap) {
-    return <div className="mountain-roadmap mountain-roadmap--empty"><h2>Your journey is waiting.</h2><p>Create a learning path to begin your climb.</p></div>;
+    return (
+      <div className="mountain-roadmap mountain-roadmap--empty">
+        <Sparkles size={22} />
+        <h2>Your journey is waiting.</h2>
+        <p>Create a learning path to begin your climb.</p>
+      </div>
+    );
   }
 
   const handleMilestoneClick = (milestone) => {
@@ -101,45 +140,89 @@ function RoadmapFlow({ roadmap, onMilestoneClick }) {
     <div className="mountain-roadmap">
       <div className="mountain-roadmap__header">
         <div>
-          <span>YOUR JOURNEY</span>
+          <span>THE CLIMB</span>
           <h2>{roadmap.title}</h2>
-          <p>{roadmap.subtitle}</p>
+          <p>Every checkpoint is a skill. Complete the work below and watch your path move toward the summit.</p>
         </div>
-        <div className="mountain-roadmap__progress"><strong>{Math.round((completedCount / Math.max(milestones.length, 1)) * 100)}%</strong><small>climbed</small></div>
+        <div className="mountain-roadmap__progress">
+          <strong>{progressPercent}%</strong>
+          <small>climbed</small>
+        </div>
       </div>
 
       <div className="mountain-stage">
+        <div className="stage-vignette" />
         <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="xMidYMid meet" className="mountain-svg" aria-label="Learning journey mountain">
           <defs>
-            <linearGradient id="mountainSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--mountain-sky-top)" /><stop offset="1" stopColor="var(--mountain-sky-bottom)" /></linearGradient>
-            <linearGradient id="trailGradient" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="var(--trail-muted)" /><stop offset="1" stopColor="var(--trail-active)" /></linearGradient>
+            <linearGradient id="mountainSky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="var(--mountain-sky-top)" />
+              <stop offset="0.58" stopColor="var(--mountain-sky-mid)" />
+              <stop offset="1" stopColor="var(--mountain-sky-bottom)" />
+            </linearGradient>
+            <linearGradient id="trailGradient" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="var(--trail-active)" />
+              <stop offset="1" stopColor="var(--trail-highlight)" />
+            </linearGradient>
+            <linearGradient id="snowGlow" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="var(--mountain-snow)" />
+              <stop offset="1" stopColor="transparent" />
+            </linearGradient>
           </defs>
-          <rect width={WIDTH} height={HEIGHT} rx="28" fill="url(#mountainSky)" />
+
+          <rect width={WIDTH} height={HEIGHT} rx="30" fill="url(#mountainSky)" />
           <MountainBackground />
+
           <g className="trail-layer">
             <path d={path} className="trail-shadow" />
             <path d={path} className="trail-base" />
-            <path d={path} className="trail-progress" style={{ strokeDashoffset: currentIndex >= 0 ? `${Math.max(0, milestones.length - completedCount) * 110}` : 0 }} />
+            <path d={path} className="trail-progress" />
           </g>
 
           <g className="summit">
-            <path d="M455 100 L500 35 L545 100Z" className="summit-peak" />
-            <path d="M482 72 L500 35 L516 72 L500 61Z" className="summit-snow" />
-            <line x1="548" y1="78" x2="548" y2="24" className="summit-flag-pole" />
-            <path d="M548 25 Q575 34 594 24 L594 52 Q573 60 548 51Z" className="summit-flag" />
-            <foreignObject x="400" y="105" width="200" height="80"><div className="summit-copy"><span>YOUR SUMMIT</span><strong>{roadmap.title}</strong></div></foreignObject>
+            <path d="M455 170 L550 42 L645 170Z" className="summit-peak" />
+            <path d="M510 105 L550 42 L590 105 L550 88Z" className="summit-snow" />
+            <path d="M550 42 L590 105 L550 88 L510 105Z" className="summit-shadow" />
+            <line x1="655" y1="105" x2="655" y2="45" className="summit-flag-pole" />
+            <path d="M655 46 Q690 58 720 45 L720 78 Q688 90 655 76Z" className="summit-flag" />
+            <foreignObject x="400" y="180" width="300" height="80">
+              <div className="summit-copy"><span>YOUR SUMMIT</span><strong>{roadmap.title}</strong></div>
+            </foreignObject>
           </g>
 
-          {milestones.map((milestone, index) => <Milestone key={milestone.id} milestone={milestone} point={points[index]} index={index} onClick={handleMilestoneClick} />)}
+          {milestones.map((milestone, index) => (
+            <Milestone
+              key={milestone.id}
+              milestone={milestone}
+              point={points[index]}
+              index={index}
+              onClick={handleMilestoneClick}
+            />
+          ))}
 
-          {progressPoint && <circle className="journey-marker" cx={progressPoint.x} cy={progressPoint.y} r="7" />}
-          <g className="start-marker"><circle cx="155" cy="1210" r="20" /><foreignObject x="85" y="1235" width="150" height="45"><div>START YOUR CLIMB</div></foreignObject></g>
+          {progressPoint && (
+            <g className="journey-marker-group">
+              <circle className="journey-marker-pulse" cx={progressPoint.x} cy={progressPoint.y} r="24" />
+              <circle className="journey-marker" cx={progressPoint.x} cy={progressPoint.y} r="8" />
+            </g>
+          )}
+
+          <g className="start-marker">
+            <circle cx="155" cy="1320" r="23" />
+            <path d="M155 1308 v24 M143 1320 h24" />
+            <foreignObject x="65" y="1350" width="180" height="45">
+              <div>START YOUR CLIMB</div>
+            </foreignObject>
+          </g>
         </svg>
       </div>
 
       {selected && (
         <div className="mountain-detail">
-          <div><span>{selected.number || "STEP"}</span><h3>{selected.title}</h3><p>{selected.description}</p></div>
+          <div>
+            <span>{selected.number || "CHECKPOINT"}</span>
+            <h3>{selected.title}</h3>
+            <p>{selected.description || "Keep climbing. Complete this checkpoint to move farther up your path."}</p>
+          </div>
           <button type="button" onClick={() => setSelected(null)}>Close</button>
         </div>
       )}
