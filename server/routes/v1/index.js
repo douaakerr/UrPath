@@ -5,6 +5,7 @@ import learningDomainRoutes from "./learningDomainRoutes.js";
 import assessmentRoutes from "./assessmentRoutes.js";
 import roadmap from "./roadmapRoutes.js"
 import progressRoutes from "./progressRoutes.js";
+import learningLogRoutes from "./learningLogRoutes.js";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use("/learning-domains", learningDomainRoutes);
 router.use("/assessments", assessmentRoutes);
 router.use("/roadmaps",roadmap);
 router.use("/progress", progressRoutes);
+router.use("/learning-logs", learningLogRoutes);
 
 export default router;
