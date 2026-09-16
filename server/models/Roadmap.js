@@ -39,23 +39,23 @@ const roadmapSchema = new mongoose.Schema(
     },
 
     skills: [
-  {
-    name: String,
-    level: String,
+      {
+        name: String,
+        level: String,
 
-    status: {
-      type: String,
-      enum: ["weak", "learning", "strong", "completed"],
-      default: "learning",
-    },
+        status: {
+          type: String,
+          enum: ["weak", "learning", "strong", "completed"],
+          default: "learning",
+        },
 
-    source: {
-      type: String,
-      enum: ["assessed", "recommended"],
-      default: "recommended",
-    },
-  },
-],
+        source: {
+          type: String,
+          enum: ["assessed", "recommended"],
+          default: "recommended",
+        },
+      },
+    ],
 
     weeks: [
       {
@@ -68,10 +68,16 @@ const roadmapSchema = new mongoose.Schema(
         tasks: [
           {
             title: String,
+
             type: {
               type: String,
               enum: ["lesson", "practice", "project", "quiz"],
               default: "lesson",
+            },
+
+            completed: {
+              type: Boolean,
+              default: false,
             },
           },
         ],
@@ -86,7 +92,7 @@ const roadmapSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.model("Roadmap", roadmapSchema);

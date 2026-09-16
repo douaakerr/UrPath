@@ -4,6 +4,7 @@ import ai from "./aiRoutes.js"
 import learningDomainRoutes from "./learningDomainRoutes.js";
 import assessmentRoutes from "./assessmentRoutes.js";
 import roadmap from "./roadmapRoutes.js"
+import progressRoutes from "./progressRoutes.js";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/ai", ai);
 router.use("/learning-domains", learningDomainRoutes);
 router.use("/assessments", assessmentRoutes);
 router.use("/roadmaps",roadmap);
+router.use("/progress", progressRoutes);
 
 export default router;
