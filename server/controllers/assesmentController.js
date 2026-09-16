@@ -1,17 +1,11 @@
-import Assessment from "../models/Assessment.js";
 import { generateAssessment } from "../ai/agent/tools/assessmentTool.js";
-import { generateRoadmap } from "../ai/agent/tools/roadmapTool.js";
+import Assessment from "../models/Assessment.js";
+
 import { scoreAssessment } from "../services/assessmentScoringService.js";
-import Roadmap from "../models/Roadmap.js";
 
 export const createAssessment = async (req, res) => {
   try {
-    const {
-      domain,
-      subdomain,
-      goal,
-      learnerLevel = "unknown",
-    } = req.body;
+    const { domain, subdomain, goal, learnerLevel = "unknown" } = req.body;
 
     if (!domain || !subdomain || !goal) {
       return res.status(400).json({
@@ -28,6 +22,7 @@ export const createAssessment = async (req, res) => {
     });
 
     const savedAssessment = await Assessment.create({
+      user: req.user._id,
       domain,
       subdomain,
       goal,
@@ -60,12 +55,22 @@ export const submitAssessment = async (req, res) => {
       });
     }
 
-    const assessment = await Assessment.findById(assessmentId);
+    const assessment = await Assessment.findOne({
+      _id: assessmentId,
+      user: req.user._id,
+    });
 
     if (!assessment) {
       return res.status(404).json({
         success: false,
         message: "Assessment not found",
+      });
+    }
+
+    if (assessment.status === "completed") {
+      return res.status(400).json({
+        success: false,
+        message: "Assessment has already been completed",
       });
     }
 
@@ -84,58 +89,6 @@ export const submitAssessment = async (req, res) => {
     });
   } catch (error) {
     console.error("Assessment scoring error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-export const generateRoadmapFromAssessment = async (req, res) => {
-  try {
-    const { assessmentId } = req.params;
-
-    const assessment = await Assessment.findById(assessmentId);
-
-    if (!assessment) {
-      return res.status(404).json({
-        success: false,
-        message: "Assessment not found",
-      });
-    }
-
-    if (assessment.status !== "completed") {
-      return res.status(400).json({
-        success: false,
-        message: "Assessment must be completed first",
-      });
-    }
-
-    const roadmap = await generateRoadmap({
-      domain: assessment.domain,
-      subdomain: assessment.subdomain,
-      goal: assessment.goal,
-      level: assessment.result.level,
-      skillScores: assessment.result.skillScores,
-    });
-
-    const savedRoadmap = await Roadmap.create({
-      domain: assessment.domain,
-      subdomain: assessment.subdomain,
-      goal: assessment.goal,
-      level: assessment.result.level,
-      skills: roadmap.skills,
-      weeks: roadmap.weeks,
-      status: "generated",
-    });
-
-    return res.status(201).json({
-      success: true,
-      roadmap: savedRoadmap,
-    });
-  } catch (error) {
-    console.error("Roadmap generation error:", error);
 
     return res.status(500).json({
       success: false,

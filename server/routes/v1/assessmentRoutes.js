@@ -3,15 +3,14 @@ import { Router } from "express";
 import {
   createAssessment,
   submitAssessment,
-  generateRoadmapFromAssessment,
 } from "../../controllers/assesmentController.js";
+
+import authCheck from "../../middleware/authCheck.js";
 
 const router = Router();
 
-router.post("/", createAssessment);
+router.post("/", authCheck, createAssessment);
+router.post("/:id/submit", authCheck, submitAssessment);
 
-router.post("/submit", submitAssessment);
-
-router.post("/:assessmentId/roadmap", generateRoadmapFromAssessment);
 
 export default router;
