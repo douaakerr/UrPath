@@ -2,6 +2,192 @@ import Course from "../models/Course.js";
 import Roadmap from "../models/Roadmap.js";
 import Progress from "../models/Progress.js";
 import LearningLog from "../models/LearningLog.js";
+import { generateCourse } from "../ai/agent/tools/courseTool.js";
+
+
+
+// --------------------------------------------------
+// AI GENERATE COURSE FROM ROADMAP TASK
+// --------------------------------------------------
+
+export const generateCourseFromRoadmap = async (req, res) => {
+  try {
+    const {
+      roadmapId,
+      weekNumber,
+      taskId,
+    } = req.body;
+
+    if (!roadmapId || !weekNumber || !taskId) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "roadmapId, weekNumber and taskId are required",
+      });
+    }
+
+    const roadmap = await Roadmap.findOne({
+      _id: roadmapId,
+      user: req.user._id,
+    });
+
+    if (!roadmap) {
+      return res.status(404).json({
+        success: false,
+        message: "Roadmap not found",
+      });
+    }
+
+    const week = roadmap.weeks.find(
+      (item) => item.week === Number(weekNumber)
+    );
+
+    if (!week) {
+      return res.status(404).json({
+        success: false,
+        message: "Roadmap week not found",
+      });
+    }
+
+    const task = week.tasks.id(taskId);
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Roadmap task not found",
+      });
+    }
+
+    // ------------------------------------------------
+    // DO NOT GENERATE THE SAME COURSE TWICE
+    // ------------------------------------------------
+
+    const existingCourse = await Course.findOne({
+      user: req.user._id,
+      roadmap: roadmapId,
+      weekNumber: Number(weekNumber),
+      taskId,
+    });
+
+    if (existingCourse) {
+      return res.status(200).json({
+        success: true,
+        message: "Course already exists",
+        generated: false,
+        course: existingCourse,
+      });
+    }
+
+    // ------------------------------------------------
+    // GET ASSESSED / RECOMMENDED SKILLS
+    // ------------------------------------------------
+
+    const skills = roadmap.skills
+      .map((skill) => skill.name)
+      .filter(Boolean);
+
+    // ------------------------------------------------
+    // GENERATE WITH AI + RAG
+    // ------------------------------------------------
+
+    const generatedCourse = await generateCourse({
+      domain: roadmap.domain,
+      subdomain: roadmap.subdomain,
+      goal: roadmap.goal,
+      level: roadmap.level,
+      weekNumber: Number(weekNumber),
+      taskTitle: task.title,
+      taskType: task.type,
+      skills,
+    });
+
+    // ------------------------------------------------
+    // SAVE COURSE
+    // ------------------------------------------------
+
+    const course = await Course.create({
+      user: req.user._id,
+      roadmap: roadmap._id,
+      weekNumber: Number(weekNumber),
+      taskId,
+
+      title: generatedCourse.title,
+
+      description:
+        generatedCourse.description || "",
+
+      domain: roadmap.domain,
+      subdomain: roadmap.subdomain,
+      level: roadmap.level,
+
+      skills,
+
+      lessons: generatedCourse.lessons.map(
+        (lesson, index) => ({
+          title: lesson.title,
+
+          slug:
+            lesson.slug ||
+            lesson.title
+              .toLowerCase()
+              .trim()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/^-|-$/g, ""),
+
+          order: lesson.order || index + 1,
+
+          content: lesson.content,
+
+          summary:
+            lesson.summary || "",
+
+          objectives:
+            lesson.objectives || [],
+
+          estimatedMinutes:
+            lesson.estimatedMinutes || 20,
+
+          resources:
+            (lesson.resources || []).map(
+              (resource) => ({
+                title: resource.title,
+                type: resource.type,
+                url: resource.url || "",
+                provider:
+                  resource.provider || "",
+                description:
+                  resource.description || "",
+                duration:
+                  resource.duration ?? null,
+              })
+            ),
+        })
+      ),
+    });
+
+    return res.status(201).json({
+      success: true,
+      message:
+        "Personalized course generated successfully",
+
+      generated: true,
+
+      course,
+    });
+  } catch (error) {
+    console.error(
+      "AI course generation error:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Failed to generate course",
+    });
+  }
+};
 
 // --------------------------------------------------
 // CREATE COURSE

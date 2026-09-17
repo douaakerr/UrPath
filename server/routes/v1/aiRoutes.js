@@ -1,24 +1,11 @@
-import express from "express";
-import { askOpenCode } from "../../services/openCodeService.js";
+import { Router } from "express";
+import { learningChat } from "../../controllers/aiController.js";
 
-const router = express.Router();
 
-router.get("/test", async (req, res) => {
-  try {
-    const answer = await askOpenCode(
-      "Say hello to UrPath in one short sentence."
-    );
+const router = Router();
 
-    res.json({
-      success: true,
-      answer,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-});
+router.post("/learning-chat", learningChat);
+
+
 
 export default router;

@@ -10,14 +10,20 @@ const resourceSchema = new mongoose.Schema(
 
     type: {
       type: String,
-      enum: ["video", "article", "documentation", "book", "other"],
+      enum: [
+        "video",
+        "article",
+        "documentation",
+        "book",
+        "other",
+      ],
       required: true,
     },
 
     url: {
       type: String,
-      required: true,
       trim: true,
+      default: "",
     },
 
     provider: {
