@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import passport from "passport";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
 
 import connectDB from "./config/connectDb.js";
 import router from "./routes/index.js";
@@ -34,6 +36,8 @@ app.use(
 );
 
 app.use(passport.initialize());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api", router);
 
