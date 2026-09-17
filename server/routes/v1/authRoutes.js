@@ -1,6 +1,7 @@
 import { Router } from "express";
-
 import passport from "passport";
+import rateLimit from "express-rate-limit";
+
 import {
   changePassword,
   forgotPassword,
@@ -10,24 +11,79 @@ import {
   register,
   resetPassword,
 } from "../../controllers/auth.controller.js";
-import authCheck from "../../middleware/authCheck.js";
+
 import { googleCallback } from "../../controllers/OauthController.js";
+import authCheck from "../../middleware/authCheck.js";
+import validate from "../../middleware/Validate.js";
+
+import {
+  changePasswordValidator,
+  forgotPasswordValidator,
+  loginValidator,
+  registerValidator,
+  resetPasswordValidator,
+} from "../../validators/authValidator.js";
 
 const router = Router();
 
-router.post("/register", register);
-router.post("/login", login);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: {
+    success: false,
+    message: "Too many authentication attempts. Please try again later.",
+  },
+});
+
+router.post(
+  "/register",
+  authLimiter,
+  registerValidator,
+  validate,
+  register
+);
+
+router.post(
+  "/login",
+  authLimiter,
+  loginValidator,
+  validate,
+  login
+);
+
+router.put(
+  "/change-password",
+  authCheck,
+  changePasswordValidator,
+  validate,
+  changePassword
+);
+
 router.post("/logout", logout);
-router.put("/change-password", authCheck, changePassword);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password/:token", resetPassword);
+
+router.post(
+  "/forgot-password",
+  authLimiter,
+  forgotPasswordValidator,
+  validate,
+  forgotPassword
+);
+
+router.post(
+  "/reset-password/:token",
+  authLimiter,
+  resetPasswordValidator,
+  validate,
+  resetPassword
+);
+
 router.get("/me", authCheck, getMe);
 
 router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-  }),
+  })
 );
 
 router.get(
@@ -36,7 +92,7 @@ router.get(
     session: false,
     failureRedirect: `${process.env.FRONTEND_URL}/login?oauth=failed`,
   }),
-  googleCallback,
+  googleCallback
 );
 
 export default router;

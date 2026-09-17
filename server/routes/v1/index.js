@@ -8,7 +8,8 @@ import learningLogRoutes from "./learningLogRoutes.js";
 import progressRoutes from "./progressRoutes.js";
 import quizRoutes from "./quizRoutes.js";
 import roadmap from "./roadmapRoutes.js";
-import notification from "./notificationRoutes.js"
+import notification from "./notificationRoutes.js";
+import profile from "./profileRoutes.js";   
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/learning-logs", learningLogRoutes);
 router.use("/quizzes", quizRoutes);
 router.use("/courses", courseRoutes);
 router.use("/notification",notification);
+router.use("/profile",profile);
 
 export default router;
