@@ -8,7 +8,8 @@ import router from "./routes/index.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import passport from "passport";
-import "./config/passport.js"
+import "./config/passport.js";
+import { startJobs } from "./jobs/index.js";
 
 dotenv.config();
 
@@ -36,7 +37,9 @@ app.use(passport.initialize());
 app.use('/api', router );
 
 // Connect to MongoDB
-connectDB();
+await connectDB();
+
+startJobs();
 
 // Start server
 app.listen(PORT, () => {
