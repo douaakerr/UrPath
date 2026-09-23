@@ -29,8 +29,12 @@ const formatTime = (seconds) => {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { getActiveRoadmap, getStats } = useRoadmapStore();
+  const { getActiveRoadmap, getStats, fetchRoadmaps, loading, error } = useRoadmapStore();
   const roadmap = getActiveRoadmap();
+
+  useEffect(() => {
+    fetchRoadmaps();
+  }, [fetchRoadmaps]);
   const { overallProgress, currentMilestone } = getStats();
 
   const milestones = roadmap?.milestones || [];
@@ -124,6 +128,8 @@ function Dashboard() {
             Good morning<span>.</span>
           </h1>
           <p>{roadmap?.title || "Your learning journey"}</p>
+          {loading && <small>Loading your path…</small>}
+          {error && <small>{error}</small>}
         </div>
         <button
           className="dashboard-header__notification"
