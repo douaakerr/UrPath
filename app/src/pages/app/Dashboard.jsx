@@ -169,14 +169,7 @@ function Dashboard() {
               Continue journey <ArrowRight size={16} />
             </button>
           </div>
-          <div className="journey-mountain" aria-hidden="true">
-            <div className="journey-sun" />
-            <div className="journey-ridge journey-ridge--back" />
-            <div className="journey-ridge journey-ridge--front" />
-            <div className="journey-trail" />
-            <div className="journey-marker">●</div>
-          </div>
-        </article>
+   </article>
 
         <article className="today-card">
           <div className="panel-heading">
