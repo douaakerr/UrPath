@@ -19,6 +19,9 @@ import SetUpLearning from "./pages/app/SetUpLearning";
 import Calendar from "./pages/app/Calendar";
 import Courses from "./pages/app/Courses";
 import CourseDetails from "./pages/app/CourseDetails";
+import Progress from "./pages/app/Progress";
+import Quizzes from "./pages/app/Quizzes";
+import QuizDetails from "./pages/app/QuizDetails";
 import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
 
 const placeholderRoutes = [
@@ -48,6 +51,9 @@ const router = createBrowserRouter([
               { path: "calendar", element: <Calendar /> },
               { path: "courses", element: <Courses /> },
               { path: "courses/:courseId", element: <CourseDetails /> },
+              { path: "progress", element: <Progress /> },
+              { path: "quizzes", element: <Quizzes /> },
+              { path: "quizzes/:quizId", element: <QuizDetails /> },
               ...placeholderRoutes.map(([path, title, description]) => ({
                 path,
                 element: <FeaturePlaceholder title={title} description={description} />,
