@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Map, BookOpen, FolderKanban, ChartNoAxesCombined,
-  CalendarDays, Sparkles, ChevronLeft, ChevronRight,
+  CalendarDays, Sparkles, CircleHelp, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { NavLink, Link } from "react-router";
 import mountainsLight from "../../assets/image/mountains_light.png";
@@ -16,6 +16,7 @@ const navigation = [
       { label: "Courses", path: "/courses", icon: BookOpen },
       { label: "Projects", path: "/projects", icon: FolderKanban },
       { label: "Progress", path: "/progress", icon: ChartNoAxesCombined },
+      { label: "Quizzes", path: "/quizzes", icon: CircleHelp },
       { label: "Calendar", path: "/calendar", icon: CalendarDays },
     ],
   },
