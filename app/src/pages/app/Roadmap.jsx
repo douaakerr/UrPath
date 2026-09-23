@@ -13,11 +13,13 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import RoadmapFlow from "../../components/Roadmap/RoadmapFlow";
 import { useRoadmapStore } from "../../stores/roadmapStore";
 import "../../style/roadmap.css";
 
 function Roadmap() {
+  const navigate = useNavigate();
   const {
     activeRoadmapId,
     roadmaps,
@@ -174,7 +176,7 @@ function Roadmap() {
               value={activeRoadmapId}
               onChange={(e) => {
                 if (e.target.value === "__NEW__") {
-                  setShowCreateRoadmapModal(true);
+                  navigate("/create-roadmap", { state: { newRoadmap: true } });
                 } else {
                   setActiveRoadmap(e.target.value);
                 }
