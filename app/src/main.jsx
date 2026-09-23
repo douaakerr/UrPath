@@ -17,62 +17,42 @@ import Dashboard from "./pages/app/Dashboard";
 import Roadmap from "./pages/app/Roadmap";
 import SetUpLearning from "./pages/app/SetUpLearning";
 import Calendar from "./pages/app/Calendar";
+import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
+
+const placeholderRoutes = [
+  ["courses", "Courses", "Your learning content will live here."],
+  ["projects", "Projects", "Track the practical work you build along your path."],
+  ["progress", "Progress", "See your completed work, activity and learning progress here."],
+  ["ask-ai", "Ask UrPath AI", "Your learning assistant will be connected here."],
+  ["profile", "Profile", "Manage your UrPath profile here."],
+];
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
-      {
-        path: "forgot-password",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "reset-password",
-        element: <ResetPassword />,
-      },
-      {
-        path: "onboarding",
-        element: <SetUpLearning />,
-      },
-
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "reset-password", element: <ResetPassword /> },
       {
         element: <ProtectedRoute />,
         children: [
           {
             element: <DashboardLayout />,
             children: [
-              {
-                path: "dashboard",
-                element: <Dashboard />,
-              },
-              {
-                path: "roadmap",
-                element: <Roadmap />,
-              },
-              {
-                path:"calendar",
-                element: <Calendar />,
-              },
+              { path: "dashboard", element: <Dashboard /> },
+              { path: "roadmap", element: <Roadmap /> },
+              { path: "calendar", element: <Calendar /> },
+              ...placeholderRoutes.map(([path, title, description]) => ({
+                path,
+                element: <FeaturePlaceholder title={title} description={description} />,
+              })),
             ],
           },
-          // Setup wizard routes — outside DashboardLayout (no sidebar/navbar)
-          {
-            path: "create-roadmap",
-            element: <SetUpLearning />,
-          },
-          {
-            path: "onboarding",
-            element: <SetUpLearning />,
-          },
+          { path: "create-roadmap", element: <SetUpLearning /> },
+          { path: "onboarding", element: <SetUpLearning /> },
         ],
       },
     ],
