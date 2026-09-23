@@ -1,15 +1,7 @@
 import {
-  LayoutDashboard,
-  Map,
-  BookOpen,
-  FolderKanban,
-  ChartNoAxesCombined,
-  CalendarDays,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
+  LayoutDashboard, Map, BookOpen, FolderKanban, ChartNoAxesCombined,
+  CalendarDays, Sparkles, ChevronLeft, ChevronRight,
 } from "lucide-react";
-
 import { NavLink, Link } from "react-router";
 import mountainsLight from "../../assets/image/mountains_light.png";
 import mountainsDark from "../../assets/image/mountains_dark.png";
@@ -33,11 +25,11 @@ const navigation = [
   },
 ];
 
-function Sidebar({ collapsed, onToggle }) {
+function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
   return (
-    <aside className={`sidebar ${collapsed ? "sidebar--collapsed" : ""}`}>
+    <aside className={`sidebar ${collapsed ? "sidebar--collapsed" : ""} ${mobileOpen ? "sidebar--mobile-open" : ""}`}>
       <div className="sidebar__brand">
-        <Link to="/dashboard" className="sidebar__brand-link" title={collapsed ? "UrPath" : undefined}>
+        <Link to="/dashboard" className="sidebar__brand-link" title={collapsed ? "UrPath" : undefined} onClick={onNavigate}>
           <div className="sidebar__logo"><span>U</span></div>
           {!collapsed && (
             <div className="sidebar__brand-text">
@@ -60,6 +52,7 @@ function Sidebar({ collapsed, onToggle }) {
                     key={item.path}
                     to={item.path}
                     title={collapsed ? item.label : undefined}
+                    onClick={onNavigate}
                     className={({ isActive }) => `sidebar__item ${isActive ? "sidebar__item--active" : ""}`}
                   >
                     <span className="sidebar__item-icon"><Icon size={19} strokeWidth={1.8} /></span>
