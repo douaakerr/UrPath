@@ -30,7 +30,12 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
   return (
     <aside className={`sidebar ${collapsed ? "sidebar--collapsed" : ""} ${mobileOpen ? "sidebar--mobile-open" : ""}`}>
       <div className="sidebar__brand">
-        <Link to="/dashboard" className="sidebar__brand-link" title={collapsed ? "UrPath" : undefined} onClick={onNavigate}>
+        <Link
+          to="/dashboard"
+          className="sidebar__brand-link"
+          title={collapsed ? "UrPath" : undefined}
+          onClick={onNavigate}
+        >
           <div className="sidebar__logo"><span>U</span></div>
           {!collapsed && (
             <div className="sidebar__brand-text">
@@ -54,11 +59,17 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
                     to={item.path}
                     title={collapsed ? item.label : undefined}
                     onClick={onNavigate}
-                    className={({ isActive }) => `sidebar__item ${isActive ? "sidebar__item--active" : ""}`}
+                    className={({ isActive }) =>
+                      `sidebar__item ${isActive ? "sidebar__item--active" : ""}`
+                    }
                   >
-                    <span className="sidebar__item-icon"><Icon size={19} strokeWidth={1.8} /></span>
+                    <span className="sidebar__item-icon">
+                      <Icon size={19} strokeWidth={1.8} />
+                    </span>
                     {!collapsed && <span className="sidebar__item-label">{item.label}</span>}
-                    {item.label === "Ask UrPath AI" && !collapsed && <span className="sidebar__ai-indicator" />}
+                    {item.label === "Ask UrPath AI" && !collapsed && (
+                      <span className="sidebar__ai-indicator" />
+                    )}
                   </NavLink>
                 );
               })}
@@ -72,7 +83,12 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
         <img src={mountainsDark} alt="" className="sidebar__mountain sidebar__mountain--dark" />
       </div>
 
-      <button type="button" className="sidebar__toggle" onClick={onToggle} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
+      <button
+        type="button"
+        className="sidebar__toggle"
+        onClick={onToggle}
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
         {collapsed ? <ChevronRight size={16} strokeWidth={2.2} /> : <ChevronLeft size={16} strokeWidth={2.2} />}
       </button>
     </aside>

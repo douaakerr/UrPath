@@ -9,7 +9,6 @@ export const generateQuizFromRoadmap = async (req, res) => {
   try {
     const { roadmapId, weekNumber, taskIndex } = req.body;
 
-  
     if (!roadmapId || !weekNumber || taskIndex === undefined) {
       return res.status(400).json({
         success: false,
@@ -29,10 +28,6 @@ export const generateQuizFromRoadmap = async (req, res) => {
       });
     }
 
-    // -------------------------------------------------------
-    // 3. Find requested week
-    // -------------------------------------------------------
-
     const week = roadmap.weeks.find(
       (item) => item.week === Number(weekNumber)
     );
@@ -44,10 +39,6 @@ export const generateQuizFromRoadmap = async (req, res) => {
       });
     }
 
-    // -------------------------------------------------------
-    // 4. Find requested task
-    // -------------------------------------------------------
-
     const task = week.tasks[Number(taskIndex)];
 
     if (!task) {
@@ -57,20 +48,12 @@ export const generateQuizFromRoadmap = async (req, res) => {
       });
     }
 
-    // -------------------------------------------------------
-    // 5. Make sure this is actually a quiz task
-    // -------------------------------------------------------
-
     if (task.type !== "quiz") {
       return res.status(400).json({
         success: false,
         message: "Selected task is not a quiz task",
       });
     }
-
-    // -------------------------------------------------------
-    // 6. Check if a quiz already exists
-    // -------------------------------------------------------
 
     const existingQuiz = await Quiz.findOne({
       user: req.user._id,
@@ -87,10 +70,6 @@ export const generateQuizFromRoadmap = async (req, res) => {
       });
     }
 
-    // -------------------------------------------------------
-    // 7. Generate quiz using AI + RAG
-    // -------------------------------------------------------
-
     const generatedQuiz = await generateQuiz({
       domain: roadmap.domain,
       subdomain: roadmap.subdomain,
@@ -99,10 +78,6 @@ export const generateQuizFromRoadmap = async (req, res) => {
       taskTitle: task.title,
       level: roadmap.level,
     });
-
-    // -------------------------------------------------------
-    // 8. Validate generated quiz
-    // -------------------------------------------------------
 
     if (
       !generatedQuiz ||
@@ -114,31 +89,17 @@ export const generateQuizFromRoadmap = async (req, res) => {
       });
     }
 
-    // -------------------------------------------------------
-    // 9. Save quiz in MongoDB
-    // -------------------------------------------------------
-
     const quiz = await Quiz.create({
       user: req.user._id,
-
       roadmap: roadmap._id,
-
       weekNumber: Number(weekNumber),
-
       title: generatedQuiz.title || task.title,
-
       description:
         generatedQuiz.description ||
         `Quiz for ${task.title}`,
-
       questions: generatedQuiz.questions,
-
       status: "not_started",
     });
-
-    // -------------------------------------------------------
-    // 10. Return quiz
-    // -------------------------------------------------------
 
     return res.status(201).json({
       success: true,
@@ -156,10 +117,6 @@ export const generateQuizFromRoadmap = async (req, res) => {
 };
 
 
-// =========================================================
-// GET QUIZ BY ID
-// =========================================================
-
 export const getQuizById = async (req, res) => {
   try {
     const { quizId } = req.params;
@@ -176,7 +133,6 @@ export const getQuizById = async (req, res) => {
       });
     }
 
-    // Never expose answers while the quiz is not completed
     const safeQuestions = quiz.questions.map((question) => ({
       _id: question._id,
       question: question.question,
@@ -193,8 +149,6 @@ export const getQuizById = async (req, res) => {
         description: quiz.description,
         questions: safeQuestions,
         status: quiz.status,
-
-        // Only expose result after completion
         ...(quiz.status === "completed" && {
           result: quiz.result,
           answers: Object.fromEntries(quiz.answers || []),
@@ -213,17 +167,13 @@ export const getQuizById = async (req, res) => {
 };
 
 
-// =========================================================
-// GET MY QUIZZES
-// =========================================================
-
 export const getMyQuizzes = async (req, res) => {
   try {
     const quizzes = await Quiz.find({
       user: req.user._id,
-    }).sort({
-      createdAt: -1,
-    });
+    })
+      .select("_id roadmap weekNumber title description status result completedAt createdAt updatedAt")
+      .sort({ createdAt: -1 });
 
     return res.json({
       success: true,
@@ -303,10 +253,6 @@ export const submitQuiz = async (req, res) => {
 
     await quiz.save();
 
-    // --------------------------------------------------
-    // UPDATE PROGRESS
-    // --------------------------------------------------
-
     const progress = await Progress.findOne({
       user: req.user._id,
       roadmap: quiz.roadmap,
@@ -322,10 +268,6 @@ export const submitQuiz = async (req, res) => {
 
       await progress.save();
     }
-
-    // --------------------------------------------------
-    // CREATE LEARNING LOG
-    // --------------------------------------------------
 
     const points = passed ? 10 : 5;
 
@@ -344,47 +286,31 @@ export const submitQuiz = async (req, res) => {
       points,
     });
 
-    // --------------------------------------------------
-    // BUILD QUIZ REVIEW
-    // --------------------------------------------------
-
     const review = quiz.questions.map((question) => {
       const questionId = question._id.toString();
-
       const userAnswer = answers[questionId] || null;
 
       return {
         questionId: question._id,
         question: question.question,
         options: question.options,
-
         userAnswer,
-
         correctAnswer: question.correctAnswer,
-
         explanation: question.explanation,
-
         isCorrect: userAnswer === question.correctAnswer,
       };
     });
 
-    // --------------------------------------------------
-    // RESPONSE
-    // --------------------------------------------------
-
     return res.status(200).json({
       success: true,
       message: "Quiz submitted successfully",
-
       result: {
         correct,
         total,
         percentage,
         passed,
       },
-
       review,
-
       progress: progress
         ? {
             completedQuizzes: progress.completedQuizzes,
@@ -392,7 +318,6 @@ export const submitQuiz = async (req, res) => {
             status: progress.status,
           }
         : null,
-
       learningLog: {
         id: learningLog._id,
         title: learningLog.title,
