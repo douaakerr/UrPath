@@ -1,18 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
-
 import "./style/index.css";
-
 import App from "./App";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
-
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ResetPassword from "./pages/auth/ResetPassword";
-
 import Dashboard from "./pages/app/Dashboard";
 import Roadmap from "./pages/app/Roadmap";
 import SetUpLearning from "./pages/app/SetUpLearning";
@@ -25,11 +21,11 @@ import QuizDetails from "./pages/app/QuizDetails";
 import Notifications from "./pages/app/Notifications";
 import Profile from "./pages/app/Profile";
 import AskAI from "./pages/app/AskAI";
+import Focus from "./pages/app/Focus";
 import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
 
 const placeholderRoutes = [
   ["projects", "Projects", "Track the practical work you build along your path."],
-
 ];
 
 const router = createBrowserRouter([
@@ -50,6 +46,7 @@ const router = createBrowserRouter([
               { path: "dashboard", element: <Dashboard /> },
               { path: "roadmap", element: <Roadmap /> },
               { path: "calendar", element: <Calendar /> },
+              { path: "focus", element: <Focus /> },
               { path: "courses", element: <Courses /> },
               { path: "courses/:courseId", element: <CourseDetails /> },
               { path: "progress", element: <Progress /> },

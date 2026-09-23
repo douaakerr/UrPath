@@ -1,0 +1,54 @@
+.focus-page{max-width:1180px;margin:0 auto;padding:42px 34px 56px}
+.focus-page__header{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:30px}
+.focus-page__eyebrow{display:inline-flex;margin-bottom:9px;color:var(--color-primary);font-size:.78rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
+.focus-page__header h1{margin:0;font-size:clamp(1.9rem,3vw,2.65rem);letter-spacing:-.035em;line-height:1.08}
+.focus-page__header p{margin:10px 0 0;color:var(--text-secondary);font-size:.98rem}
+.focus-page__status{display:flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid var(--border);border-radius:999px;background:var(--bg-surface);color:var(--text-secondary);font-size:.8rem;white-space:nowrap}
+.focus-status-dot{width:7px;height:7px;border-radius:50%;background:var(--text-muted)}
+.focus-status-dot--active{background:#65d89a;box-shadow:0 0 0 5px rgba(101,216,154,.1)}
+.focus-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:20px}
+.focus-card{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:24px;background:linear-gradient(145deg,var(--bg-surface),rgba(255,255,255,.025));box-shadow:var(--shadow-soft)}
+[data-theme="dark"] .focus-card{background:linear-gradient(145deg,rgba(13,31,55,.78),rgba(7,19,35,.72))}
+.focus-card--timer,.focus-card--music{padding:27px}
+.focus-card__topline{display:flex;align-items:center;gap:12px}
+.focus-card__topline>div:last-child{display:flex;flex-direction:column;gap:3px}
+.focus-card__topline span{color:var(--text-muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+.focus-card__topline strong{font-size:.98rem}
+.focus-card__icon{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(92,169,255,.2);border-radius:13px;color:var(--color-primary);background:rgba(92,169,255,.08)}
+.focus-card__icon--music{color:#e6a4ff;border-color:rgba(230,164,255,.2);background:rgba(230,164,255,.08)}
+.focus-timer{display:grid;place-items:center;padding:34px 0 25px}
+.focus-timer__ring{display:grid;place-items:center;width:218px;height:218px;border-radius:50%;background:conic-gradient(var(--color-primary) var(--focus-progress),rgba(127,148,174,.12) 0);padding:7px;box-shadow:0 0 55px rgba(92,169,255,.09)}
+.focus-timer__inner{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--bg-main);border:1px solid var(--border);box-shadow:inset 0 0 30px rgba(92,169,255,.04)}
+.focus-timer__inner span{font-size:2.65rem;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.focus-timer__inner small{margin-top:-52px;color:var(--text-muted);font-size:.75rem}
+.focus-presets{display:flex;justify-content:center;gap:8px}
+.focus-preset{padding:8px 13px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text-secondary);font-size:.8rem}
+.focus-preset:hover,.focus-preset--active{border-color:rgba(92,169,255,.35);background:rgba(92,169,255,.08);color:var(--text-primary)}
+.focus-timer__actions{display:flex;justify-content:center;gap:10px;margin-top:24px}
+.focus-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:11px 17px;border:1px solid var(--border);font-weight:650;font-size:.85rem}
+.focus-button--secondary{background:transparent;color:var(--text-secondary)}
+.focus-button--primary{border-color:rgba(92,169,255,.35);background:var(--color-primary);color:#06111f;box-shadow:0 8px 24px rgba(92,169,255,.18)}
+.focus-button:disabled{opacity:.45;cursor:not-allowed}
+.focus-music-now{display:flex;align-items:center;gap:13px;margin:25px 0 18px;padding:14px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.025)}
+.focus-music-art{display:grid;place-items:center;width:52px;height:52px;flex:none;border-radius:14px;background:linear-gradient(145deg,rgba(92,169,255,.17),rgba(214,142,255,.12));color:var(--color-primary)}
+.focus-music-now div:last-child{display:flex;flex-direction:column;gap:4px}
+.focus-music-now strong{font-size:.9rem}.focus-music-now span{color:var(--text-muted);font-size:.76rem}
+.focus-player{display:flex;align-items:center;justify-content:center;gap:15px;margin-bottom:23px}
+.focus-player button{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--text-secondary)}
+.focus-player button:hover{background:rgba(255,255,255,.06);color:var(--text-primary)}
+.focus-player .focus-player__play{width:44px;height:44px;background:var(--text-primary);color:var(--bg-main)}
+.focus-providers{display:grid;gap:9px}
+.focus-provider{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:11px;width:100%;padding:11px;border:1px solid var(--border);border-radius:14px;background:transparent;color:var(--text-primary);text-align:left;transition:border-color .2s ease,background .2s ease}
+.focus-provider:hover,.focus-provider--selected{border-color:rgba(92,169,255,.3);background:rgba(92,169,255,.055)}
+.focus-provider__brand{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.055);font-weight:800}
+.focus-provider--spotify .focus-provider__brand{color:#6ee7a2}
+.focus-provider--apple .focus-provider__brand{color:#f0f3ff}
+.focus-provider__action{color:var(--color-primary);font-size:.72rem;font-weight:700}
+.focus-provider>span:nth-child(2){display:flex;flex-direction:column;gap:3px;min-width:0}
+.focus-provider strong{font-size:.82rem}.focus-provider small{overflow:hidden;color:var(--text-muted);font-size:.69rem;text-overflow:ellipsis;white-space:nowrap}
+.focus-provider--none{margin-top:9px}
+.focus-provider--none .focus-provider__brand{color:var(--text-secondary)}
+.focus-note{display:flex;align-items:center;gap:10px;margin-top:15px;padding:12px 14px;color:var(--text-muted);font-size:.74rem}
+.focus-note span{color:var(--color-primary);font-size:1rem}.focus-note p{margin:0}
+@media(max-width:900px){.focus-grid{grid-template-columns:1fr}.focus-page__header{align-items:flex-start;flex-direction:column}.focus-page__status{align-self:flex-start}}
+@media(max-width:600px){.focus-page{padding:28px 16px 42px}.focus-card--timer,.focus-card--music{padding:20px;border-radius:20px}.focus-timer__ring{width:190px;height:190px}.focus-timer__inner span{font-size:2.25rem}.focus-provider{grid-template-columns:32px minmax(0,1fr)}.focus-provider__action{display:none}.focus-page__header h1{font-size:1.8rem}}
