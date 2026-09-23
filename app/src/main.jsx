@@ -22,13 +22,14 @@ import CourseDetails from "./pages/app/CourseDetails";
 import Progress from "./pages/app/Progress";
 import Quizzes from "./pages/app/Quizzes";
 import QuizDetails from "./pages/app/QuizDetails";
+import Notifications from "./pages/app/Notifications";
+import Profile from "./pages/app/Profile";
+import AskAI from "./pages/app/AskAI";
 import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
 
 const placeholderRoutes = [
   ["projects", "Projects", "Track the practical work you build along your path."],
-  ["progress", "Progress", "See your completed work, activity and learning progress here."],
-  ["ask-ai", "Ask UrPath AI", "Your learning assistant will be connected here."],
-  ["profile", "Profile", "Manage your UrPath profile here."],
+
 ];
 
 const router = createBrowserRouter([
@@ -54,6 +55,9 @@ const router = createBrowserRouter([
               { path: "progress", element: <Progress /> },
               { path: "quizzes", element: <Quizzes /> },
               { path: "quizzes/:quizId", element: <QuizDetails /> },
+              { path: "notifications", element: <Notifications /> },
+              { path: "profile", element: <Profile /> },
+              { path: "ask-ai", element: <AskAI /> },
               ...placeholderRoutes.map(([path, title, description]) => ({
                 path,
                 element: <FeaturePlaceholder title={title} description={description} />,
