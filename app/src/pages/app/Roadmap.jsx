@@ -12,7 +12,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RoadmapFlow from "../../components/Roadmap/RoadmapFlow";
 import { useRoadmapStore } from "../../stores/roadmapStore";
 import "../../style/roadmap.css";
@@ -34,10 +34,25 @@ function Roadmap() {
     deleteFocusGoal,
     createRoadmap,
     resetToDefaults,
+    fetchRoadmaps,
+    loading,
+    error,
   } = useRoadmapStore();
 
   const activeRoadmap = getActiveRoadmap();
+
+  useEffect(() => {
+    fetchRoadmaps();
+  }, [fetchRoadmaps]);
   const { total, completed, remaining, overallProgress } = getStats();
+
+  if (loading && !activeRoadmap) {
+    return <main className="roadmap-page"><div className="roadmap-empty">Loading your roadmap…</div></main>;
+  }
+
+  if (!activeRoadmap) {
+    return <main className="roadmap-page"><div className="roadmap-empty">{error || "No roadmap found yet."}</div></main>;
+  }
 
   // Modals & UI States
   const [showAiModal, setShowAiModal] = useState(false);
