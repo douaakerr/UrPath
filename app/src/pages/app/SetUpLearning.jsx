@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import {
   Code2,
   Palette,
@@ -114,6 +114,7 @@ const OTHER_SUGGESTIONS = [
 
 export default function SetUpLearning() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Store
   const {
@@ -155,6 +156,13 @@ export default function SetUpLearning() {
 
   // Ready confirmation modal
   const [assessmentStarted, setAssessmentStarted] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.newRoadmap) {
+      resetOnboarding();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location.state, resetOnboarding]);
 
   // Fetch domains from backend
   const loadDomains = async () => {
