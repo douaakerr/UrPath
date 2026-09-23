@@ -41,6 +41,30 @@ function Roadmap() {
 
   const activeRoadmap = getActiveRoadmap();
 
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showCreateRoadmapModal, setShowCreateRoadmapModal] = useState(false);
+  const [activeLearningMilestone, setActiveLearningMilestone] = useState(null);
+
+  const [newMilestoneTitle, setNewMilestoneTitle] = useState("");
+  const [newMilestoneDesc, setNewMilestoneDesc] = useState("");
+  const [newMilestoneLessons, setNewMilestoneLessons] = useState(6);
+  const [newMilestoneHours, setNewMilestoneHours] = useState(10);
+  const [newMilestoneProjects, setNewMilestoneProjects] = useState(1);
+
+  const [editingMilestone, setEditingMilestone] = useState(null);
+  const [newGoalText, setNewGoalText] = useState("");
+  const [newRoadmapTitle, setNewRoadmapTitle] = useState("");
+  const [newRoadmapSub, setNewRoadmapSub] = useState("");
+  const [aiQuestion, setAiQuestion] = useState("");
+  const [aiResponses, setAiResponses] = useState([
+    {
+      sender: "ai",
+      text: `Hello! I'm your UrPath AI Learning Guide. You are currently focusing on "${activeRoadmap?.title}". How can I help you tackle your next milestone?`,
+    },
+  ]);
+
   useEffect(() => {
     fetchRoadmaps();
   }, [fetchRoadmaps]);
