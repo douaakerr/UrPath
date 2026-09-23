@@ -54,41 +54,7 @@ function Roadmap() {
     return <main className="roadmap-page"><div className="roadmap-empty">{error || "No roadmap found yet."}</div></main>;
   }
 
-  // Modals & UI States
-  const [showAiModal, setShowAiModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [showCreateRoadmapModal, setShowCreateRoadmapModal] = useState(false);
-  
-  const [activeLearningMilestone, setActiveLearningMilestone] = useState(null);
 
-  // New Milestone Form State
-  const [newMilestoneTitle, setNewMilestoneTitle] = useState("");
-  const [newMilestoneDesc, setNewMilestoneDesc] = useState("");
-  const [newMilestoneLessons, setNewMilestoneLessons] = useState(6);
-  const [newMilestoneHours, setNewMilestoneHours] = useState(10);
-  const [newMilestoneProjects, setNewMilestoneProjects] = useState(1);
-
-  // Edit Milestone Form State
-  const [editingMilestone, setEditingMilestone] = useState(null);
-
-  // Focus Goal Input State
-  const [newGoalText, setNewGoalText] = useState("");
-
-  // Create Roadmap Form State
-  const [newRoadmapTitle, setNewRoadmapTitle] = useState("");
-  const [newRoadmapSub, setNewRoadmapSub] = useState("");
-
-  // AI Prompt State
-  const [aiQuestion, setAiQuestion] = useState("");
-  const [aiResponses, setAiResponses] = useState([
-    {
-      sender: "ai",
-      text: `Hello! I'm your UrPath AI Learning Guide. You are currently focusing on "${
-        activeRoadmap?.title
-      }". How can I help you tackle your next milestone?`,
-    },
-  ]);
 
   const handleAskAi = (e) => {
     e.preventDefault();
@@ -159,6 +125,50 @@ function Roadmap() {
     addFocusGoal(newGoalText);
     setNewGoalText("");
   };
+
+  // Modals & UI States
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showCreateRoadmapModal, setShowCreateRoadmapModal] = useState(false);
+  
+  const [activeLearningMilestone, setActiveLearningMilestone] = useState(null);
+
+  // New Milestone Form State
+  const [newMilestoneTitle, setNewMilestoneTitle] = useState("");
+  const [newMilestoneDesc, setNewMilestoneDesc] = useState("");
+  const [newMilestoneLessons, setNewMilestoneLessons] = useState(6);
+  const [newMilestoneHours, setNewMilestoneHours] = useState(10);
+  const [newMilestoneProjects, setNewMilestoneProjects] = useState(1);
+
+  // Edit Milestone Form State
+  const [editingMilestone, setEditingMilestone] = useState(null);
+
+  // Focus Goal Input State
+  const [newGoalText, setNewGoalText] = useState("");
+
+  // Create Roadmap Form State
+  const [newRoadmapTitle, setNewRoadmapTitle] = useState("");
+  const [newRoadmapSub, setNewRoadmapSub] = useState("");
+
+  // AI Prompt State
+  const [aiQuestion, setAiQuestion] = useState("");
+  const [aiResponses, setAiResponses] = useState([
+    {
+      sender: "ai",
+      text: `Hello! I'm your UrPath AI Learning Guide. You are currently focusing on "${
+        activeRoadmap?.title
+      }". How can I help you tackle your next milestone?`,
+    },
+  ]);
+
+  if (loading && !activeRoadmap) {
+    return <main className="roadmap-page"><div className="roadmap-empty">Loading your roadmap…</div></main>;
+  }
+
+  if (!activeRoadmap) {
+    return <main className="roadmap-page"><div className="roadmap-empty">{error || "No roadmap found yet."}</div></main>;
+  }
 
   return (
     <div className="roadmap-page">
