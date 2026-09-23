@@ -32,9 +32,9 @@ function Navbar({ app = false, onMenu }) {
         )}
 
         {app && (
-          <button type="button" className="navbar__icon-button" aria-label="Notifications">
+          <Link to="/notifications" className="navbar__icon-button" aria-label="Notifications">
             <Bell size={19} strokeWidth={1.8} />
-          </button>
+          </Link>
         )}
 
         <button
