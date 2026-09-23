@@ -17,10 +17,11 @@ import Dashboard from "./pages/app/Dashboard";
 import Roadmap from "./pages/app/Roadmap";
 import SetUpLearning from "./pages/app/SetUpLearning";
 import Calendar from "./pages/app/Calendar";
+import Courses from "./pages/app/Courses";
+import CourseDetails from "./pages/app/CourseDetails";
 import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
 
 const placeholderRoutes = [
-  ["courses", "Courses", "Your learning content will live here."],
   ["projects", "Projects", "Track the practical work you build along your path."],
   ["progress", "Progress", "See your completed work, activity and learning progress here."],
   ["ask-ai", "Ask UrPath AI", "Your learning assistant will be connected here."],
@@ -45,6 +46,8 @@ const router = createBrowserRouter([
               { path: "dashboard", element: <Dashboard /> },
               { path: "roadmap", element: <Roadmap /> },
               { path: "calendar", element: <Calendar /> },
+              { path: "courses", element: <Courses /> },
+              { path: "courses/:courseId", element: <CourseDetails /> },
               ...placeholderRoutes.map(([path, title, description]) => ({
                 path,
                 element: <FeaturePlaceholder title={title} description={description} />,
