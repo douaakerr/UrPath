@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ResetPassword from "./pages/auth/ResetPassword";
+import ChangePassword from "./pages/auth/ChangePassword";
 import Dashboard from "./pages/app/Dashboard";
 import Roadmap from "./pages/app/Roadmap";
 import SetUpLearning from "./pages/app/SetUpLearning";
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
               { path: "quizzes/:quizId", element: <QuizDetails /> },
               { path: "notifications", element: <Notifications /> },
               { path: "profile", element: <Profile /> },
+              { path: "change-password", element: <ChangePassword /> },
               { path: "ask-ai", element: <AskAI /> },
             ],
           },
