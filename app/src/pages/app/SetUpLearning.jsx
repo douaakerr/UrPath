@@ -245,21 +245,6 @@ export default function SetUpLearning() {
   // Step 5: Start Assessment
   const handleStartAssessment = () => {
     navigate("/assessment");
-    setAssessmentStarted(false);
-    return;
-    setAssessmentStarted(true);
-    const completePayload = {
-      domain: selectedDomain?.name,
-      subdomain: isOtherSubdomain ? customSubdomain : selectedSubdomain?.name || null,
-      language: selectedLanguage === "another" ? customLanguage : selectedLanguage || null,
-      customLearningSubject: isOtherDomain ? customLearningSubject : null,
-      goal: goal === "custom" ? customGoal : goal,
-      experienceLevel,
-      learningPace,
-      availableTime,
-      learningPreferences,
-    };
-    console.log("UrPath Learning Setup Complete — Payload ready for AI Assessment:", completePayload);
   };
 
   // Check if current step allows next
