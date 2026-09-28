@@ -22,6 +22,7 @@ import QuizDetails from "./pages/app/QuizDetails";
 import Notifications from "./pages/app/Notifications";
 import Profile from "./pages/app/Profile";
 import AskAI from "./pages/app/AskAI";
+import Assessment from "./pages/app/Assessment";
 import Focus from "./pages/app/Focus";
 import Projects from "./pages/app/Projects";
 import Landing from "./pages/public/Landing";
