@@ -32,3 +32,4 @@ button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}
 @media(max-width:480px){.dashboard-layout{--navbar-height:60px}}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+\n\n/* Shared elevation tokens */\n[data-theme="dark"]{--bg-elevated:#0d2038}\n:root{--bg-elevated:#fff}\n
