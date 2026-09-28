@@ -28,6 +28,7 @@ function Assessment() {
   const [roadmapLoading, setRoadmapLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [generationAttempt, setGenerationAttempt] = useState(0);
 
   const domain = selectedDomain?.name || "";
   const subdomain = useMemo(() => {
@@ -51,6 +52,9 @@ function Assessment() {
         return;
       }
 
+      setLoading(true);
+      setError("");
+
       try {
         const response = await createAssessment({
           domain,
@@ -71,7 +75,7 @@ function Assessment() {
     return () => {
       mounted = false;
     };
-  }, [domain, subdomain, assessmentGoal, learnerLevel]);
+  }, [domain, subdomain, assessmentGoal, learnerLevel, generationAttempt]);
 
   const questions = assessment?.questions || [];
   const question = questions[currentIndex];
@@ -121,7 +125,16 @@ function Assessment() {
       <main className="assessment-page">
         <div className="assessment-state">
           <LoaderCircle className="assessment-spinner" size={30} />
-          <span>Building your diagnostic assessment...</span>
+          <div className="assessment-loading-copy">
+            <span className="assessment-eyebrow"><FileCheck2 size={14} /> PREPARING YOUR PATH</span>
+            <h1>Building your diagnostic assessment</h1>
+            <p>UrPath is generating real questions from your learning setup. This can take a moment while your knowledge base and AI are working.</p>
+            <div className="assessment-loading-steps">
+              <span><i /> Reading your goal</span>
+              <span><i /> Checking learning knowledge</span>
+              <span><i /> Generating diagnostic questions</span>
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -133,9 +146,29 @@ function Assessment() {
         <div className="assessment-state assessment-state--error">
           <h2>Assessment could not start</h2>
           <p>{error}</p>
-          <button type="button" onClick={() => navigate("/onboarding")}>
-            <ArrowLeft size={16} /> Return to setup
-          </button>
+          <div className="assessment-error-actions">
+            <button type="button" onClick={() => setGenerationAttempt((value) => value + 1)}>
+              Try again
+            </button>
+            <button type="button" className="assessment-secondary-button" onClick={() => navigate("/onboarding")}>
+              <ArrowLeft size={16} /> Return to setup
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!assessment || !questions.length) {
+    return (
+      <main className="assessment-page">
+        <div className="assessment-state assessment-state--error">
+          <h2>No assessment questions were returned.</h2>
+          <p>The server responded, but there were no usable questions to display.</p>
+          <div className="assessment-error-actions">
+            <button type="button" onClick={() => setGenerationAttempt((value) => value + 1)}>Generate again</button>
+            <button type="button" className="assessment-secondary-button" onClick={() => navigate("/onboarding")}><ArrowLeft size={16} /> Return to setup</button>
+          </div>
         </div>
       </main>
     );
