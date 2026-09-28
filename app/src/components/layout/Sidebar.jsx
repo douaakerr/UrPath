@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Map, BookOpen, FolderKanban, ChartNoAxesCombined,
-  CalendarDays, Sparkles, CircleHelp, Timer, ChevronLeft, ChevronRight,
+  CalendarDays, Sparkles, CircleHelp, Timer, ChevronLeft, ChevronRight, X,
 } from "lucide-react";
 import { NavLink, Link } from "react-router";
 import mountainsLight from "../../assets/image/mountains_light.png";
@@ -40,6 +40,7 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
             </div>
           )}
         </Link>
+        <button type="button" className="sidebar__mobile-close" onClick={onNavigate} aria-label="Close navigation"><X size={19} /></button>
       </div>
       <nav className="sidebar__nav" aria-label="Main navigation">
         {navigation.map((group) => (
