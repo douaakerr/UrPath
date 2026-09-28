@@ -4,10 +4,12 @@ import { useNavigate } from "react-router";
 import { createAssessment, submitAssessment } from "../../services/assessmentService";
 import { generateRoadmapFromAssessment } from "../../services/roadmapService";
 import { useOnboardingStore } from "../../stores/onboardingStore";
+import { useRoadmapStore } from "../../stores/roadmapStore";
 import "../../style/assessment.css";
 
 function Assessment() {
   const navigate = useNavigate();
+  const setGeneratedRoadmap = useRoadmapStore((state) => state.setGeneratedRoadmap);
   const {
     selectedDomain,
     selectedSubdomain,
@@ -111,7 +113,14 @@ function Assessment() {
     setError("");
 
     try {
-      await generateRoadmapFromAssessment(assessment._id);
+      const response = await generateRoadmapFromAssessment(assessment._id);
+      const roadmap = response?.roadmap || response?.data?.roadmap;
+
+      if (!roadmap?._id) {
+        throw new Error("The server did not return the generated roadmap.");
+      }
+
+      setGeneratedRoadmap(roadmap);
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Assessment completed, but roadmap generation failed.");
