@@ -22,17 +22,16 @@ import Notifications from "./pages/app/Notifications";
 import Profile from "./pages/app/Profile";
 import AskAI from "./pages/app/AskAI";
 import Focus from "./pages/app/Focus";
+import Projects from "./pages/app/Projects";
+import Landing from "./pages/public/Landing";
 import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
-
-const placeholderRoutes = [
-  ["projects", "Projects", "Track the practical work you build along your path."],
-];
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      { index: true, element: <Landing /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "forgot-password", element: <ForgotPassword /> },
@@ -47,6 +46,7 @@ const router = createBrowserRouter([
               { path: "roadmap", element: <Roadmap /> },
               { path: "calendar", element: <Calendar /> },
               { path: "focus", element: <Focus /> },
+              { path: "projects", element: <Projects /> },
               { path: "courses", element: <Courses /> },
               { path: "courses/:courseId", element: <CourseDetails /> },
               { path: "progress", element: <Progress /> },
