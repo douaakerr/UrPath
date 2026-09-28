@@ -97,6 +97,19 @@ export const useRoadmapStore = create(
         }
       },
 
+      setGeneratedRoadmap: (roadmap) => {
+        if (!roadmap?._id) return null;
+
+        const normalized = normalizeRoadmap(roadmap);
+
+        set((state) => ({
+          roadmaps: { ...state.roadmaps, [normalized.id]: normalized },
+          activeRoadmapId: normalized.id,
+        }));
+
+        return normalized.id;
+      },
+
       fetchProgress: async (roadmapId) => {
         try {
           const data = await getProgressByRoadmap(roadmapId);
