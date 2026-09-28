@@ -61,6 +61,7 @@ const router = createBrowserRouter([
               { path: "ask-ai", element: <AskAI /> },
             ],
           },
+          { path: "assessment", element: <Assessment /> },
           { path: "create-roadmap", element: <SetUpLearning /> },
           { path: "onboarding", element: <SetUpLearning /> },
         ],
