@@ -244,6 +244,9 @@ export default function SetUpLearning() {
 
   // Step 5: Start Assessment
   const handleStartAssessment = () => {
+    navigate("/assessment");
+    setAssessmentStarted(false);
+    return;
     setAssessmentStarted(true);
     const completePayload = {
       domain: selectedDomain?.name,
