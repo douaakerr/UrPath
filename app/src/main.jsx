@@ -24,7 +24,6 @@ import AskAI from "./pages/app/AskAI";
 import Focus from "./pages/app/Focus";
 import Projects from "./pages/app/Projects";
 import Landing from "./pages/public/Landing";
-import FeaturePlaceholder from "./pages/app/FeaturePlaceholder";
 
 const router = createBrowserRouter([
   {
@@ -55,10 +54,6 @@ const router = createBrowserRouter([
               { path: "notifications", element: <Notifications /> },
               { path: "profile", element: <Profile /> },
               { path: "ask-ai", element: <AskAI /> },
-              ...placeholderRoutes.map(([path, title, description]) => ({
-                path,
-                element: <FeaturePlaceholder title={title} description={description} />,
-              })),
             ],
           },
           { path: "create-roadmap", element: <SetUpLearning /> },
