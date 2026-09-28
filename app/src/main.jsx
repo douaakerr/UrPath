@@ -26,11 +26,13 @@ import Assessment from "./pages/app/Assessment";
 import Focus from "./pages/app/Focus";
 import Projects from "./pages/app/Projects";
 import Landing from "./pages/public/Landing";
+import RouteError from "./components/RouteError";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <RouteError />,
     children: [
       { index: true, element: <Landing /> },
       { path: "login", element: <Login /> },
