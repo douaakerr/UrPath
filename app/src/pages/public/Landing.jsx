@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Compass, Route, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Map, Sparkles, Timer } from "lucide-react";
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { useRef } from "react";
@@ -8,25 +8,25 @@ import "../../style/landing.css";
 const milestones = [
   {
     number: "01",
-    title: "Start with a direction.",
-    text: "Tell UrPath what you want to become. You don't need the whole plan yet.",
+    title: "Choose a direction.",
+    text: "Start with what you want to learn. You do not need to know the whole route.",
   },
   {
     number: "02",
-    title: "Find the next step.",
-    text: "Turn a goal into a practical sequence of skills, milestones, and focused work.",
+    title: "Climb one step at a time.",
+    text: "Your roadmap turns a big goal into focused skills, tasks, practice, and progress.",
   },
   {
     number: "03",
-    title: "Keep moving.",
-    text: "Learn, practice, track your progress, and always know where your path goes next.",
+    title: "Reach your summit.",
+    text: "Keep learning, track your progress, and always have a clear next step.",
   },
 ];
 
 const features = [
-  { icon: Route, title: "A path made for you", text: "Your goal becomes a structured learning journey instead of a pile of bookmarks." },
-  { icon: Compass, title: "Know what's next", text: "Clear milestones keep the next action visible without overwhelming you." },
-  { icon: Sparkles, title: "Learn with support", text: "Courses, quizzes, progress, and AI help stay connected to your journey." },
+  { icon: Map, title: "A path made for you", text: "Turn a learning goal into a clear sequence of milestones and tasks." },
+  { icon: Timer, title: "Learn with focus", text: "Use focused sessions, daily progress, quizzes and courses without losing your place." },
+  { icon: Sparkles, title: "Ask when you're stuck", text: "Get help from UrPath AI while keeping your learning journey in one workspace." },
 ];
 
 function Landing() {
@@ -52,14 +52,14 @@ function Landing() {
       <section className="landing__hero">
         <motion.div
           className="landing__hero-copy"
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="landing__eyebrow">DEVELOP YOURSELF. BUILD YOUR PATH.</p>
           <h1>Stop wondering what to learn next.</h1>
           <p className="landing__lead">
-            Start with a goal. UrPath turns it into a learning journey you can actually follow,
+            UrPath turns your goal into a practical learning journey you can actually follow,
             one step at a time.
           </p>
           <div className="landing__actions">
@@ -75,19 +75,19 @@ function Landing() {
           </div>
         </motion.div>
 
-        <div className="landing__hero-route">
-          <span className="landing__route-label landing__route-label--start">START</span>
-          <span className="landing__route-label landing__route-label--goal">YOUR GOAL</span>
+        <div className="landing__mountain-caption" aria-hidden="true">
+          <span>YOUR PATH</span>
+          <strong>SUMMIT</strong>
         </div>
       </section>
 
       <section className="landing__story">
         <div className="landing__story-intro">
           <p className="landing__eyebrow">THE JOURNEY</p>
-          <h2>Your path becomes clearer as you move.</h2>
+          <h2>Every scroll takes you one step closer.</h2>
           <p>
-            The route stays with you while you scroll. Each section is another point on the journey,
-            so the animation is part of the story — not decoration sitting behind it.
+            The route is part of the story. Watch the particles leave the starting point,
+            follow the trail, and gather at the summit as you move through UrPath.
           </p>
         </div>
 
@@ -96,10 +96,10 @@ function Landing() {
             <motion.article
               className="landing__milestone"
               key={item.number}
-              initial={{ opacity: 0, y: 35 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.45 }}
-              transition={{ duration: 0.7, delay: index * 0.06 }}
+              transition={{ duration: 0.65, delay: index * 0.06 }}
             >
               <span>{item.number}</span>
               <div>
@@ -127,10 +127,12 @@ function Landing() {
       </section>
 
       <section className="landing__cta">
-        <p className="landing__eyebrow">YOUR NEXT STEP</p>
+        <p className="landing__eyebrow">YOUR SUMMIT IS AHEAD</p>
         <h2>You don't need to know the whole path.</h2>
         <p>Just choose where you want to go.</p>
-        <Link to="/register" className="landing__primary">Start building <ArrowRight size={17} /></Link>
+        <Link to="/register" className="landing__primary">
+          Start building <ArrowRight size={17} />
+        </Link>
       </section>
 
       <footer className="landing__footer">
