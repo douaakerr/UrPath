@@ -244,7 +244,7 @@ function ParticleRoute({ scrollRoot }) {
       position.needsUpdate = true;
     }
 
-    function updateScene() {
+    function updateScene(time) {
       const p = state.progress;
       const achieved = p > 0.88;
       root.classList.toggle("is-achieved", achieved);
@@ -317,7 +317,7 @@ function ParticleRoute({ scrollRoot }) {
       state.progress = proxy.value;
       material.opacity = THREE.MathUtils.lerp(0.74, 0.9, state.progress);
       updateParticles(time);
-      updateScene();
+      updateScene(time);
       particles.rotation.z = Math.sin(time * 0.08) * 0.01;
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(render);
