@@ -5,25 +5,34 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ROUTE = [
-  new THREE.Vector3(-8.2, -3.35, 0.35),
-  new THREE.Vector3(-6.5, -2.7, 0.15),
-  new THREE.Vector3(-4.8, -2.15, -0.05),
-  new THREE.Vector3(-3.15, -1.15, 0.1),
-  new THREE.Vector3(-1.55, -0.2, -0.15),
-  new THREE.Vector3(0.15, 0.7, 0.05),
-  new THREE.Vector3(1.8, 0.15, -0.1),
-  new THREE.Vector3(3.15, 1.25, 0.05),
-  new THREE.Vector3(4.25, 2.35, 0.1),
-  new THREE.Vector3(4.85, 3.55, 0),
+const CLEAN_ROUTE = [
+  new THREE.Vector3(-7.8, -3.45, 0.2),
+  new THREE.Vector3(-6.3, -3.0, 0.1),
+  new THREE.Vector3(-5.1, -2.35, 0),
+  new THREE.Vector3(-3.8, -1.55, 0.05),
+  new THREE.Vector3(-2.55, -0.75, 0),
+  new THREE.Vector3(-1.1, -0.1, 0.05),
+  new THREE.Vector3(0.2, 0.45, 0),
+  new THREE.Vector3(1.45, 0.95, -0.05),
+  new THREE.Vector3(2.6, 1.65, 0),
+  new THREE.Vector3(3.65, 2.55, 0.05),
+  new THREE.Vector3(4.45, 3.7, 0),
 ];
 
-function createRouteCurve() {
+const LOST_ROUTES = [
+  [[-8.1, -3.5], [-5.8, -2.0], [-7.0, -0.7], [-4.9, 0.4], [-6.1, 1.8]],
+  [[-7.6, -3.4], [-5.2, -2.4], [-3.8, -2.7], [-2.8, -1.1], [-3.8, 0.8]],
+  [[-7.4, -3.3], [-5.0, -2.1], [-3.4, -1.7], [-1.8, -2.2], [-0.4, -1.2]],
+  [[-6.8, -3.2], [-5.1, -1.8], [-4.1, -0.2], [-2.0, 0.8], [-0.7, 1.7]],
+  [[-7.7, -3.2], [-6.2, -1.7], [-4.0, -1.0], [-2.7, 0.3], [-1.1, 2.2]],
+];
+
+function curveFrom(points) {
   return new THREE.CatmullRomCurve3(
-    ROUTE.map((point) => point.clone()),
+    points.map(([x, y]) => new THREE.Vector3(x, y, 0)),
     false,
     "catmullrom",
-    0.55,
+    0.35,
   );
 }
 
@@ -31,77 +40,81 @@ function createParticleTexture() {
   const canvas = document.createElement("canvas");
   canvas.width = 64;
   canvas.height = 64;
-  const context = canvas.getContext("2d");
-  const gradient = context.createRadialGradient(32, 32, 1, 32, 32, 31);
-  gradient.addColorStop(0, "rgba(243,247,251,1)");
-  gradient.addColorStop(0.22, "rgba(143,200,247,.95)");
+  const ctx = canvas.getContext("2d");
+  const gradient = ctx.createRadialGradient(32, 32, 1, 32, 32, 31);
+  gradient.addColorStop(0, "rgba(255,255,255,1)");
+  gradient.addColorStop(0.2, "rgba(143,200,247,.95)");
   gradient.addColorStop(1, "rgba(143,200,247,0)");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, 64, 64);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 64, 64);
   return new THREE.CanvasTexture(canvas);
 }
 
 function createMountain(scene) {
-  const backShape = new THREE.Shape();
-  backShape.moveTo(-8.8, -4.1);
-  backShape.lineTo(-3.8, 0.35);
-  backShape.lineTo(-1.9, -1.25);
-  backShape.lineTo(1.15, 2.15);
-  backShape.lineTo(3.15, 0.55);
-  backShape.lineTo(7.9, -4.1);
-  backShape.closePath();
+  const back = new THREE.Shape();
+  back.moveTo(-8.8, -4.2);
+  back.lineTo(-4.8, -0.4);
+  back.lineTo(-2.6, -1.5);
+  back.lineTo(0.2, 1.75);
+  back.lineTo(2.2, 0.1);
+  back.lineTo(7.8, -4.2);
+  back.closePath();
 
-  const frontShape = new THREE.Shape();
-  frontShape.moveTo(-6.2, -4.1);
-  frontShape.lineTo(-1.55, 0.25);
-  frontShape.lineTo(0.75, 4.15);
-  frontShape.lineTo(2.2, 1.55);
-  frontShape.lineTo(6.35, -4.1);
-  frontShape.closePath();
+  const front = new THREE.Shape();
+  front.moveTo(-6.5, -4.2);
+  front.lineTo(-2.2, -0.2);
+  front.lineTo(0.8, 4.2);
+  front.lineTo(2.2, 1.35);
+  front.lineTo(6.7, -4.2);
+  front.closePath();
 
-  const back = new THREE.Mesh(
-    new THREE.ShapeGeometry(backShape),
-    new THREE.MeshBasicMaterial({
-      color: 0x0e2137,
-      transparent: true,
-      opacity: 0.72,
-      depthWrite: false,
-    }),
-  );
-
-  const front = new THREE.Mesh(
-    new THREE.ShapeGeometry(frontShape),
-    new THREE.MeshBasicMaterial({
-      color: 0x173a59,
-      transparent: true,
-      opacity: 0.78,
-      depthWrite: false,
-    }),
-  );
-
-  const snowShape = new THREE.Shape();
-  snowShape.moveTo(-0.15, 2.95);
-  snowShape.lineTo(0.75, 4.15);
-  snowShape.lineTo(1.28, 3.18);
-  snowShape.lineTo(0.95, 3.48);
-  snowShape.lineTo(0.55, 3.05);
-  snowShape.closePath();
-
-  const snow = new THREE.Mesh(
-    new THREE.ShapeGeometry(snowShape),
-    new THREE.MeshBasicMaterial({
-      color: 0x8fc8f7,
-      transparent: true,
-      opacity: 0.18,
-      depthWrite: false,
-    }),
-  );
+  const snow = new THREE.Shape();
+  snow.moveTo(0.18, 3.15);
+  snow.lineTo(0.8, 4.2);
+  snow.lineTo(1.38, 3.08);
+  snow.lineTo(1.02, 3.35);
+  snow.lineTo(0.73, 2.98);
+  snow.closePath();
 
   const group = new THREE.Group();
-  group.add(back, front, snow);
-  group.position.set(1.0, -0.15, -0.55);
+  group.add(
+    new THREE.Mesh(new THREE.ShapeGeometry(back), new THREE.MeshBasicMaterial({
+      color: 0x0e2137, transparent: true, opacity: 0.75, depthWrite: false,
+    })),
+    new THREE.Mesh(new THREE.ShapeGeometry(front), new THREE.MeshBasicMaterial({
+      color: 0x173a59, transparent: true, opacity: 0.82, depthWrite: false,
+    })),
+    new THREE.Mesh(new THREE.ShapeGeometry(snow), new THREE.MeshBasicMaterial({
+      color: 0xdbeafa, transparent: true, opacity: 0.22, depthWrite: false,
+    })),
+  );
+  group.position.set(1.1, 0, -0.8);
   scene.add(group);
+  return group;
+}
 
+function createFlag(scene) {
+  const group = new THREE.Group();
+  const pole = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.018, 0.018, 0.75, 8),
+    new THREE.MeshBasicMaterial({ color: 0xf3f7fb }),
+  );
+  pole.position.y = 0.35;
+
+  const flagShape = new THREE.Shape();
+  flagShape.moveTo(0, 0.7);
+  flagShape.lineTo(0.48, 0.58);
+  flagShape.lineTo(0, 0.4);
+  flagShape.closePath();
+
+  const flag = new THREE.Mesh(
+    new THREE.ShapeGeometry(flagShape),
+    new THREE.MeshBasicMaterial({ color: 0x65adff, side: THREE.DoubleSide }),
+  );
+
+  group.add(pole, flag);
+  group.position.set(4.45, 3.7, 0.15);
+  scene.add(group);
   return group;
 }
 
@@ -111,7 +124,6 @@ function ParticleRoute({ scrollRoot }) {
   useEffect(() => {
     const mount = mountRef.current;
     const root = scrollRoot?.current;
-
     if (!mount || !root) return undefined;
 
     const scene = new THREE.Scene();
@@ -123,129 +135,156 @@ function ParticleRoute({ scrollRoot }) {
       antialias: true,
       powerPreference: "high-performance",
     });
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setClearColor(0x000000, 0);
     mount.appendChild(renderer.domElement);
 
-    const curve = createRouteCurve();
-    const particleTexture = createParticleTexture();
+    const cleanCurve = new THREE.CatmullRomCurve3(
+      CLEAN_ROUTE.map((point) => point.clone()),
+      false,
+      "catmullrom",
+      0.55,
+    );
+    const lostCurves = LOST_ROUTES.map(curveFrom);
+    const texture = createParticleTexture();
     const mountain = createMountain(scene);
+    const flag = createFlag(scene);
 
-    const count = 1900;
+    const darkParticle = new THREE.Color(0x8fc8f7);
+    const lightParticle = new THREE.Color(0x27755e);
+    const darkRoute = new THREE.Color(0x8fc8f7);
+    const lightRoute = new THREE.Color(0x27755e);
+
+    const lostLines = lostCurves.map((curve) => new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(curve.getPoints(90)),
+      new THREE.LineBasicMaterial({
+        color: 0x8fa3b8,
+        transparent: true,
+        opacity: 0.16,
+      }),
+    ));
+    lostLines.forEach((line) => scene.add(line));
+
+    const cleanLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(cleanCurve.getPoints(260)),
+      new THREE.LineBasicMaterial({
+        color: 0x8fc8f7,
+        transparent: true,
+        opacity: 0.42,
+      }),
+    );
+    scene.add(cleanLine);
+
+    const summit = new THREE.Mesh(
+      new THREE.SphereGeometry(0.085, 14, 14),
+      new THREE.MeshBasicMaterial({ color: 0xf3f7fb, transparent: true, opacity: 0.95 }),
+    );
+    summit.position.copy(CLEAN_ROUTE[CLEAN_ROUTE.length - 1]);
+    summit.position.z = 0.2;
+    scene.add(summit);
+
+    const walker = new THREE.Mesh(
+      new THREE.SphereGeometry(0.075, 10, 10),
+      new THREE.MeshBasicMaterial({ color: 0xf3f7fb }),
+    );
+    scene.add(walker);
+
+    const count = 1700;
     const positions = new Float32Array(count * 3);
-    const baseProgress = new Float32Array(count);
-    const spread = new Float32Array(count);
-    const size = new Float32Array(count);
-    const seed = new Float32Array(count);
+    const progressSeed = new Float32Array(count);
+    const drift = new Float32Array(count);
 
-    for (let index = 0; index < count; index += 1) {
-      baseProgress[index] = Math.random();
-      spread[index] = (Math.random() - 0.5) * 0.55;
-      size[index] = 0.7 + Math.random() * 1.8;
-      seed[index] = Math.random() * Math.PI * 2;
+    for (let i = 0; i < count; i += 1) {
+      progressSeed[i] = Math.random();
+      drift[i] = (Math.random() - 0.5) * 0.8;
     }
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("aSize", new THREE.BufferAttribute(size, 1));
 
-    const material = new THREE.ShaderMaterial({
+    const material = new THREE.PointsMaterial({
+      color: darkParticle,
+      size: 0.055,
+      map: texture,
       transparent: true,
+      opacity: 0.75,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      uniforms: {
-        pointTexture: { value: particleTexture },
-        opacity: { value: 0.82 },
-        time: { value: 0 },
-      },
-      vertexShader: `
-        attribute float aSize;
-        uniform float time;
-        varying float vAlpha;
-
-        void main() {
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          float pulse = 0.86 + 0.22 * sin(time * 1.6 + position.x * 1.9);
-          gl_PointSize = aSize * pulse * (42.0 / -mvPosition.z);
-          gl_Position = projectionMatrix * mvPosition;
-          vAlpha = pulse;
-        }
-      `,
-      fragmentShader: `
-        uniform sampler2D pointTexture;
-        uniform float opacity;
-        varying float vAlpha;
-
-        void main() {
-          vec4 tex = texture2D(pointTexture, gl_PointCoord);
-          gl_FragColor = vec4(tex.rgb, tex.a * opacity * vAlpha);
-        }
-      `,
+      sizeAttenuation: true,
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    const routeLine = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(curve.getPoints(240)),
-      new THREE.LineBasicMaterial({
-        color: 0x8fc8f7,
-        transparent: true,
-        opacity: 0.12,
-      }),
-    );
-    scene.add(routeLine);
-
-    const summitGlow = new THREE.Mesh(
-      new THREE.SphereGeometry(0.075, 12, 12),
-      new THREE.MeshBasicMaterial({
-        color: 0xf3f7fb,
-        transparent: true,
-        opacity: 0.9,
-      }),
-    );
-    summitGlow.position.copy(ROUTE[ROUTE.length - 1]);
-    summitGlow.position.z += 0.15;
-    scene.add(summitGlow);
-
     const state = { progress: 0 };
     const target = new THREE.Vector3();
     const tangent = new THREE.Vector3();
+    const walkerTarget = new THREE.Vector3();
 
-    function updateParticles() {
-      const positionsAttribute = geometry.attributes.position;
-      const scroll = state.progress;
+    function updateParticles(time) {
+      const position = geometry.attributes.position;
+      const p = state.progress;
 
-      for (let index = 0; index < count; index += 1) {
-        const particleStart = baseProgress[index] * 0.62;
-        const routeProgress = Math.min(
-          0.995,
-          particleStart + scroll * 0.52 + Math.sin(seed[index]) * 0.012,
-        );
+      for (let i = 0; i < count; i += 1) {
+        const local = (progressSeed[i] + p * 0.72) % 1;
+        const routeP = Math.min(0.997, local);
+        cleanCurve.getPointAt(routeP, target);
+        cleanCurve.getTangentAt(routeP, tangent);
 
-        curve.getPointAt(routeProgress, target);
-        curve.getTangentAt(routeProgress, tangent);
+        const side = (drift[i] * (0.25 + Math.sin(routeP * Math.PI) * 0.8));
+        const idle = Math.sin(time * 0.45 + progressSeed[i] * 18) * 0.055;
 
-        const sideX = -tangent.y;
-        const sideY = tangent.x;
-        const localWave = Math.sin(
-          seed[index] + material.uniforms.time.value * 0.7 + routeProgress * 34,
-        ) * 0.075;
-
-        const routeSpread =
-          spread[index] *
-          (0.35 + Math.sin(routeProgress * Math.PI) * 0.95);
-
-        positionsAttribute.setXYZ(
-          index,
-          target.x + sideX * routeSpread + localWave,
-          target.y + sideY * routeSpread,
-          target.z + Math.sin(seed[index] + routeProgress * 18) * 0.18,
+        position.setXYZ(
+          i,
+          target.x - tangent.y * side + idle,
+          target.y + tangent.x * side,
+          -0.1 + Math.sin(time * 0.3 + progressSeed[i] * 15) * 0.25,
         );
       }
+      position.needsUpdate = true;
+    }
 
-      positionsAttribute.needsUpdate = true;
+    function updateScene() {
+      const p = state.progress;
+      const achieved = p > 0.88;
+      root.classList.toggle("is-achieved", achieved);
+
+      const lostVisibility = THREE.MathUtils.clamp(1 - p * 2.8, 0, 1);
+      lostLines.forEach((line) => {
+        line.material.opacity = 0.16 * lostVisibility;
+      });
+
+      cleanLine.material.opacity = THREE.MathUtils.lerp(0.15, 0.62, p);
+      cleanLine.material.color.copy(darkRoute).lerp(lightRoute, Math.max(0, (p - 0.72) / 0.28));
+
+      const particleMix = Math.max(0, (p - 0.72) / 0.28);
+      material.color.copy(darkParticle).lerp(lightParticle, particleMix);
+
+      mountain.traverse((object) => {
+        if (object.material?.color) {
+          object.material.color.lerp(new THREE.Color(0xdce9df), particleMix * 0.35);
+        }
+      });
+
+      camera.position.x = THREE.MathUtils.lerp(-0.45, 0.6, p);
+      camera.position.y = THREE.MathUtils.lerp(0.15, -0.15, p);
+      camera.position.z = THREE.MathUtils.lerp(17.2, 14.8, p);
+      camera.lookAt(0.15, 0.15, 0);
+
+      mountain.position.x = THREE.MathUtils.lerp(1.1, 0.15, p);
+      mountain.position.y = THREE.MathUtils.lerp(0, 0.18, p);
+      mountain.scale.setScalar(THREE.MathUtils.lerp(0.94, 1.1, p));
+
+      flag.position.x = THREE.MathUtils.lerp(4.45, 3.8, p);
+      flag.position.y = THREE.MathUtils.lerp(3.7, 3.45, p);
+      flag.visible = p > 0.34;
+
+      cleanLine.material.opacity = THREE.MathUtils.lerp(0.08, 0.7, p);
+      walkerTarget.copy(cleanCurve.getPointAt(Math.min(p, 0.999)));
+      walker.position.lerp(walkerTarget, 0.22);
+      walker.scale.setScalar(p > 0.88 ? 1.45 : 1);
+      summit.scale.setScalar(1 + Math.sin(time * 2) * 0.08 + p * 0.45);
+      summit.material.opacity = 0.35 + p * 0.6;
     }
 
     function resize() {
@@ -259,65 +298,27 @@ function ParticleRoute({ scrollRoot }) {
     resize();
     window.addEventListener("resize", resize);
 
-    const progressProxy = { value: 0 };
-    const setScrollProgress = gsap.quickTo(progressProxy, "value", {
-      duration: 0.35,
-      ease: "power2.out",
-    });
+    const proxy = { value: 0 };
+    const setProgress = gsap.quickTo(proxy, "value", { duration: 0.35, ease: "power2.out" });
 
     const trigger = ScrollTrigger.create({
       trigger: root,
       start: "top top",
       end: "bottom bottom",
-      scrub: 0.4,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        setScrollProgress(self.progress);
-      },
-    });
-
-    const syncScroll = () => {
-      state.progress = progressProxy.value;
-
-      camera.position.x = THREE.MathUtils.lerp(-0.8, 0.8, state.progress);
-      camera.position.y = THREE.MathUtils.lerp(0.2, -0.15, state.progress);
-      camera.position.z = THREE.MathUtils.lerp(17, 14.8, state.progress);
-      camera.lookAt(0.3, 0.1, 0);
-
-      mountain.position.x = THREE.MathUtils.lerp(1, 0.15, state.progress);
-      mountain.position.y = THREE.MathUtils.lerp(-0.15, 0.15, state.progress);
-      mountain.scale.setScalar(THREE.MathUtils.lerp(1, 1.08, state.progress));
-    };
-
-    const ambient = gsap.to(material.uniforms.opacity, {
-      value: 0.98,
-      duration: 2.1,
-      ease: "sine.inOut",
-      repeat: -1,
-      yoyo: true,
-    });
-
-    const summitPulse = gsap.to(summitGlow.scale, {
-      x: 1.8,
-      y: 1.8,
-      z: 1.8,
-      duration: 1.5,
-      ease: "sine.inOut",
-      repeat: -1,
-      yoyo: true,
+      scrub: 0.25,
+      onUpdate: (self) => setProgress(self.progress),
     });
 
     const clock = new THREE.Clock();
     let frameId;
 
     function render() {
-      material.uniforms.time.value = clock.getElapsedTime();
-      state.progress = progressProxy.value;
-      updateParticles();
-      syncScroll();
-
-      particles.rotation.z = Math.sin(material.uniforms.time.value * 0.08) * 0.008;
-      summitGlow.material.opacity = 0.55 + state.progress * 0.35;
+      const time = clock.getElapsedTime();
+      state.progress = proxy.value;
+      material.opacity = THREE.MathUtils.lerp(0.74, 0.9, state.progress);
+      updateParticles(time);
+      updateScene();
+      particles.rotation.z = Math.sin(time * 0.08) * 0.01;
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(render);
     }
@@ -328,28 +329,34 @@ function ParticleRoute({ scrollRoot }) {
     return () => {
       cancelAnimationFrame(frameId);
       trigger.kill();
-      ambient.kill();
-      summitPulse.kill();
       window.removeEventListener("resize", resize);
 
       geometry.dispose();
       material.dispose();
-      routeLine.geometry.dispose();
-      routeLine.material.dispose();
-      summitGlow.geometry.dispose();
-      summitGlow.material.dispose();
+      texture.dispose();
+
+      [...lostLines, cleanLine].forEach((line) => {
+        line.geometry.dispose();
+        line.material.dispose();
+      });
+
+      [summit, walker].forEach((object) => {
+        object.geometry.dispose();
+        object.material.dispose();
+      });
+
+      flag.traverse((object) => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) object.material.dispose();
+      });
 
       mountain.traverse((object) => {
         if (object.geometry) object.geometry.dispose();
         if (object.material) object.material.dispose();
       });
 
-      particleTexture.dispose();
       renderer.dispose();
-
-      if (mount.contains(renderer.domElement)) {
-        mount.removeChild(renderer.domElement);
-      }
+      if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
   }, [scrollRoot]);
 
