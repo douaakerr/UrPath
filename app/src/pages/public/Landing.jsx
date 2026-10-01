@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Map, Sparkles, Timer } from "lucide-react";
+import { ArrowRight, Map, Sparkles, Timer } from "lucide-react";
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { useRef } from "react";
