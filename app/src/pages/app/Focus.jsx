@@ -172,7 +172,7 @@ function Focus() {
         <section className="focus-card focus-card--music">
           <div className="focus-card__topline">
             <div className="focus-card__icon focus-card__icon--music"><Headphones size={19} /></div>
-            <div><span>Study music</span><strong>{connectedProvider ? (connectedProvider === "spotify" ? "Spotify connected" : "Apple Music connected") : "Choose your source"}</strong></div>
+            <div><span>Study music</span><strong>{connectedProvider === "local" ? "Local music loaded" : connectedProvider ? (connectedProvider === "spotify" ? "Spotify connected" : "Apple Music connected") : "Choose your source"}</strong></div>
           </div>
 
           <div className="focus-music-now">
@@ -183,7 +183,7 @@ function Focus() {
             </div>
           </div>
 
-          {localTrack && <audio ref={audioRef} src={localTrack.url} onEnded={() => setLocalPlaying(false)} />}
+          {localTrack && <audio className="focus-local-audio" ref={audioRef} src={localTrack.url} onEnded={() => setLocalPlaying(false)} />}
 
           <div className="focus-player">
             <button type="button" aria-label="Previous track"><SkipBack size={17} /></button>
