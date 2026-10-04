@@ -75,3 +75,5 @@
 @keyframes focus-sun-breathe{0%,100%{transform:scale(.92);opacity:.65}50%{transform:scale(1.08);opacity:1}}
 @keyframes focus-haze-drift{0%{transform:translate3d(-2%,0,0) scale(1)}100%{transform:translate3d(9%,4%,0) scale(1.12)}}
 @media(prefers-reduced-motion:reduce){.focus-leaf,.focus-sun,.focus-haze{animation:none}.focus-nature{display:none}}
+
+.focus-local-audio{display:none}
