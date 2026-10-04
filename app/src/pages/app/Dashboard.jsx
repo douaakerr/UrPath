@@ -15,6 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { getCurrentUser } from "../../services/authService";
 import { useRoadmapStore } from "../../stores/roadmapStore";
+import { useOnboardingStore } from "../../stores/onboardingStore";
 import "../../style/dashboard.css";
 
 const formatTime = (seconds) => {
@@ -36,6 +37,7 @@ function Dashboard() {
     error,
   } = useRoadmapStore();
   const roadmap = getActiveRoadmap();
+  const resetOnboarding = useOnboardingStore((state) => state.resetOnboarding);
   const [user, setUser] = useState(null);
   const [focusOpen, setFocusOpen] = useState(false);
   const [focusRunning, setFocusRunning] = useState(false);
@@ -98,7 +100,7 @@ function Dashboard() {
           <Target size={28} />
           <h1>Hello, {displayName}.</h1>
           <p>{error || "You do not have a roadmap yet."}</p>
-          <button type="button" className="journey-button" onClick={() => navigate("/onboarding")}>
+          <button type="button" className="journey-button" onClick={() => { resetOnboarding(); navigate("/onboarding"); }}>
             Build my path <ArrowRight size={16} />
           </button>
         </div>
