@@ -22,9 +22,14 @@ function Landing() {
 
       <nav className="landing__nav">
         <Link to="/" className="landing__brand"><span>U</span><strong>UrPath</strong></Link>
+        <div className="landing__nav-center">
+          <a href="#who-we-are">Who We Are</a>
+          <a href="#features">Features</a>
+          <a href="#why-urpath">Why UrPath</a>
+        </div>
         <div className="landing__nav-actions">
           <Link to="/login" className="landing__login">Log in</Link>
-          <Link to="/register" className="landing__signup">Start your path</Link>
+          <Link to="/register" className="landing__signup">Get started</Link>
         </div>
       </nav>
 
@@ -52,7 +57,7 @@ function Landing() {
         </div>
       </section>
 
-      <section className="landing__turn">
+      <section id="who-we-are" className="landing__turn">
         <div className="landing__turn-copy">
           <p className="landing__eyebrow">THEN YOU FIND A DIFFERENT WAY</p>
           <h2>You don't need to know the whole journey.</h2>
@@ -67,7 +72,7 @@ function Landing() {
         </div>
       </section>
 
-      <section className="landing__paths">
+      <section id="why-urpath" className="landing__paths">
         <div className="landing__paths-heading">
           <p className="landing__eyebrow">TWO WAYS FORWARD</p>
           <h2>One keeps you guessing.<br />One shows you the way.</h2>
@@ -124,7 +129,7 @@ function Landing() {
         </div>
       </section>
 
-      <section className="landing__features">
+      <section id="features" className="landing__features">
         {features.map(({ icon: Icon, title, text }) => (
           <motion.article className="landing__feature" key={title} whileHover={{ y: -5 }}>
             <div className="landing__feature-icon"><Icon size={19} /></div>
