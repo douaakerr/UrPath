@@ -61,6 +61,30 @@ function Focus() {
 
   return (
     <section className="focus-page">
+      <div className="focus-nature" aria-hidden="true">
+        <span className="focus-sun" />
+        <span className="focus-haze focus-haze--one" />
+        <span className="focus-haze focus-haze--two" />
+        <div className="focus-leaves"><span className="focus-leaf focus-leaf--1" style={{"--leaf-i":0}} />
+<span className="focus-leaf focus-leaf--2" style={{"--leaf-i":1}} />
+<span className="focus-leaf focus-leaf--3" style={{"--leaf-i":2}} />
+<span className="focus-leaf focus-leaf--4" style={{"--leaf-i":3}} />
+<span className="focus-leaf focus-leaf--5" style={{"--leaf-i":4}} />
+<span className="focus-leaf focus-leaf--6" style={{"--leaf-i":5}} />
+<span className="focus-leaf focus-leaf--1" style={{"--leaf-i":6}} />
+<span className="focus-leaf focus-leaf--2" style={{"--leaf-i":7}} />
+<span className="focus-leaf focus-leaf--3" style={{"--leaf-i":8}} />
+<span className="focus-leaf focus-leaf--4" style={{"--leaf-i":9}} />
+<span className="focus-leaf focus-leaf--5" style={{"--leaf-i":10}} />
+<span className="focus-leaf focus-leaf--6" style={{"--leaf-i":11}} />
+<span className="focus-leaf focus-leaf--1" style={{"--leaf-i":12}} />
+<span className="focus-leaf focus-leaf--2" style={{"--leaf-i":13}} />
+<span className="focus-leaf focus-leaf--3" style={{"--leaf-i":14}} />
+<span className="focus-leaf focus-leaf--4" style={{"--leaf-i":15}} />
+<span className="focus-leaf focus-leaf--5" style={{"--leaf-i":16}} />
+<span className="focus-leaf focus-leaf--6" style={{"--leaf-i":17}} /></div>
+        <span className="focus-ground-glow" />
+      </div>
       <header className="focus-page__header">
         <div>
           <span className="focus-page__eyebrow">Focus Mode</span>
