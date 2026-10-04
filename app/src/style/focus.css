@@ -57,23 +57,20 @@
 @media(max-width:900px){.focus-grid{grid-template-columns:1fr}.focus-page__header{align-items:flex-start;flex-direction:column}.focus-page__status{align-self:flex-start}}
 @media(max-width:600px){.focus-page{padding:28px 16px 42px}.focus-card--timer,.focus-card--music{padding:20px;border-radius:20px}.focus-timer__ring{width:190px;height:190px}.focus-timer__inner span{font-size:2.25rem}.focus-provider{grid-template-columns:32px minmax(0,1fr)}.focus-provider__action{display:none}.focus-page__header h1{font-size:1.8rem}}
 
-.focus-page{position:relative;isolation:isolate;min-height:100vh;overflow:hidden}
+.focus-page{position:relative;isolation:isolate;min-height:100vh;overflow:hidden;background:#eef2e8;color:#1d2a22}
+[data-theme="dark"] .focus-page{background:#17221c;color:#edf2e9}
 .focus-page>*:not(.focus-nature){position:relative;z-index:2}
 .focus-page__header,.focus-note{z-index:3}
-.focus-nature{position:absolute;inset:-80px -40px -40px;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(circle at 72% 18%,rgba(210,191,125,.12),transparent 20%),linear-gradient(160deg,rgba(24,53,39,.08),transparent 45%,rgba(62,104,75,.1))}
-[data-theme="dark"] .focus-nature{background:radial-gradient(circle at 72% 18%,rgba(226,199,126,.1),transparent 20%),linear-gradient(160deg,rgba(12,39,29,.42),transparent 45%,rgba(37,76,52,.2))}
-.focus-sun{position:absolute;width:210px;height:210px;right:8%;top:7%;border-radius:50%;background:radial-gradient(circle,rgba(244,220,153,.2),rgba(244,220,153,.05) 38%,transparent 70%);filter:blur(2px);animation:focus-sun-breathe 8s ease-in-out infinite}
-.focus-haze{position:absolute;width:58vw;height:22vw;border-radius:50%;filter:blur(38px);opacity:.16;background:#a9c4a5}
-.focus-haze--one{left:-12%;bottom:5%;animation:focus-haze-drift 15s ease-in-out infinite alternate}
-.focus-haze--two{right:-16%;top:28%;background:#d6c58c;animation:focus-haze-drift 18s ease-in-out -5s infinite alternate-reverse}
-.focus-ground-glow{position:absolute;left:4%;right:4%;bottom:-35%;height:65%;border-radius:50%;background:radial-gradient(ellipse,rgba(78,111,77,.16),transparent 68%);filter:blur(10px)}
+.focus-nature{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#eef2e8}
+[data-theme="dark"] .focus-nature{background:#17221c}
+.focus-sun,.focus-haze,.focus-ground-glow{display:none}
 .focus-leaves{position:absolute;inset:0;overflow:hidden}
-.focus-leaf{--leaf-size:14px;position:absolute;left:calc(-10% + (var(--leaf-i) * 6.2%));top:calc(8% + (var(--leaf-i) * 4.7%));width:var(--leaf-size);height:calc(var(--leaf-size) * .58);border-radius:100% 0 100% 0;background:rgba(115,151,109,.42);filter:blur(.15px);transform:rotate(calc(18deg + var(--leaf-i) * 17deg));animation:focus-leaf-drift calc(14s + var(--leaf-i) * .9s) linear infinite;animation-delay:calc(var(--leaf-i) * -1.7s)}
-.focus-leaf:nth-child(3n){--leaf-size:19px;background:rgba(173,157,91,.25)}
-.focus-leaf:nth-child(4n){--leaf-size:10px;opacity:.7}
-@keyframes focus-leaf-drift{0%{translate:-12vw -8vh;rotate:0deg;opacity:0}12%{opacity:.65}50%{translate:38vw 16vh;rotate:100deg}100%{translate:115vw 55vh;rotate:260deg;opacity:0}}
-@keyframes focus-sun-breathe{0%,100%{transform:scale(.92);opacity:.65}50%{transform:scale(1.08);opacity:1}}
-@keyframes focus-haze-drift{0%{transform:translate3d(-2%,0,0) scale(1)}100%{transform:translate3d(9%,4%,0) scale(1.12)}}
-@media(prefers-reduced-motion:reduce){.focus-leaf,.focus-sun,.focus-haze{animation:none}.focus-nature{display:none}}
-
+.focus-leaf{--leaf-size:15px;position:absolute;left:-12vw;top:calc(4% + (var(--leaf-i) * 5.2%));width:var(--leaf-size);height:calc(var(--leaf-size) * .56);border-radius:100% 0 100% 0;background:#8da886;opacity:.62;transform:rotate(calc(25deg + var(--leaf-i) * 13deg));animation:focus-leaf-drift calc(20s + var(--leaf-i) * 1.35s) ease-in-out infinite;animation-delay:calc(var(--leaf-i) * -2.2s)}
+.focus-leaf:nth-child(3n){--leaf-size:22px;background:#6f8d68;opacity:.5}
+.focus-leaf:nth-child(4n){--leaf-size:11px;background:#b0a875;opacity:.48}
+.focus-leaf:nth-child(5n){--leaf-size:28px;opacity:.28}
+.focus-leaf:nth-child(2n){animation-name:focus-leaf-drift-alt}
+@keyframes focus-leaf-drift{0%{translate:-8vw -3vh;rotate:0deg;opacity:0}10%{opacity:.58}35%{translate:18vw 5vh;rotate:55deg}65%{translate:54vw 15vh;rotate:125deg}100%{translate:112vw 34vh;rotate:205deg;opacity:0}}
+@keyframes focus-leaf-drift-alt{0%{translate:-8vw 4vh;rotate:10deg;opacity:0}12%{opacity:.48}40%{translate:25vw -2vh;rotate:75deg}70%{translate:70vw 20vh;rotate:155deg}100%{translate:116vw 8vh;rotate:245deg;opacity:0}}
+@media(prefers-reduced-motion:reduce){.focus-leaf{animation:none}.focus-nature{display:none}}
 .focus-local-audio{display:none}
