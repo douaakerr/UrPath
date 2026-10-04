@@ -8,6 +8,8 @@ import {
   RotateCcw,
   Target,
   X,
+  Plus,
+  ChevronDown,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -23,7 +25,16 @@ const formatTime = (seconds) => {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { getActiveRoadmap, getStats, fetchRoadmaps, loading, error } = useRoadmapStore();
+  const {
+    getActiveRoadmap,
+    getStats,
+    fetchRoadmaps,
+    setActiveRoadmap,
+    roadmaps,
+    activeRoadmapId,
+    loading,
+    error,
+  } = useRoadmapStore();
   const roadmap = getActiveRoadmap();
   const [user, setUser] = useState(null);
   const [focusOpen, setFocusOpen] = useState(false);
@@ -104,14 +115,34 @@ function Dashboard() {
           <p>{roadmap.title}</p>
           {error && <small>{error}</small>}
         </div>
-        <button
-          className="dashboard-header__notification"
-          type="button"
-          onClick={() => navigate("/notifications")}
-          aria-label="Notifications"
-        >
-          <Bell size={18} />
-        </button>
+        <div className="dashboard-header__actions">
+          <label className="roadmap-switcher">
+            <span>ACTIVE PATH</span>
+            <select
+              value={activeRoadmapId || ""}
+              onChange={(event) => setActiveRoadmap(event.target.value)}
+              aria-label="Choose active learning path"
+            >
+              {Object.values(roadmaps).map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.domain || item.title}{item.subdomain ? ` · ${item.subdomain}` : ""}
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={15} />
+          </label>
+          <button className="dashboard-new-path" type="button" onClick={() => navigate("/onboarding")}>
+            <Plus size={16} /> Learn something new
+          </button>
+          <button
+            className="dashboard-header__notification"
+            type="button"
+            onClick={() => navigate("/notifications")}
+            aria-label="Notifications"
+          >
+            <Bell size={18} />
+          </button>
+        </div>
       </header>
 
       <section className="dashboard-hero-grid">
