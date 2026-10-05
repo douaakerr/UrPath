@@ -50,74 +50,6 @@ function createParticleTexture() {
   return new THREE.CanvasTexture(canvas);
 }
 
-function createMountain(scene) {
-  const back = new THREE.Shape();
-  back.moveTo(-8.8, -4.2);
-  back.lineTo(-4.8, -0.4);
-  back.lineTo(-2.6, -1.5);
-  back.lineTo(0.2, 1.75);
-  back.lineTo(2.2, 0.1);
-  back.lineTo(7.8, -4.2);
-  back.closePath();
-
-  const front = new THREE.Shape();
-  front.moveTo(-6.5, -4.2);
-  front.lineTo(-2.2, -0.2);
-  front.lineTo(0.8, 4.2);
-  front.lineTo(2.2, 1.35);
-  front.lineTo(6.7, -4.2);
-  front.closePath();
-
-  const snow = new THREE.Shape();
-  snow.moveTo(0.18, 3.15);
-  snow.lineTo(0.8, 4.2);
-  snow.lineTo(1.38, 3.08);
-  snow.lineTo(1.02, 3.35);
-  snow.lineTo(0.73, 2.98);
-  snow.closePath();
-
-  const group = new THREE.Group();
-  group.add(
-    new THREE.Mesh(new THREE.ShapeGeometry(back), new THREE.MeshBasicMaterial({
-      color: 0x0e2137, transparent: true, opacity: 0.75, depthWrite: false,
-    })),
-    new THREE.Mesh(new THREE.ShapeGeometry(front), new THREE.MeshBasicMaterial({
-      color: 0x173a59, transparent: true, opacity: 0.82, depthWrite: false,
-    })),
-    new THREE.Mesh(new THREE.ShapeGeometry(snow), new THREE.MeshBasicMaterial({
-      color: 0xdbeafa, transparent: true, opacity: 0.22, depthWrite: false,
-    })),
-  );
-  group.position.set(1.1, 0, -0.8);
-  scene.add(group);
-  return group;
-}
-
-function createFlag(scene) {
-  const group = new THREE.Group();
-  const pole = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.018, 0.018, 0.75, 8),
-    new THREE.MeshBasicMaterial({ color: 0xf3f7fb }),
-  );
-  pole.position.y = 0.35;
-
-  const flagShape = new THREE.Shape();
-  flagShape.moveTo(0, 0.7);
-  flagShape.lineTo(0.48, 0.58);
-  flagShape.lineTo(0, 0.4);
-  flagShape.closePath();
-
-  const flag = new THREE.Mesh(
-    new THREE.ShapeGeometry(flagShape),
-    new THREE.MeshBasicMaterial({ color: 0x65adff, side: THREE.DoubleSide }),
-  );
-
-  group.add(pole, flag);
-  group.position.set(4.45, 3.7, 0.15);
-  scene.add(group);
-  return group;
-}
-
 function ParticleRoute({ scrollRoot }) {
   const mountRef = useRef(null);
 
@@ -147,8 +79,6 @@ function ParticleRoute({ scrollRoot }) {
     );
     const lostCurves = LOST_ROUTES.map(curveFrom);
     const texture = createParticleTexture();
-    const mountain = createMountain(scene);
-    const flag = createFlag(scene);
 
     const darkParticle = new THREE.Color(0x8fc8f7);
     const lightParticle = new THREE.Color(0x27755e);
@@ -260,24 +190,10 @@ function ParticleRoute({ scrollRoot }) {
       const particleMix = Math.max(0, (p - 0.72) / 0.28);
       material.color.copy(darkParticle).lerp(lightParticle, particleMix);
 
-      mountain.traverse((object) => {
-        if (object.material?.color) {
-          object.material.color.lerp(new THREE.Color(0xdce9df), particleMix * 0.35);
-        }
-      });
-
-      camera.position.x = THREE.MathUtils.lerp(-0.45, 0.6, p);
+        camera.position.x = THREE.MathUtils.lerp(-0.45, 0.6, p);
       camera.position.y = THREE.MathUtils.lerp(0.15, -0.15, p);
       camera.position.z = THREE.MathUtils.lerp(17.2, 14.8, p);
       camera.lookAt(0.15, 0.15, 0);
-
-      mountain.position.x = THREE.MathUtils.lerp(1.1, 0.15, p);
-      mountain.position.y = THREE.MathUtils.lerp(0, 0.18, p);
-      mountain.scale.setScalar(THREE.MathUtils.lerp(0.94, 1.1, p));
-
-      flag.position.x = THREE.MathUtils.lerp(4.45, 3.8, p);
-      flag.position.y = THREE.MathUtils.lerp(3.7, 3.45, p);
-      flag.visible = p > 0.34;
 
       cleanLine.material.opacity = THREE.MathUtils.lerp(0.08, 0.7, p);
       walkerTarget.copy(cleanCurve.getPointAt(Math.min(p, 0.999)));
@@ -343,16 +259,6 @@ function ParticleRoute({ scrollRoot }) {
       [summit, walker].forEach((object) => {
         object.geometry.dispose();
         object.material.dispose();
-      });
-
-      flag.traverse((object) => {
-        if (object.geometry) object.geometry.dispose();
-        if (object.material) object.material.dispose();
-      });
-
-      mountain.traverse((object) => {
-        if (object.geometry) object.geometry.dispose();
-        if (object.material) object.material.dispose();
       });
 
       renderer.dispose();

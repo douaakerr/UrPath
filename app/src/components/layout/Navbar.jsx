@@ -1,4 +1,4 @@
-import { Sun, Moon, Bell, Search, UserCircle, Menu } from "lucide-react";
+import { Sun, Moon, Bell, UserCircle, Menu } from "lucide-react";
 import { Link } from "react-router";
 import { useThemeStore } from "../../stores/themeStore";
 import "../../style/navbar.css";
@@ -11,9 +11,9 @@ function Navbar({ app = false, onMenu }) {
     <header className={`navbar ${app ? "navbar--app" : "navbar--public"}`}>
       {!app && (
         <nav className="navbar__links">
-          <a href="#how-it-works">How it works</a>
+          <a href="#who-we-are">Who We Are</a>
           <a href="#features">Features</a>
-          <a href="#about">About</a>
+          <a href="#why-urpath">Why UrPath</a>
         </nav>
       )}
 
@@ -23,14 +23,6 @@ function Navbar({ app = false, onMenu }) {
             <Menu size={20} strokeWidth={1.9} />
           </button>
         )}
-
-        {app && (
-          <div className="navbar__search">
-            <Search size={18} strokeWidth={1.8} />
-            <input type="text" placeholder="Search..." />
-          </div>
-        )}
-
         {app && (
           <Link to="/notifications" className="navbar__icon-button" aria-label="Notifications">
             <Bell size={19} strokeWidth={1.8} />
