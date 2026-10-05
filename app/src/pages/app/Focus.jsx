@@ -95,7 +95,13 @@ function Focus() {
 
   return (
     <section className="focus-page">
-      <div className="focus-nature" aria-hidden="true" />\n      <header className="focus-page__header">
+      <div className="focus-background" aria-hidden="true">
+        <img src="/assets/video/Focus.jpg" alt="" />
+        <video autoPlay loop muted playsInline poster="/assets/video/Focus.jpg">
+          <source src="/assets/video/Focus.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <header className="focus-page__header">
         <div>
           <span className="focus-page__eyebrow">Focus Mode</span>
           <h1>Make time for the work that matters.</h1>
