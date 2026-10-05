@@ -101,10 +101,6 @@ function Focus() {
           <h1>Make time for the work that matters.</h1>
           <p>Set a session, choose your music, and stay in your flow.</p>
         </div>
-        <div className="focus-page__status">
-          <span className={running ? "focus-status-dot focus-status-dot--active" : "focus-status-dot"} />
-          {running ? "Session active" : "Ready to focus"}
-        </div>
       </header>
 
       <div className="focus-grid">
