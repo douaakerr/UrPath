@@ -232,44 +232,128 @@ function Dashboard() {
         </article>
       </section>
 
-      <section className="dashboard-progress-chart">
-        <div className="dashboard-progress-chart__header">
+      <section className="dashboard-progress-section">
+        <div className="dashboard-progress-section__header">
           <div>
-            <span className="panel-kicker">ALL YOUR PATHS</span>
-            <h2>Progress by domain</h2>
-            <p>See how far you have progressed in each learning path.</p>
+            <span className="panel-kicker">LEARNING PROGRESS</span>
+            <h2>See your progress clearly</h2>
+            <p>Compare your learning paths and follow your current journey week by week.</p>
           </div>
           <span className="dashboard-progress-chart__count">{domainProgress.length} paths</span>
         </div>
 
-        <div className="domain-progress-list">
-          {domainProgress.map((item) => {
-            const label = item.subdomain
-              ? `${item.domain || item.title} · ${item.subdomain}`
-              : item.domain || item.title;
+        <div className="dashboard-progress-layout">
+          <article className="domain-rings-panel">
+            <div className="progress-panel-heading">
+              <div>
+                <span className="panel-kicker">ALL YOUR PATHS</span>
+                <h3>Progress by domain</h3>
+              </div>
+            </div>
 
-            return (
-              <button
-                type="button"
-                className={`domain-progress-row${item.id === activeRoadmapId ? " is-active" : ""}`}
-                key={item.id}
-                onClick={() => setActiveRoadmap(item.id)}
-                title={`Open ${label}`}
-              >
-                <span className="domain-progress-row__label">
-                  <strong>{label}</strong>
-                  <small>{item.id === activeRoadmapId ? "ACTIVE PATH · " : ""}{item.completedTasks}/{item.totalTasks} tasks</small>
-                </span>
-                <span className="domain-progress-row__track">
-                  <span style={{ width: `${item.progress}%` }} />
-                </span>
-                <strong className="domain-progress-row__value">{item.progress}%</strong>
-              </button>
-            );
-          })}
+            <div className="domain-rings-grid">
+              {domainProgress.map((item) => {
+                const label = item.subdomain
+                  ? `${item.domain || item.title} · ${item.subdomain}`
+                  : item.domain || item.title;
+                const radius = 30;
+                const circumference = 2 * Math.PI * radius;
+                const offset = circumference - (item.progress / 100) * circumference;
+
+                return (
+                  <button
+                    type="button"
+                    className={`domain-ring-card${item.id === activeRoadmapId ? " is-active" : ""}`}
+                    key={item.id}
+                    onClick={() => setActiveRoadmap(item.id)}
+                    title={`Open ${label}`}
+                  >
+                    <span className="domain-ring" aria-hidden="true">
+                      <svg viewBox="0 0 76 76">
+                        <circle className="domain-ring__track" cx="38" cy="38" r={radius} />
+                        <circle
+                          className="domain-ring__value"
+                          cx="38"
+                          cy="38"
+                          r={radius}
+                          strokeDasharray={circumference}
+                          strokeDashoffset={offset}
+                        />
+                      </svg>
+                      <strong>{item.progress}%</strong>
+                    </span>
+                    <span className="domain-ring-card__label">
+                      <strong>{label}</strong>
+                      <small>{item.completedTasks}/{item.totalTasks} tasks</small>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </article>
+
+          <article className="progress-graph-panel">
+            <div className="progress-panel-heading">
+              <div>
+                <span className="panel-kicker">CURRENT PATH</span>
+                <h3>Roadmap progress</h3>
+              </div>
+              <strong>{overallProgress}%</strong>
+            </div>
+
+            <div className="progress-graph" aria-label="Progress through the current roadmap">
+              <div className="progress-graph__grid" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="progress-graph__line" aria-hidden="true">
+                {(() => {
+                  let completedBefore = 0;
+                  const totalTasks = milestones.reduce(
+                    (sum, milestone) => sum + (milestone.tasks?.length || 0),
+                    0,
+                  );
+
+                  return milestones.map((milestone, index) => {
+                    const weekTasks = milestone.tasks || [];
+                    const weekCompleted = weekTasks.filter((task) => task.completed).length;
+                    completedBefore += weekCompleted;
+                    const percentage = totalTasks
+                      ? Math.round((completedBefore / totalTasks) * 100)
+                      : 0;
+                    const left = milestones.length === 1
+                      ? 50
+                      : (index / (milestones.length - 1)) * 100;
+                    const top = 100 - percentage;
+
+                    return (
+                      <span
+                        key={milestone.id}
+                        className="progress-graph__point"
+                        style={{ left: `${left}%`, top: `${top}%` }}
+                        title={`Week ${milestone.weekNumber}: ${percentage}%`}
+                      />
+                    );
+                  });
+                })()}
+              </div>
+              <div className="progress-graph__labels">
+                {milestones.map((milestone) => (
+                  <span key={milestone.id}>W{milestone.weekNumber}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="progress-graph__footer">
+              <span>Start</span>
+              <strong>Week by week</strong>
+              <span>100%</span>
+            </div>
+          </article>
         </div>
       </section>
-
       <section className="dashboard-stats">
         <article>
           <div className="metric-icon"><Target size={17} /></div>
