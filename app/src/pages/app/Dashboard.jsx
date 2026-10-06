@@ -11,10 +11,19 @@ import {
   Plus,
   ChevronDown,
 } from "lucide-react";
-import { useEffect,  useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { getCurrentUser } from "../../services/authService";
 import { useRoadmapStore } from "../../stores/roadmapStore";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import "../../style/dashboard.css";
 
@@ -113,6 +122,23 @@ function Dashboard() {
       totalTasks: storedProgress?.totalTasks ?? totalTasks,
     };
   });
+
+  const progressChartData = useMemo(() => {
+    let completedBefore = 0;
+    const totalTasks = milestones.reduce(
+      (sum, milestone) => sum + (milestone.tasks?.length || 0),
+      0,
+    );
+
+    return milestones.map((milestone) => {
+      const weekTasks = milestone.tasks || [];
+      completedBefore += weekTasks.filter((task) => task.completed).length;
+      return {
+        week: `W${milestone.weekNumber}`,
+        progress: totalTasks ? Math.round((completedBefore / totalTasks) * 100) : 0,
+      };
+    });
+  }, [milestones]);
 
   const resetFocus = () => {
     setFocusRunning(false);
@@ -302,51 +328,45 @@ function Dashboard() {
             </div>
 
             <div className="progress-graph" aria-label="Progress through the current roadmap">
-              <div className="progress-graph__grid" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-              {(() => {
-                let completedBefore = 0;
-                const totalTasks = milestones.reduce(
-                  (sum, milestone) => sum + (milestone.tasks?.length || 0),
-                  0,
-                );
-                const points = milestones.map((milestone, index) => {
-                  const weekTasks = milestone.tasks || [];
-                  completedBefore += weekTasks.filter((task) => task.completed).length;
-                  const percentage = totalTasks
-                    ? Math.round((completedBefore / totalTasks) * 100)
-                    : 0;
-                  const x = milestones.length === 1
-                    ? 50
-                    : (index / (milestones.length - 1)) * 100;
-                  const y = 100 - percentage;
-                  return { x, y, percentage, week: milestone.weekNumber };
-                });
-                const polyline = points.map((point) => `${point.x},${point.y}`).join(" ");
-
-                return (
-                  <svg className="progress-graph__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                    <polyline points={polyline} />
-                    {points.map((point) => (
-                      <circle
-                        key={point.week}
-                        cx={point.x}
-                        cy={point.y}
-                        r="1.7"
-                      />
-                    ))}
-                  </svg>
-                );
-              })()}
-              <div className="progress-graph__labels">
-                {milestones.map((milestone) => (
-                  <span key={milestone.id}>W{milestone.weekNumber}</span>
-                ))}
-              </div>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={progressChartData} margin={{ top: 8, right: 8, left: -18, bottom: 4 }}>
+                  <CartesianGrid stroke="var(--border)" vertical={false} />
+                  <XAxis
+                    dataKey="week"
+                    tick={{ fill: "var(--text-muted)", fontSize: 8 }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    domain={[0, 100]}
+                    tick={{ fill: "var(--text-muted)", fontSize: 8 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `${value}%`}
+                    width={34}
+                  />
+                  <Tooltip
+                    cursor={{ stroke: "var(--border)" }}
+                    formatter={(value) => [`${value}%`, "Progress"]}
+                    labelFormatter={(label) => `Roadmap ${label}`}
+                    contentStyle={{
+                      border: "1px solid var(--border)",
+                      borderRadius: "10px",
+                      background: "var(--bg-elevated)",
+                      color: "var(--text-primary)",
+                      fontSize: "9px",
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="progress"
+                    stroke="var(--color-primary)"
+                    strokeWidth={2.5}
+                    dot={{ r: 3, fill: "var(--color-primary)", strokeWidth: 0 }}
+                    activeDot={{ r: 5 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
             <div className="progress-graph__footer">
               <span>Start</span>
