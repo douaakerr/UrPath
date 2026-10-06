@@ -1130,3 +1130,67 @@
     gap: 9px;
   }
 }
+
+
+/* Dashboard cleanup */
+.today-card {
+  min-height: 315px;
+  display: flex;
+  flex-direction: column;
+}
+.today-task {
+  flex: 1;
+  align-items: flex-start;
+  margin-top: 8px;
+  padding: 24px 0 18px;
+}
+.today-task .task-dot {
+  margin-top: 6px;
+}
+.today-task strong {
+  white-space: normal;
+  line-height: 1.45;
+}
+.today-task span:last-child {
+  line-height: 1.5;
+}
+.today-card .text-action {
+  margin-top: auto;
+  padding-top: 10px;
+}
+.domain-progress-row {
+  position: relative;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.domain-progress-row:hover {
+  background: var(--bg-elevated);
+}
+.domain-progress-row.is-active {
+  background: var(--bg-elevated);
+}
+.domain-progress-row.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--domain-accent);
+}
+.domain-progress-row.is-active .domain-progress-row__label strong {
+  color: var(--domain-accent);
+}
+.dashboard-progress-chart__header h2 {
+  font-weight: 650;
+}
+@media (max-width: 760px) {
+  .today-card {
+    min-height: auto;
+  }
+  .today-task {
+    padding: 18px 0 14px;
+  }
+}
