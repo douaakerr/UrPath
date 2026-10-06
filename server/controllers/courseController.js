@@ -731,20 +731,134 @@ export const completeLesson = async (req, res) => {
 
     await course.save();
 
-    // Update global roadmap progress activity
-    const progress = await Progress.findOne({
+    // Keep roadmap progress synchronized with course completion.
+    let roadmapProgress = await Progress.findOne({
       user: req.user._id,
       roadmap: course.roadmap,
     });
 
-    if (progress) {
-      progress.lastActivityAt = new Date();
+    const roadmap = await Roadmap.findOne({
+      _id: course.roadmap,
+      user: req.user._id,
+    });
 
-      if (progress.status === "not_started") {
-        progress.status = "in_progress";
+    if (roadmap) {
+      const week = roadmap.weeks.find(
+        (item) => item.week === Number(course.weekNumber)
+      );
+
+      const task = week?.tasks?.id(course.taskId);
+
+      // A roadmap task becomes complete when its generated course
+      // has been fully completed.
+      if (
+        task &&
+        course.progressPercentage === 100 &&
+        !task.completed
+      ) {
+        task.completed = true;
+        await roadmap.save();
       }
 
-      await progress.save();
+      const totalTasks = roadmap.weeks.reduce(
+        (total, item) => total + (item.tasks?.length || 0),
+        0
+      );
+
+      const completedTasks = roadmap.weeks.reduce(
+        (total, item) =>
+          total +
+          (item.tasks?.filter((itemTask) => itemTask.completed).length || 0),
+        0
+      );
+
+      const completedLessons = roadmap.weeks.reduce(
+        (total, item) =>
+          total +
+          (item.tasks?.filter(
+            (itemTask) =>
+              itemTask.completed && itemTask.type === "lesson"
+          ).length || 0),
+        0
+      );
+
+      const completedProjects = roadmap.weeks.reduce(
+        (total, item) =>
+          total +
+          (item.tasks?.filter(
+            (itemTask) =>
+              itemTask.completed && itemTask.type === "project"
+          ).length || 0),
+        0
+      );
+
+      const completedQuizzes = roadmap.weeks.reduce(
+        (total, item) =>
+          total +
+          (item.tasks?.filter(
+            (itemTask) =>
+              itemTask.completed && itemTask.type === "quiz"
+          ).length || 0),
+        0
+      );
+
+      const percentage = totalTasks
+        ? Math.round((completedTasks / totalTasks) * 100)
+        : 0;
+
+      if (!roadmapProgress) {
+        roadmapProgress = await Progress.create({
+          user: req.user._id,
+          roadmap: roadmap._id,
+          totalTasks,
+        });
+      }
+
+      roadmapProgress.totalTasks = totalTasks;
+      roadmapProgress.completedTasks = completedTasks;
+      roadmapProgress.completedLessons = completedLessons;
+      roadmapProgress.completedProjects = completedProjects;
+      roadmapProgress.completedQuizzes = completedQuizzes;
+      roadmapProgress.percentage = percentage;
+      roadmapProgress.lastActivityAt = new Date();
+
+      if (!roadmapProgress.startedAt) {
+        roadmapProgress.startedAt = new Date();
+      }
+
+      roadmapProgress.status =
+        percentage >= 100 ? "completed" : "in_progress";
+
+      if (percentage >= 100 && !roadmapProgress.completedAt) {
+        roadmapProgress.completedAt = new Date();
+      }
+
+      roadmapProgress.currentWeek = Number(course.weekNumber);
+
+      const nextTask = roadmap.weeks
+        .flatMap((item) =>
+          (item.tasks || []).map((itemTask) => ({
+            week: item.week,
+            task: itemTask,
+          }))
+        )
+        .find(({ task: itemTask }) => !itemTask.completed);
+
+      roadmapProgress.currentTask = nextTask?.task?.title || null;
+
+      if (nextTask) {
+        roadmapProgress.currentWeek = nextTask.week;
+      }
+
+      await roadmapProgress.save();
+    } else if (roadmapProgress) {
+      roadmapProgress.lastActivityAt = new Date();
+
+      if (roadmapProgress.status === "not_started") {
+        roadmapProgress.status = "in_progress";
+      }
+
+      await roadmapProgress.save();
     }
 
     // Create learning log
