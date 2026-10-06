@@ -30,8 +30,10 @@ function Dashboard() {
     getActiveRoadmap,
     getStats,
     fetchRoadmaps,
+    fetchProgress,
     setActiveRoadmap,
     roadmaps,
+    progressByRoadmap,
     activeRoadmapId,
     loading,
     error,
@@ -49,6 +51,15 @@ function Dashboard() {
       .then((response) => setUser(response?.user || response?.data?.user || response?.data || response))
       .catch(() => setUser(null));
   }, [fetchRoadmaps]);
+
+  useEffect(() => {
+    const roadmapIds = Object.keys(roadmaps);
+    const missingProgress = roadmapIds.filter((id) => !progressByRoadmap[id]);
+
+    if (!missingProgress.length) return;
+
+    missingProgress.forEach((id) => fetchProgress(id));
+  }, [roadmaps, progressByRoadmap, fetchProgress]);
 
   useEffect(() => {
     if (!focusRunning) return undefined;
@@ -79,6 +90,29 @@ function Dashboard() {
 
   const completed = milestones.filter((item) => item.status === "completed").length;
   const displayName = user?.name || user?.username || user?.firstName || "Learner";
+
+  const domainProgress = Object.values(roadmaps).map((item) => {
+    const storedProgress = progressByRoadmap[item.id];
+    const totalTasks = item.milestones.reduce(
+      (sum, milestone) => sum + (milestone.tasks?.length || 0),
+      0,
+    );
+    const completedTasks = item.milestones.reduce(
+      (sum, milestone) =>
+        sum + (milestone.tasks?.filter((task) => task.completed).length || 0),
+      0,
+    );
+    const calculatedProgress = totalTasks
+      ? Math.round((completedTasks / totalTasks) * 100)
+      : 0;
+
+    return {
+      ...item,
+      progress: Math.min(100, Math.max(0, storedProgress?.percentage ?? calculatedProgress)),
+      completedTasks: storedProgress?.completedTasks ?? completedTasks,
+      totalTasks: storedProgress?.totalTasks ?? totalTasks,
+    };
+  });
 
   const resetFocus = () => {
     setFocusRunning(false);
@@ -192,6 +226,44 @@ function Dashboard() {
             View roadmap <ArrowRight size={14} />
           </button>
         </article>
+      </section>
+
+      <section className="dashboard-progress-chart">
+        <div className="dashboard-progress-chart__header">
+          <div>
+            <span className="panel-kicker">ALL YOUR PATHS</span>
+            <h2>Progress by domain</h2>
+            <p>See how far you have progressed in each learning path.</p>
+          </div>
+          <span className="dashboard-progress-chart__count">{domainProgress.length} paths</span>
+        </div>
+
+        <div className="domain-progress-list">
+          {domainProgress.map((item) => {
+            const label = item.subdomain
+              ? `${item.domain || item.title} · ${item.subdomain}`
+              : item.domain || item.title;
+
+            return (
+              <button
+                type="button"
+                className="domain-progress-row"
+                key={item.id}
+                onClick={() => setActiveRoadmap(item.id)}
+                title={`Open ${label}`}
+              >
+                <span className="domain-progress-row__label">
+                  <strong>{label}</strong>
+                  <small>{item.completedTasks}/{item.totalTasks} tasks</small>
+                </span>
+                <span className="domain-progress-row__track">
+                  <span style={{ width: `${item.progress}%` }} />
+                </span>
+                <strong className="domain-progress-row__value">{item.progress}%</strong>
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       <section className="dashboard-stats">
