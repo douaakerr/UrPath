@@ -28,25 +28,18 @@ function unwrap(response, key) {
 
 function formatInline(text) {
   const parts = [];
-  const pattern = /(\\*\\*[^*]+\\*\\*|\\*[^*]+\\*|\x60[^\x60]+\x60|\\[[^\\]]+\\]\\([^\\)]+\\))/g;
+  const pattern = /(\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^\)]+\))/g;
   let lastIndex = 0;
   let match;
   while ((match = pattern.exec(text)) !== null) {
     if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
     const token = match[0];
-    if (token.startsWith("**")) {
-      parts.push(<strong key={match.index}>{token.slice(2, -2)}</strong>);
-    } else if (token.startsWith("*")) {
-      parts.push(<em key={match.index}>{token.slice(1, -1)}</em>);
-    } else if (token.startsWith("`")) {
-      parts.push(<code key={match.index}>{token.slice(1, -1)}</code>);
-    } else {
-      const link = token.match(/^\\[([^\\]]+)\\]\\(([^\\)]+)\\)$/);
-      if (link && /^https?:\\/\\//i.test(link[2])) {
-        parts.push(<a key={match.index} href={link[2]} target="_blank" rel="noreferrer">{link[1]}</a>);
-      } else {
-        parts.push(token);
-      }
+    if (token.startsWith("**")) parts.push(<strong key={match.index}>{token.slice(2, -2)}</strong>);
+    else if (token.startsWith("*")) parts.push(<em key={match.index}>{token.slice(1, -1)}</em>);
+    else {
+      const link = token.match(/^\[([^\]]+)\]\(([^\)]+)\)$/);
+      if (link && /^https?:\/\//i.test(link[2])) parts.push(<a key={match.index} href={link[2]} target="_blank" rel="noreferrer">{link[1]}</a>);
+      else parts.push(token);
     }
     lastIndex = pattern.lastIndex;
   }
@@ -56,56 +49,52 @@ function formatInline(text) {
 
 function LessonMarkdown({ content = "" }) {
   const normalized = String(content)
-    .replace(/\\\\([#*_<>])/g, "$1")
-    .replace(/\\\\n/g, "\n")
+    .replace(/\\([#*_<>])/g, "$1")
+    .replace(/\\n/g, "\n")
     .replace(/<details[^>]*>/gi, "")
     .replace(/<summary[^>]*>/gi, "")
-    .replace(/<\\/summary>/gi, "")
-    .replace(/<\\/details>/gi, "");
+    .replace(/<\/summary>/gi, "")
+    .replace(/<\/details>/gi, "");
   const lines = normalized.split("\n");
   const blocks = [];
   let paragraph = [];
   let listItems = [];
   let listType = "";
   let tableRows = [];
-
   const flushParagraph = () => {
     if (paragraph.length) {
-      blocks.push(<p key={`p-${blocks.length}`}>{formatInline(paragraph.join(" "))}</p>);
+      blocks.push(<p key={"p-" + blocks.length}>{formatInline(paragraph.join(" "))}</p>);
       paragraph = [];
     }
   };
   const flushList = () => {
     if (!listItems.length) return;
     const Tag = listType === "ol" ? "ol" : "ul";
-    blocks.push(<Tag key={`list-${blocks.length}`}>{listItems.map((item, index) => <li key={index}>{formatInline(item)}</li>)}</Tag>);
+    blocks.push(<Tag key={"list-" + blocks.length}>{listItems.map((item, index) => <li key={index}>{formatInline(item)}</li>)}</Tag>);
     listItems = [];
     listType = "";
   };
   const flushTable = () => {
     if (!tableRows.length) return;
-    const rows = tableRows.filter((row) => !/^\\s*\\|?\\s*:?-{3,}/.test(row));
-    const cells = rows.map((row) => row.trim().replace(/^\\|/, "").replace(/\\|$/, "").split("|").map((cell) => cell.trim()));
-    blocks.push(<div className="lesson-table-wrap" key={`table-${blocks.length}`}><table className="lesson-table"><tbody>{cells.map((row, ri) => <tr key={ri}>{row.map((cell, ci) => { const Cell = ri === 0 ? "th" : "td"; return <Cell key={ci}>{formatInline(cell)}</Cell>; })}</tr>)}</tbody></table></div>);
+    const rows = tableRows.filter((row) => !/^\s*\|?\s*:?-{3,}/.test(row));
+    const cells = rows.map((row) => row.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim()));
+    blocks.push(<div className="lesson-table-wrap" key={"table-" + blocks.length}><table className="lesson-table"><tbody>{cells.map((row, ri) => <tr key={ri}>{row.map((cell, ci) => { const Cell = ri === 0 ? "th" : "td"; return <Cell key={ci}>{formatInline(cell)}</Cell>; })}</tr>)}</tbody></table></div>);
     tableRows = [];
   };
-
   lines.forEach((rawLine) => {
     const line = rawLine.trim();
     if (!line) { flushParagraph(); flushList(); flushTable(); return; }
-    if (line.startsWith("|") && line.includes("|", 1)) {
-      flushParagraph(); flushList(); tableRows.push(line); return;
-    }
+    if (line.startsWith("|") && line.includes("|", 1)) { flushParagraph(); flushList(); tableRows.push(line); return; }
     flushTable();
-    const heading = line.match(/^(#{1,4})\\s+(.+)$/);
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
     if (heading) {
       flushParagraph(); flushList();
-      const Tag = `h${Math.min(heading[1].length + 2, 6)}`;
-      blocks.push(<Tag key={`h-${blocks.length}`}>{formatInline(heading[2].replace(/\\*\\*/g, ""))}</Tag>);
+      const Tag = "h" + Math.min(heading[1].length + 2, 6);
+      blocks.push(<Tag key={"h-" + blocks.length}>{formatInline(heading[2].replace(/\*\*/g, ""))}</Tag>);
       return;
     }
-    const bullet = line.match(/^[-*+]\\s+(.+)$/);
-    const numbered = line.match(/^\\d+[.)]\\s+(.+)$/);
+    const bullet = line.match(/^[-*+]\s+(.+)$/);
+    const numbered = line.match(/^\d+[.)]\s+(.+)$/);
     if (bullet || numbered) {
       flushParagraph();
       const nextType = numbered ? "ol" : "ul";
@@ -114,13 +103,13 @@ function LessonMarkdown({ content = "" }) {
       listItems.push((bullet || numbered)[1]);
       return;
     }
-    if (/^>\\s?/.test(line)) {
+    if (/^>\s?/.test(line)) {
       flushParagraph(); flushList();
-      blocks.push(<blockquote key={`q-${blocks.length}`}>{formatInline(line.replace(/^>\\s?/, ""))}</blockquote>);
+      blocks.push(<blockquote key={"q-" + blocks.length}>{formatInline(line.replace(/^>\s?/, ""))}</blockquote>);
       return;
     }
     flushList();
-    paragraph.push(line.replace(/\\s{2,}/g, " "));
+    paragraph.push(line.replace(/\s{2,}/g, " "));
   });
   flushParagraph(); flushList(); flushTable();
   return <div className="lesson-markdown">{blocks}</div>;
