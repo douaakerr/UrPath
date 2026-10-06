@@ -80,13 +80,13 @@ function Dashboard() {
   const { overallProgress, currentMilestone } = getStats();
   const milestones = roadmap?.milestones || [];
 
-  // const nextTask = useMemo(() => {
-  //   for (const milestone of milestones) {
-  //     const task = (milestone.tasks || []).find((item) => !item.completed);
-  //     if (task) return { ...task, weekNumber: milestone.weekNumber };
-  //   }
-  //   return null;
-  // }, [milestones]);
+  const nextTask = (() => {
+    for (const milestone of milestones) {
+      const task = (milestone.tasks || []).find((item) => !item.completed);
+      if (task) return { ...task, weekNumber: milestone.weekNumber };
+    }
+    return null;
+  })();
 
   const completed = milestones.filter((item) => item.status === "completed").length;
   const displayName = user?.name || user?.username || user?.firstName || "Learner";
@@ -208,22 +208,26 @@ function Dashboard() {
           <div className="panel-heading">
             <div>
               <span className="panel-kicker">NEXT STEP</span>
-              {/* <h2>{nextTask?.title || currentMilestone?.title || "Roadmap complete"}</h2> */}
+              <h2>{nextTask?.title || "Roadmap complete"}</h2>
             </div>
             <Target size={19} />
           </div>
 
-          {/* <div className="today-task today-task--active">
+          <div className="today-task today-task--active">
             <span className="task-dot" />
             <div>
               <small>{nextTask ? `WEEK ${nextTask.weekNumber || ""}` : "STATUS"}</small>
-              <strong>{nextTask?.title || currentMilestone?.title || "All roadmap tasks completed"}</strong>
-              <span>{nextTask?.description || currentMilestone?.progress || 0}{nextTask?.description ? "" : "% complete"}</span>
+              <strong>
+                {nextTask?.description || "You have completed every task in this path."}
+              </strong>
+              <span>
+                {nextTask ? "Continue your current learning path." : "Choose another path to keep learning."}
+              </span>
             </div>
-          </div> */}
+          </div>
 
           <button className="text-action" type="button" onClick={() => navigate("/roadmap")}>
-            View roadmap <ArrowRight size={14} />
+            {nextTask ? "Continue learning" : "View roadmap"} <ArrowRight size={14} />
           </button>
         </article>
       </section>
@@ -247,14 +251,14 @@ function Dashboard() {
             return (
               <button
                 type="button"
-                className="domain-progress-row"
+                className={`domain-progress-row${item.id === activeRoadmapId ? " is-active" : ""}`}
                 key={item.id}
                 onClick={() => setActiveRoadmap(item.id)}
                 title={`Open ${label}`}
               >
                 <span className="domain-progress-row__label">
                   <strong>{label}</strong>
-                  <small>{item.completedTasks}/{item.totalTasks} tasks</small>
+                  <small>{item.id === activeRoadmapId ? "ACTIVE PATH · " : ""}{item.completedTasks}/{item.totalTasks} tasks</small>
                 </span>
                 <span className="domain-progress-row__track">
                   <span style={{ width: `${item.progress}%` }} />
