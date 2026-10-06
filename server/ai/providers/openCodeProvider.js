@@ -7,7 +7,7 @@ const OPENCODE_PROVIDER =
   process.env.OPENCODE_PROVIDER || "opencode";
 
 const OPENCODE_MODEL =
-  process.env.OPENCODE_MODEL || "mimo-v2.5-free";
+  process.env.OPENCODE_MODEL || "mimo-v2.6-flash-free";
 
 export const generateWithOpenCode = async ({
   messages,

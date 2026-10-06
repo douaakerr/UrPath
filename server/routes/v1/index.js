@@ -677,6 +677,8 @@ import quizRoutes from "./quizRoutes.js";
 import roadmap from "./roadmapRoutes.js";
 import notification from "./notificationRoutes.js";
 import profile from "./profileRoutes.js";   
+import spotify from "./spotufyRoutes.js";
+import { spotifyCallback } from "../../controllers/spotifyController.js";
 
 const router = Router();
 
@@ -691,5 +693,6 @@ router.use("/quizzes", quizRoutes);
 router.use("/courses", courseRoutes);
 router.use("/notification",notification);
 router.use("/profile",profile);
+router.use("/spotify", spotify);
 
 export default router;

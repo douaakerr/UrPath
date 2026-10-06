@@ -43,6 +43,21 @@ const userSchema = new mongoose.Schema({
     default: null,
   },
 
+  spotifyAccessToken: {
+    type: String,
+    select: false,
+  },
+
+  spotifyRefreshToken: {
+    type: String,
+    select: false,
+  },
+
+  spotifyTokenExpiresAt: {
+    type: Date,
+    select: false,
+  },
+
   onboardingCompleted: {
     type: Boolean,
     default: false,

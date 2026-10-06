@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
-import crypto from "crypto";
 import { sendEmail } from "../utils/sendEmails.js";
 
 export const register = async (req, res) => {
@@ -51,7 +51,6 @@ export const register = async (req, res) => {
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    
 
     return res.status(201).json({
       message: "Registration successful",
@@ -127,37 +126,49 @@ export const login = async (req, res) => {
 };
 
 //logout
-export const logout = (req, res) => {
-  res.cookie("token", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
+export const logout = async (req, res) => {
+  try {
+    await User.updateOne(
+      { _id: req.user._id },
+      {
+        $unset: {
+          spotifyAccessToken: 1,
+          spotifyRefreshToken: 1,
+          spotifyTokenExpiresAt: 1,
+        },
+      },
+    );
 
-  return res.status(200).json({
-    message: "Logout successful",
-  });
-}; 
+    res.cookie("token", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
 
+    return res.status(200).json({
+      message: "Logout successful",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+
+    return res.status(500).json({
+      message: "Logout failed",
+    });
+  }
+};
 
 export const changePassword = async (req, res) => {
   try {
-
-    const {
-      oldPassword,
-      newPassword,
-    } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword || !newPassword) {
       return res.status(400).json({
-        message:
-          "Old and new passwords are required",
+        message: "Old and new passwords are required",
       });
     }
 
     if (newPassword.length < 8) {
       return res.status(400).json({
-        message:
-          "New password must be at least 8 characters long",
+        message: "New password must be at least 8 characters long",
       });
     }
 
@@ -169,10 +180,7 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    const isMatch = await bcrypt.compare(
-      oldPassword,
-      user.password
-    );
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -180,27 +188,20 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    user.password = await bcrypt.hash(
-      newPassword,
-      12
-    );
+    user.password = await bcrypt.hash(newPassword, 12);
 
     await user.save();
 
     res.status(200).json({
       message: "Password changed successfully",
     });
-
   } catch (error) {
-
     res.status(500).json({
       message: "Error changing password",
       error: error.message,
     });
-
   }
 };
-
 
 // FORGOT PASSWORD
 export const forgotPassword = async (req, res) => {
@@ -219,7 +220,6 @@ export const forgotPassword = async (req, res) => {
       email: normalizedEmail,
     });
 
-   
     if (!user) {
       return res.status(200).json({
         message:
@@ -227,24 +227,18 @@ export const forgotPassword = async (req, res) => {
       });
     }
 
-
     const resetToken = crypto.randomBytes(32).toString("hex");
 
-    
     const hashedToken = crypto
       .createHash("sha256")
       .update(resetToken)
       .digest("hex");
 
-    
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpires = new Date(
-      Date.now() + 15 * 60 * 1000
-    );
+    user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000);
 
     await user.save();
 
-    
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
     await sendEmail({
@@ -294,10 +288,8 @@ export const forgotPassword = async (req, res) => {
     });
 
     return res.status(200).json({
-      message:
-        " A password reset link has been sent.",
+      message: " A password reset link has been sent.",
     });
-
   } catch (error) {
     console.error("Forgot password error:", error);
 
@@ -306,7 +298,6 @@ export const forgotPassword = async (req, res) => {
     });
   }
 };
-
 
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
@@ -332,11 +323,7 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    
-    const hashedToken = crypto
-      .createHash("sha256")
-      .update(token)
-      .digest("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
@@ -351,11 +338,7 @@ export const resetPassword = async (req, res) => {
       });
     }
 
-    
-    const hashedPassword = await bcrypt.hash(
-      newPassword,
-      12
-    );
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
 
     user.password = hashedPassword;
 
@@ -367,11 +350,9 @@ export const resetPassword = async (req, res) => {
     return res.status(200).json({
       message: "Password reset successfully",
     });
-
   } catch (error) {
     console.error("Reset password error:", error);
 
-    
     return res.status(500).json({
       message: "Failed to reset password",
     });

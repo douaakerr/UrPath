@@ -1,6 +1,6 @@
 import { Router } from "express";
-import passport from "passport";
 import rateLimit from "express-rate-limit";
+import passport from "passport";
 
 import {
   changePassword,
@@ -35,38 +35,26 @@ const authLimiter = rateLimit({
   },
 });
 
-router.post(
-  "/register",
-  authLimiter,
-  registerValidator,
-  validate,
-  register
-);
+router.post("/register", authLimiter, registerValidator, validate, register);
 
-router.post(
-  "/login",
-  authLimiter,
-  loginValidator,
-  validate,
-  login
-);
+router.post("/login", authLimiter, loginValidator, validate, login);
 
 router.put(
   "/change-password",
   authCheck,
   changePasswordValidator,
   validate,
-  changePassword
+  changePassword,
 );
 
-router.post("/logout", logout);
+router.post("/logout", authCheck, logout);
 
 router.post(
   "/forgot-password",
   authLimiter,
   forgotPasswordValidator,
   validate,
-  forgotPassword
+  forgotPassword,
 );
 
 router.post(
@@ -74,7 +62,7 @@ router.post(
   authLimiter,
   resetPasswordValidator,
   validate,
-  resetPassword
+  resetPassword,
 );
 
 router.get("/me", authCheck, getMe);
@@ -83,7 +71,7 @@ router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-  })
+  }),
 );
 
 router.get(
@@ -92,7 +80,7 @@ router.get(
     session: false,
     failureRedirect: `${process.env.FRONTEND_URL}/login?oauth=failed`,
   }),
-  googleCallback
+  googleCallback,
 );
 
 export default router;

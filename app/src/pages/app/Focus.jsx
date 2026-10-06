@@ -1,156 +1,569 @@
-import { useEffect, useMemo, useState } from "react";
-import { Clock3, Headphones, Music2, Pause, Play, RotateCcw, SkipBack, SkipForward, Timer } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+
+import {
+  ChevronRight,
+  Leaf,
+  Music2,
+  Pause,
+  Play,
+  RotateCcw,
+  Shuffle,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
+
 import "../../style/focus.css";
 
-const presets = [
-  { label: "25 min", minutes: 25 },
-  { label: "50 min", minutes: 50 },
-  { label: "90 min", minutes: 90 },
+import forestWind from "../../assets/video/forest_wind.mp4";
+
+// OPTIONAL:
+// Add your own music file here:
+//
+// import studyMusic from "../../assets/audio/study-music.mp3";
+
+const musicOptions = [
+  {
+    name: "Spotify",
+    icon: "spotify",
+  },
+  {
+    name: "Apple Music",
+    icon: "apple",
+  },
+  {
+    name: "Local Music",
+    icon: "music",
+  },
+  {
+    name: "No Music",
+    icon: "mute",
+  },
 ];
 
-const providers = [
-  { id: "spotify", name: "Spotify", description: "Connect your playlists and keep your study music in one place.", className: "focus-provider--spotify" },
-  { id: "apple", name: "Apple Music", description: "Use your Apple Music library while you focus.", className: "focus-provider--apple" },
-];
+function MusicIcon({ type }) {
+  if (type === "mute") {
+    return <VolumeX size={18} />;
+  }
 
-function formatTime(seconds) {
-  const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
-  const remaining = (seconds % 60).toString().padStart(2, "0");
-  return minutes + ":" + remaining;
+  if (type === "music") {
+    return <Music2 size={18} />;
+  }
+
+  if (type === "spotify") {
+    return (
+      <div className="music-brand spotify-brand">
+        <span />
+      </div>
+    );
+  }
+
+  if (type === "apple") {
+    return <div className="music-brand apple-brand">●</div>;
+  }
+
+  return <Music2 size={18} />;
 }
 
-function Focus() {
+export default function FocusPage() {
+  const navigate = useNavigate();
+
+  
+   
+
   const [duration, setDuration] = useState(25 * 60);
-  const [secondsLeft, setSecondsLeft] = useState(25 * 60);
-  const [running, setRunning] = useState(false);
-  const [provider, setProvider] = useState("none");
-  const [connectedProvider, setConnectedProvider] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+
+ 
+  const [selectedMusic, setSelectedMusic] = useState("No Music");
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const audioRef = useRef(null);
+
+  
 
   useEffect(() => {
-    if (!running) return undefined;
-    const interval = window.setInterval(() => {
-      setSecondsLeft((current) => {
+    if (!isRunning) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft((current) => {
         if (current <= 1) {
-          window.clearInterval(interval);
-          setRunning(false);
+          setIsRunning(false);
           return 0;
         }
+
         return current - 1;
       });
     }, 1000);
-    return () => window.clearInterval(interval);
-  }, [running]);
 
-  const progress = useMemo(() => ((duration - secondsLeft) / duration) * 100, [duration, secondsLeft]);
+    return () => clearInterval(timer);
+  }, [isRunning]);
 
-  const choosePreset = (minutes) => {
-    setRunning(false);
-    setDuration(minutes * 60);
-    setSecondsLeft(minutes * 60);
+  
+
+  useEffect(() => {
+    if (!audioRef.current) {
+      return;
+    }
+
+    audioRef.current.volume = isMuted ? 0 : 1;
+  }, [isMuted]);
+
+  
+
+  const selectDuration = (minutes) => {
+    const seconds = minutes * 60;
+
+    setDuration(seconds);
+    setTimeLeft(seconds);
+    setIsRunning(false);
   };
 
   const resetTimer = () => {
-    setRunning(false);
-    setSecondsLeft(duration);
+    setTimeLeft(duration);
+    setIsRunning(false);
   };
 
-  const connectProvider = (id) => {
-    setProvider(id);
-    setConnectedProvider(id);
+  const toggleTimer = () => {
+    if (timeLeft === 0) {
+      setTimeLeft(duration);
+    }
+
+    setIsRunning((current) => !current);
   };
+
+  /*
+   * ==========================================
+   * TIMER PROGRESS
+   * ==========================================
+   */
+
+  const progress = duration > 0 ? ((duration - timeLeft) / duration) * 100 : 0;
+
+  /*
+   * ==========================================
+   * TIMER COLOR
+   *
+   * Purple at the beginning
+   * Brighter purple in the middle
+   * Pink/purple near completion
+   * ==========================================
+   */
+
+  const timerColor =
+    progress < 30 ? "#a78bfa" : progress < 70 ? "#c084fc" : "#e879f9";
+
+  /*
+   * ==========================================
+   * TIMER DOT POSITION
+   * ==========================================
+   */
+
+  const radius = 94;
+
+  const center = 110;
+
+  const angle = -90 + (progress / 100) * 360;
+
+  const angleInRadians = (angle * Math.PI) / 180;
+
+  const dotX = center + radius * Math.cos(angleInRadians);
+
+  const dotY = center + radius * Math.sin(angleInRadians);
+
+  /*
+   * ==========================================
+   * FORMAT TIMER
+   * ==========================================
+   */
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+
+    const secs = seconds % 60;
+
+    return `${String(minutes).padStart(
+      2,
+      "0",
+    )}:${String(secs).padStart(2, "0")}`;
+  };
+
+const connectSpotify = () => {
+  window.location.assign(
+     "http://127.0.0.1:5000/api/v1/spotify/login"
+  );
+};
+
+  const toggleMusic = async () => {
+   
+    if (selectedMusic === "No Music") {
+      return;
+    }
+
+    
+
+    if (audioRef.current) {
+      try {
+        if (isMusicPlaying) {
+          audioRef.current.pause();
+
+          setIsMusicPlaying(false);
+        } else {
+          await audioRef.current.play();
+
+          setIsMusicPlaying(true);
+        }
+      } catch (error) {
+        console.error("Unable to play music:", error);
+      }
+
+      return;
+    }
+
+   
+
+    setIsMusicPlaying((current) => !current);
+  };
+
+  const stopMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+
+      audioRef.current.currentTime = 0;
+    }
+
+    setIsMusicPlaying(false);
+  };
+
+  const selectMusic = (name) => {
+  
+  if (name === "Spotify") {
+    connectSpotify();
+    return;
+  }
+
+  setSelectedMusic(name);
+
+  if (name === "No Music") {
+    stopMusic();
+    return;
+  }
+
+  
+  if (name === "Apple Music") {
+    stopMusic();
+  }
+};
+
+  
 
   return (
-    <section className="focus-page">
-      <header className="focus-page__header">
-        <div>
-          <span className="focus-page__eyebrow">Focus Mode</span>
-          <h1>Make time for the work that matters.</h1>
-          <p>Set a session, choose your music, and stay in your flow.</p>
-        </div>
-        <div className="focus-page__status">
-          <span className={running ? "focus-status-dot focus-status-dot--active" : "focus-status-dot"} />
-          {running ? "Session active" : "Ready to focus"}
+    <main className="focus-page">
+     
+
+      <video
+        className="background-video"
+        src={forestWind}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+
+      <div className="video-overlay" />
+
+      {/* ======================================
+          OPTIONAL LOCAL AUDIO
+
+          When you have an MP3:
+
+          1. Import it:
+             import studyMusic from
+             "../../assets/audio/study-music.mp3";
+
+          2. Uncomment this:
+      ====================================== */}
+
+      {/*
+      <audio
+        ref={audioRef}
+        src={studyMusic}
+        loop
+      />
+      */}
+
+      {/* ======================================
+          TOP BAR
+      ====================================== */}
+
+      <header className="topbar">
+        <button
+          type="button"
+          className="brand brand-button"
+          onClick={() => navigate("/dashboard")}
+          aria-label="Go to dashboard"
+        >
+          <span>UrPath</span>
+        </button>
+
+        <div className="top-focus">
+          <Leaf size={15} />
+
+          <span>Focus Mode</span>
         </div>
       </header>
 
-      <div className="focus-grid">
-        <section className="focus-card focus-card--timer">
-          <div className="focus-card__topline">
-            <div className="focus-card__icon"><Timer size={19} /></div>
-            <div><span>Study session</span><strong>{running ? "In progress" : "Choose your pace"}</strong></div>
+      {/* ======================================
+          MAIN CONTENT
+      ====================================== */}
+
+      <section className="content">
+        {/* ====================================
+            FOCUS / TIMER
+        ==================================== */}
+
+        <div className="focus-section">
+          <div className="section-heading">
+            <div className="heading-title">
+              <Leaf size={18} />
+
+              <span>Focus Mode</span>
+            </div>
+
+            <p>Stay focused. Build your path.</p>
           </div>
 
-          <div className="focus-timer">
-            <div className="focus-timer__ring" style={{ "--focus-progress": progress + "%" }}>
-              <div className="focus-timer__inner">
-                <span>{formatTime(secondsLeft)}</span>
-                <small>{secondsLeft === 0 ? "Complete" : running ? "Focus" : "Minutes"}</small>
+          {/* TIMER */}
+          <div className="timer-wrapper">
+            <svg className="progress-ring" viewBox="0 0 220 220">
+              {/* Background ring */}
+              <circle
+                className="progress-background"
+                cx="110"
+                cy="110"
+                r="94"
+              />
+
+              {/* Progress ring */}
+              <circle
+                className="progress-circle"
+                cx="110"
+                cy="110"
+                r="94"
+                style={{
+                  strokeDashoffset: 590 - (590 * progress) / 100,
+                  stroke: timerColor,
+                }}
+              />
+
+              {/* Moving dot */}
+              <circle
+                className="progress-dot"
+                cx={dotX}
+                cy={dotY}
+                r="5"
+                style={{
+                  fill: timerColor,
+                }}
+              />
+            </svg>
+
+            {/* Timer content */}
+            <div className="timer-content">
+              <Leaf
+                size={20}
+                className="timer-leaf"
+                style={{
+                  color: timerColor,
+                }}
+              />
+
+              <div className="timer-value">{formatTime(timeLeft)}</div>
+
+              <div className="timer-label">
+                {isRunning
+                  ? "Focus in progress"
+                  : timeLeft === 0
+                    ? "Session complete"
+                    : "Focus Time"}
               </div>
             </div>
           </div>
 
-          <div className="focus-presets">
-            {presets.map((preset) => (
+          {/* DURATION */}
+          <div className="duration-buttons">
+            {[25, 50, 90].map((minutes) => (
               <button
-                key={preset.minutes}
                 type="button"
-                className={duration === preset.minutes * 60 ? "focus-preset focus-preset--active" : "focus-preset"}
-                onClick={() => choosePreset(preset.minutes)}
+                key={minutes}
+                className={`duration-btn ${
+                  duration === minutes * 60 ? "active" : ""
+                }`}
+                onClick={() => selectDuration(minutes)}
               >
-                {preset.label}
+                {minutes} min
               </button>
             ))}
           </div>
 
-          <div className="focus-timer__actions">
-            <button type="button" className="focus-button focus-button--secondary" onClick={resetTimer}><RotateCcw size={17} />Reset</button>
-            <button type="button" className="focus-button focus-button--primary" onClick={() => setRunning((value) => !value)} disabled={secondsLeft === 0}>
-              {running ? <Pause size={18} /> : <Play size={18} />}
-              {running ? "Pause" : "Start focus"}
+          {/* TIMER ACTIONS */}
+          <div className="timer-actions">
+            <button type="button" className="reset-btn" onClick={resetTimer}>
+              <RotateCcw size={18} />
+
+              <span>Reset</span>
+            </button>
+
+            <button type="button" className="start-btn" onClick={toggleTimer}>
+              {isRunning ? (
+                <>
+                  <Pause size={18} fill="currentColor" />
+
+                  <span>Pause Focus</span>
+                </>
+              ) : (
+                <>
+                  <Play size={18} fill="currentColor" />
+
+                  <span>Start Focus</span>
+                </>
+              )}
             </button>
           </div>
-        </section>
+        </div>
 
-        <section className="focus-card focus-card--music">
-          <div className="focus-card__topline">
-            <div className="focus-card__icon focus-card__icon--music"><Headphones size={19} /></div>
-            <div><span>Study music</span><strong>{connectedProvider ? (connectedProvider === "spotify" ? "Spotify connected" : "Apple Music connected") : "Choose your source"}</strong></div>
+        {/* ====================================
+            MUSIC
+        ==================================== */}
+
+        <div className="music-section">
+          <div className="section-heading music-heading">
+            <div className="heading-title">
+              <Music2 size={18} />
+
+              <span>Study Music</span>
+            </div>
+
+            <p>Choose your sound, find your flow.</p>
           </div>
 
-          <div className="focus-music-now">
-            <div className="focus-music-art"><Music2 size={28} /></div>
-            <div>
-              <strong>{provider === "none" ? "No music selected" : "Your study playlist"}</strong>
-              <span>{provider === "none" ? "Your timer works without music." : "Ready when you are."}</span>
+          {/* CURRENT TRACK */}
+          <div className="track-card">
+            <div className="track-image">
+              <div className="track-image-gradient">
+                <Leaf size={28} />
+              </div>
+            </div>
+
+            <div className="track-info">
+              <strong>
+                {selectedMusic === "No Music"
+                  ? "No Music"
+                  : "Lo-fi Study Vibes"}
+              </strong>
+
+              <span>
+                {selectedMusic === "No Music"
+                  ? "Music disabled"
+                  : "Chill Beats"}
+              </span>
             </div>
           </div>
 
-          <div className="focus-player">
-            <button type="button" aria-label="Previous track"><SkipBack size={17} /></button>
-            <button type="button" className="focus-player__play" aria-label="Play music"><Play size={18} /></button>
-            <button type="button" aria-label="Next track"><SkipForward size={17} /></button>
+          {/* MUSIC PROGRESS */}
+          <div className="music-progress">
+            <div className="music-progress-bar">
+              <div
+                className={`music-progress-value ${
+                  isMusicPlaying ? "playing" : ""
+                }`}
+              />
+            </div>
+
+            <div className="music-times">
+              <span>1:24</span>
+
+              <span>3:42</span>
+            </div>
           </div>
 
-          <div className="focus-providers">
-            {providers.map((item) => (
-              <button key={item.id} type="button" className={"focus-provider " + item.className + (provider === item.id ? " focus-provider--selected" : "")} onClick={() => connectProvider(item.id)}>
-                <span className="focus-provider__brand">{item.id === "spotify" ? "S" : "♪"}</span>
-                <span><strong>{item.name}</strong><small>{item.description}</small></span>
-                <span className="focus-provider__action">{connectedProvider === item.id ? "Connected" : "Connect"}</span>
+          {/* MUSIC CONTROLS */}
+          <div className="music-controls">
+            {/* Shuffle */}
+            <button type="button" title="Shuffle">
+              <Shuffle size={16} />
+            </button>
+
+            {/* Previous */}
+            <button type="button" title="Previous" onClick={stopMusic}>
+              <SkipBack size={19} fill="currentColor" />
+            </button>
+
+            {/* Play / Pause */}
+            <button
+              type="button"
+              className="play-circle"
+              onClick={toggleMusic}
+              disabled={selectedMusic === "No Music"}
+              title={
+                selectedMusic === "No Music"
+                  ? "Select music first"
+                  : isMusicPlaying
+                    ? "Pause music"
+                    : "Play music"
+              }
+            >
+              {isMusicPlaying ? (
+                <Pause size={20} fill="currentColor" />
+              ) : (
+                <Play size={20} fill="currentColor" />
+              )}
+            </button>
+
+            {/* Next */}
+            <button type="button" title="Next" onClick={stopMusic}>
+              <SkipForward size={19} fill="currentColor" />
+            </button>
+
+            {/* Mute */}
+            <button
+              type="button"
+              title={isMuted ? "Unmute" : "Mute"}
+              onClick={() => setIsMuted((current) => !current)}
+            >
+              {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
+            </button>
+          </div>
+
+          {/* MUSIC PROVIDERS */}
+          <div className="music-providers">
+            {musicOptions.map((option) => (
+              <button
+                type="button"
+                key={option.name}
+                className={`provider ${
+                  selectedMusic === option.name ? "selected" : ""
+                }`}
+                onClick={() => selectMusic(option.name)}
+              >
+                <div className="provider-left">
+                  <MusicIcon type={option.icon} />
+
+                  <span>{option.name}</span>
+                </div>
+
+                <ChevronRight size={17} />
               </button>
             ))}
           </div>
-
-          <button type="button" className={"focus-provider focus-provider--none" + (provider === "none" ? " focus-provider--selected" : "")} onClick={() => { setProvider("none"); setConnectedProvider(null); }}>
-            <span className="focus-provider__brand"><Clock3 size={17} /></span>
-            <span><strong>No music</strong><small>Keep Focus Mode completely distraction-free.</small></span>
-          </button>
-        </section>
-      </div>
-
-      <div className="focus-note"><span>♪</span><p>Music connections are optional. Focus Mode stays independent from Spotify or Apple Music.</p></div>
-    </section>
+        </div>
+      </section>
+    </main>
   );
 }
-
-export default Focus;

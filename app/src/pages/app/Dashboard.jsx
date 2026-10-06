@@ -11,7 +11,7 @@ import {
   Plus,
   ChevronDown,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect,  useState } from "react";
 import { useNavigate } from "react-router";
 import { getCurrentUser } from "../../services/authService";
 import { useRoadmapStore } from "../../stores/roadmapStore";
@@ -69,13 +69,13 @@ function Dashboard() {
   const { overallProgress, currentMilestone } = getStats();
   const milestones = roadmap?.milestones || [];
 
-  const nextTask = useMemo(() => {
-    for (const milestone of milestones) {
-      const task = (milestone.tasks || []).find((item) => !item.completed);
-      if (task) return { ...task, weekNumber: milestone.weekNumber };
-    }
-    return null;
-  }, [milestones]);
+  // const nextTask = useMemo(() => {
+  //   for (const milestone of milestones) {
+  //     const task = (milestone.tasks || []).find((item) => !item.completed);
+  //     if (task) return { ...task, weekNumber: milestone.weekNumber };
+  //   }
+  //   return null;
+  // }, [milestones]);
 
   const completed = milestones.filter((item) => item.status === "completed").length;
   const displayName = user?.name || user?.username || user?.firstName || "Learner";
@@ -174,19 +174,19 @@ function Dashboard() {
           <div className="panel-heading">
             <div>
               <span className="panel-kicker">NEXT STEP</span>
-              <h2>{nextTask?.title || currentMilestone?.title || "Roadmap complete"}</h2>
+              {/* <h2>{nextTask?.title || currentMilestone?.title || "Roadmap complete"}</h2> */}
             </div>
             <Target size={19} />
           </div>
 
-          <div className="today-task today-task--active">
+          {/* <div className="today-task today-task--active">
             <span className="task-dot" />
             <div>
               <small>{nextTask ? `WEEK ${nextTask.weekNumber || ""}` : "STATUS"}</small>
               <strong>{nextTask?.title || currentMilestone?.title || "All roadmap tasks completed"}</strong>
               <span>{nextTask?.description || currentMilestone?.progress || 0}{nextTask?.description ? "" : "% complete"}</span>
             </div>
-          </div>
+          </div> */}
 
           <button className="text-action" type="button" onClick={() => navigate("/roadmap")}>
             View roadmap <ArrowRight size={14} />
