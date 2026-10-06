@@ -308,44 +308,46 @@ function Dashboard() {
                 <span />
                 <span />
               </div>
-              <div className="progress-graph__line" aria-hidden="true">
-                {(() => {
-                  let completedBefore = 0;
-                  const totalTasks = milestones.reduce(
-                    (sum, milestone) => sum + (milestone.tasks?.length || 0),
-                    0,
-                  );
+              {(() => {
+                let completedBefore = 0;
+                const totalTasks = milestones.reduce(
+                  (sum, milestone) => sum + (milestone.tasks?.length || 0),
+                  0,
+                );
+                const points = milestones.map((milestone, index) => {
+                  const weekTasks = milestone.tasks || [];
+                  completedBefore += weekTasks.filter((task) => task.completed).length;
+                  const percentage = totalTasks
+                    ? Math.round((completedBefore / totalTasks) * 100)
+                    : 0;
+                  const x = milestones.length === 1
+                    ? 50
+                    : (index / (milestones.length - 1)) * 100;
+                  const y = 100 - percentage;
+                  return { x, y, percentage, week: milestone.weekNumber };
+                });
+                const polyline = points.map((point) => `${point.x},${point.y}`).join(" ");
 
-                  return milestones.map((milestone, index) => {
-                    const weekTasks = milestone.tasks || [];
-                    const weekCompleted = weekTasks.filter((task) => task.completed).length;
-                    completedBefore += weekCompleted;
-                    const percentage = totalTasks
-                      ? Math.round((completedBefore / totalTasks) * 100)
-                      : 0;
-                    const left = milestones.length === 1
-                      ? 50
-                      : (index / (milestones.length - 1)) * 100;
-                    const top = 100 - percentage;
-
-                    return (
-                      <span
-                        key={milestone.id}
-                        className="progress-graph__point"
-                        style={{ left: `${left}%`, top: `${top}%` }}
-                        title={`Week ${milestone.weekNumber}: ${percentage}%`}
+                return (
+                  <svg className="progress-graph__svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline points={polyline} />
+                    {points.map((point) => (
+                      <circle
+                        key={point.week}
+                        cx={point.x}
+                        cy={point.y}
+                        r="1.7"
                       />
-                    );
-                  });
-                })()}
-              </div>
+                    ))}
+                  </svg>
+                );
+              })()}
               <div className="progress-graph__labels">
                 {milestones.map((milestone) => (
                   <span key={milestone.id}>W{milestone.weekNumber}</span>
                 ))}
               </div>
             </div>
-
             <div className="progress-graph__footer">
               <span>Start</span>
               <strong>Week by week</strong>
