@@ -1186,28 +1186,27 @@
 .progress-graph__line {
   position: absolute;
   inset: 8px 4px 28px;
-  border-bottom: 1px solid transparent;
 }
-.progress-graph__point {
+.progress-graph__svg {
   position: absolute;
-  width: 8px;
-  height: 8px;
-  transform: translate(-50%, -50%);
-  border: 2px solid var(--bg-elevated);
-  border-radius: 50%;
-  background: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(92, 169, 255, .10);
+  inset: 8px 4px 28px;
+  width: calc(100% - 8px);
+  height: calc(100% - 36px);
+  overflow: visible;
 }
-.progress-graph__point::before {
-  content: "";
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  width: 1px;
-  height: 500px;
-  transform: translateY(100%);
-  background: var(--border);
-  opacity: .35;
+.progress-graph__svg polyline {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.progress-graph__svg circle {
+  fill: var(--color-primary);
+  stroke: var(--bg-elevated);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
 }
 .progress-graph__labels {
   position: absolute;
