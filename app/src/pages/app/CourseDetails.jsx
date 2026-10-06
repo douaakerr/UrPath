@@ -51,6 +51,7 @@ function LessonMarkdown({ content = "" }) {
   const normalized = String(content)
     .replace(/\\([#*_<>])/g, "$1")
     .replace(/\\n/g, "\n")
+    .replace(/[ \t]{2,}(?=\S)/g, "\n")
     .replace(/<details[^>]*>/gi, "")
     .replace(/<summary[^>]*>/gi, "")
     .replace(/<\/summary>/gi, "")
