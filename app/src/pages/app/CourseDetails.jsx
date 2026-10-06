@@ -214,7 +214,55 @@ function CourseDetails() {
     }
   };
 
+  const askAI = async (text) => {
+    const message = String(text || "").trim();
+    if (!message || !activeLesson || aiLoading) return;
+
+    setAiMessages((current) => [
+      ...current,
+      { role: "user", text: message },
+    ]);
+    setAiMessage("");
+    setAiLoading(true);
+    setAiError("");
+
+    try {
+      const response = await sendLearningChat({
+        domain: course.domain,
+        subdomain: course.subdomain,
+        goal: course.title,
+        level: course.level,
+        courseTitle: course.title,
+        lessonTitle: activeLesson.title,
+        lessonContent: activeLesson.content,
+        message,
+      });
+
+      setAiMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          text:
+            response?.answer ||
+            "I couldn't generate an answer.",
+        },
+      ]);
+    } catch (err) {
+      setAiError(
+        err.response?.data?.message ||
+          "Unable to reach UrPath AI.",
+      );
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const handleAskAI = async (event) => {
+    event.preventDefault();
+    const message = aiMessage.trim();
+    if (!message || !activeLesson || aiLoading) return;
+    await askAI(message);
+  };
     event.preventDefault();
 
     const message = aiMessage.trim();
@@ -470,10 +518,10 @@ function CourseDetails() {
               <section className="lesson-section lesson-recommendations">
                 <div className="lesson-section__title">
                   <Youtube size={18} />
-                  Keep learning
+                  Recommended next
                 </div>
                 <p className="lesson-recommendations__intro">
-                  Explore videos and trusted learning material related to this lesson.
+                  These searches are generated from the actual course and lesson. Open them when you want a second explanation or a different teaching style.
                 </p>
                 <div className="lesson-recommendations__grid">
                   <a
@@ -483,7 +531,7 @@ function CourseDetails() {
                     rel="noreferrer"
                   >
                     <span className="lesson-recommendation__icon"><Youtube size={19} /></span>
-                    <span><strong>Find a lesson video</strong><small>YouTube search for this topic</small></span>
+                    <span><strong>Watch a lesson video</strong><small>YouTube search based on this course and lesson</small></span>
                     <ExternalLink size={14} />
                   </a>
                   <a
@@ -493,9 +541,12 @@ function CourseDetails() {
                     rel="noreferrer"
                   >
                     <span className="lesson-recommendation__icon"><FileText size={18} /></span>
-                    <span><strong>Read another explanation</strong><small>Find documentation and written guides</small></span>
+                    <span><strong>Read another explanation</strong><small>Search for documentation and written guides</small></span>
                     <ExternalLink size={14} />
                   </a>
+                </div>
+                <div className="lesson-recommendations__note">
+                  <strong>Tip:</strong> Prefer official documentation, university courses, or established educational channels when choosing an external resource.
                 </div>
               </section>
 
@@ -513,6 +564,24 @@ function CourseDetails() {
                   <div className="course-ai-panel__header">
                     <span>LEARNING ASSISTANT</span>
                     <h3>Ask about {activeLesson.title}</h3>
+                  </div>
+
+                  <div className="course-ai-prompts">
+                    {[
+                      "Explain this simply",
+                      "Give me a practical example",
+                      "Quiz me on this lesson",
+                      "What should I remember?",
+                    ].map((prompt) => (
+                      <button
+                        type="button"
+                        key={prompt}
+                        disabled={aiLoading}
+                        onClick={() => askAI(prompt)}
+                      >
+                        {prompt}
+                      </button>
+                    ))}
                   </div>
 
                   <div className="course-ai-panel__messages">
