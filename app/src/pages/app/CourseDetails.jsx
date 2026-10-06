@@ -7,7 +7,7 @@ import {
   FileText,
   MessageCircle,
   PlayCircle,
-  Youtube,
+  Video,
   Send,
   Target,
 } from "lucide-react";
@@ -469,7 +469,7 @@ function CourseDetails() {
 
               <section className="lesson-section lesson-recommendations">
                 <div className="lesson-section__title">
-                  <Youtube size={18} />
+                  <Video size={18} />
                   Keep learning
                 </div>
                 <p className="lesson-recommendations__intro">
@@ -482,7 +482,7 @@ function CourseDetails() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span className="lesson-recommendation__icon"><Youtube size={19} /></span>
+                    <span className="lesson-recommendation__icon"><Video size={19} /></span>
                     <span><strong>Find a lesson video</strong><small>YouTube search for this topic</small></span>
                     <ExternalLink size={14} />
                   </a>
