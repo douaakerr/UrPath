@@ -17,6 +17,7 @@ import {
   getCourseProgress,
 } from "../../services/courseService";
 import { sendLearningChat } from "../../services/aiService";
+import { useRoadmapStore } from "../../stores/roadmapStore";
 import "../../style/courses.css";
 
 function unwrap(response, key) {
@@ -25,6 +26,7 @@ function unwrap(response, key) {
 
 function CourseDetails() {
   const { courseId } = useParams();
+  const fetchRoadmaps = useRoadmapStore((state) => state.fetchRoadmaps);
   const [course, setCourse] = useState(null);
   const [progress, setProgress] = useState(null);
   const [activeLessonId, setActiveLessonId] = useState(null);
@@ -109,6 +111,7 @@ function CourseDetails() {
     try {
       await completeLesson(courseId, activeLesson._id);
       await loadCourse();
+      await fetchRoadmaps();
     } catch (err) {
       setError(
         err.response?.data?.message ||
