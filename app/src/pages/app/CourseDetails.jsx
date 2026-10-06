@@ -263,50 +263,6 @@ function CourseDetails() {
     if (!message || !activeLesson || aiLoading) return;
     await askAI(message);
   };
-    event.preventDefault();
-
-    const message = aiMessage.trim();
-
-    if (!message || !activeLesson || aiLoading) return;
-
-    setAiMessages((current) => [
-      ...current,
-      { role: "user", text: message },
-    ]);
-    setAiMessage("");
-    setAiLoading(true);
-    setAiError("");
-
-    try {
-      const response = await sendLearningChat({
-        domain: course.domain,
-        subdomain: course.subdomain,
-        goal: course.title,
-        level: course.level,
-        courseTitle: course.title,
-        lessonTitle: activeLesson.title,
-        lessonContent: activeLesson.content,
-        message,
-      });
-
-      setAiMessages((current) => [
-        ...current,
-        {
-          role: "assistant",
-          text:
-            response?.answer ||
-            "I couldn't generate an answer.",
-        },
-      ]);
-    } catch (err) {
-      setAiError(
-        err.response?.data?.message ||
-          "Unable to reach UrPath AI.",
-      );
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   if (loading) {
     return (
