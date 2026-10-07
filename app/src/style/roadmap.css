@@ -24,3 +24,31 @@
 .roadmap-task__action{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg-surface);color:var(--text-primary);font-size:9px;font-weight:700;cursor:pointer}.roadmap-task__action:hover{border-color:var(--color-primary);color:var(--color-primary)}.roadmap-task__action:disabled{cursor:wait;opacity:.55}.roadmap-task__complete-icon{color:#39b38f}.roadmap-empty{min-height:300px;display:grid;place-items:center;align-content:center;gap:8px;text-align:center;border:1px dashed var(--border);border-radius:18px;color:var(--text-muted)}.roadmap-empty h2,.roadmap-empty p{margin:0}.roadmap-empty h2{color:var(--text-primary)}.roadmap-error{margin-bottom:14px;padding:11px 13px;border:1px solid rgba(213,109,124,.25);border-radius:10px;background:rgba(213,109,124,.06);color:#d56d7c;font-size:11px}
 @media(max-width:900px){.roadmap-summary{grid-template-columns:1fr}.roadmap-header{align-items:flex-start;flex-direction:column}}
 @media(max-width:700px){.roadmap-page{padding:24px 12px 40px}.roadmap-title-row{align-items:flex-start;flex-direction:column}.roadmap-selector{width:100%}.roadmap-summary__stats{grid-template-columns:1fr}.roadmap-week__header{grid-template-columns:40px minmax(0,1fr)}.roadmap-week__progress{grid-column:1/-1}.roadmap-week__progress strong{text-align:left}.roadmap-task{grid-template-columns:25px 34px minmax(0,1fr)}.roadmap-task__action{grid-column:3;justify-self:start;margin-top:3px}}
+
+/* Roadmap path */
+.roadmap-flow{height:680px;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:linear-gradient(180deg,rgba(92,169,255,.035),rgba(255,255,255,.5));}
+.roadmap-flow .react-flow__viewport{transition:none;}
+.roadmap-flow .react-flow__background pattern circle{fill:rgba(92,169,255,.16);}
+.roadmap-flow .react-flow__edge-path{stroke:#8db9df;stroke-width:2.2;}
+.roadmap-flow .react-flow__edge.animated .react-flow__edge-path{stroke:#5ca9ff;stroke-width:2.8;}
+.roadmap-flow .react-flow__arrowhead{fill:#8db9df;}
+.roadmap-flow .react-flow__controls{left:14px;bottom:14px;box-shadow:0 7px 20px rgba(24,72,120,.1);}
+.roadmap-flow .react-flow__controls-button{width:30px;height:30px;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-primary);fill:var(--text-primary);}
+.roadmap-node{position:relative;width:285px;min-height:142px;display:flex;gap:13px;padding:15px;text-align:left;border:1px solid #d8e6f2;border-radius:18px;background:var(--bg-surface);box-shadow:0 10px 28px rgba(24,72,120,.09);color:var(--text-primary);cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;}
+.roadmap-node:hover{transform:translateY(-3px);border-color:#91bce2;box-shadow:0 15px 34px rgba(24,72,120,.14);}
+.roadmap-node--current{border-color:#5ca9ff;box-shadow:0 12px 32px rgba(92,169,255,.16);}
+.roadmap-node--completed{border-color:#9bd6bd;}
+.roadmap-node__number{flex:0 0 39px;width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#e9f4ff;color:#397cae;font-size:11px;font-weight:850;}
+.roadmap-node--current .roadmap-node__number{background:#dceeff;color:#348ddd;}
+.roadmap-node--completed .roadmap-node__number{background:#e5f7ee;color:#31966d;}
+.roadmap-node__body{min-width:0;flex:1;}
+.roadmap-node__body>span{display:block;color:#7b91a7;font-size:8px;font-weight:850;letter-spacing:.13em;}
+.roadmap-node__body strong{display:block;margin-top:5px;font-size:15px;line-height:1.25;}
+.roadmap-node__topics{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.roadmap-node__topics em{padding:4px 6px;border:1px solid #dce8f2;border-radius:6px;background:#f7fbff;color:#6d8297;font-size:8px;font-style:normal;}
+.roadmap-node__footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;color:#6f8196;font-size:9px;font-weight:700;}
+.roadmap-node__footer svg{color:#5ca9ff;}
+.roadmap-handle{width:8px!important;height:8px!important;border:2px solid var(--bg-surface)!important;background:#78acd2!important;}
+.roadmap-node--current .roadmap-handle{background:#5ca9ff!important;}
+.roadmap-node--completed .roadmap-handle{background:#4caf7d!important;}
+@media(max-width:700px){.roadmap-flow{height:620px;}.roadmap-node{width:245px;min-height:130px;padding:13px;}.roadmap-flow .react-flow__controls{display:none;}}
