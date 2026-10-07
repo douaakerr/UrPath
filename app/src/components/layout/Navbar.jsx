@@ -5,7 +5,7 @@ import { getProfile } from "../../services/profileService";
 import { useThemeStore } from "../../stores/themeStore";
 import "../../style/navbar.css";
 
-function Navbar({ app = false }) {
+function Navbar({ app = false, onMenu }) {
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const [profilePhoto, setProfilePhoto] = useState("");
