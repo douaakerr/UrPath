@@ -74,8 +74,8 @@ function RoadmapFlow({
           id: String(milestone.id || `milestone-${index}`),
           type: "roadmap",
           position: {
-            x: index % 2 === 0 ? 80 : 390,
-            y: Math.floor(index / 2) * 235 + 30,
+            x: index % 2 === 0 ? 90 : 410,
+            y: index * 190 + 30,
           },
           data: {
             number: String(milestone.weekNumber || index + 1).padStart(2, "0"),
