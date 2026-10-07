@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import RoadmapFlow from "../../components/Roadmap/RoadmapFlow";
 import { getCourses, generateCourse } from "../../services/courseService";
+import { getQuizzes, generateQuiz } from "../../services/quizService";
 import { useRoadmapStore } from "../../stores/roadmapStore";
 import "../../style/roadmap.css";
 
@@ -69,16 +70,47 @@ function Roadmap() {
       return;
     }
 
-    if (task.type === "quiz") {
-      navigate("/quizzes");
-      return;
-    }
-
     if (!activeRoadmap?.id) return;
 
     setGeneratingTaskId(task._id);
 
     try {
+      if (task.type === "quiz") {
+        const quizzesResponse = await getQuizzes();
+        const quizzes =
+          quizzesResponse?.quizzes ||
+          quizzesResponse?.data?.quizzes ||
+          [];
+
+        const existingQuiz = quizzes.find(
+          (quiz) =>
+            String(quiz.taskId) === String(task._id) ||
+            String(quiz.task?._id) === String(task._id),
+        );
+
+        if (existingQuiz?._id) {
+          navigate(`/quizzes/${existingQuiz._id}`);
+          return;
+        }
+
+        const response = await generateQuiz({
+          roadmapId: activeRoadmap.id,
+          weekNumber: milestone.weekNumber,
+          taskId: task._id,
+        });
+
+        const generatedQuiz =
+          response?.quiz ||
+          response?.data?.quiz;
+
+        if (!generatedQuiz?._id) {
+          throw new Error("The generated quiz was not returned by the server.");
+        }
+
+        navigate(`/quizzes/${generatedQuiz._id}`);
+        return;
+      }
+
       const response = await generateCourse({
         roadmapId: activeRoadmap.id,
         weekNumber: milestone.weekNumber,
@@ -92,14 +124,27 @@ function Roadmap() {
       }
 
       setCourses((current) => {
-        const exists = current.some((item) => String(item._id) === String(generatedCourse._id));
+        const exists = current.some(
+          (item) => String(item._id) === String(generatedCourse._id),
+        );
         return exists ? current : [...current, generatedCourse];
       });
 
       navigate(`/courses/${generatedCourse._id}`);
     } catch (err) {
-      console.error("Course generation error:", err);
-      setCourseError(err.response?.data?.message || err.message || "Unable to generate this course.");
+      console.error(
+        task.type === "quiz"
+          ? "Quiz generation error:"
+          : "Course generation error:",
+        err,
+      );
+      setCourseError(
+        err.response?.data?.message ||
+          err.message ||
+          (task.type === "quiz"
+            ? "Unable to generate this quiz."
+            : "Unable to generate this course."),
+      );
     } finally {
       setGeneratingTaskId(null);
     }
