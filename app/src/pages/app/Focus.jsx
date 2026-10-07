@@ -13,6 +13,7 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
+  Upload,
 } from "lucide-react";
 
 import "../../style/focus.css";
@@ -81,8 +82,11 @@ export default function FocusPage() {
   const [selectedMusic, setSelectedMusic] = useState("No Music");
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [localMusicUrl, setLocalMusicUrl] = useState("");
+  const [localMusicName, setLocalMusicName] = useState("");
 
   const audioRef = useRef(null);
+  const localMusicInputRef = useRef(null);
 
   
 
@@ -113,7 +117,15 @@ export default function FocusPage() {
     }
 
     audioRef.current.volume = isMuted ? 0 : 1;
-  }, [isMuted]);
+  }, [isMuted, localMusicUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (localMusicUrl) {
+        URL.revokeObjectURL(localMusicUrl);
+      }
+    };
+  }, [localMusicUrl]);
 
   
 
@@ -239,6 +251,25 @@ const connectSpotify = () => {
     setIsMusicPlaying((current) => !current);
   };
 
+  const handleLocalMusic = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("audio/")) {
+      event.target.value = "";
+      return;
+    }
+
+    const nextUrl = URL.createObjectURL(file);
+    setLocalMusicUrl((currentUrl) => {
+      if (currentUrl) URL.revokeObjectURL(currentUrl);
+      return nextUrl;
+    });
+    setLocalMusicName(file.name);
+    setSelectedMusic("Local Music");
+    setIsMusicPlaying(false);
+  };
+
   const stopMusic = () => {
     if (audioRef.current) {
       audioRef.current.pause();
@@ -253,6 +284,11 @@ const connectSpotify = () => {
   
   if (name === "Spotify") {
     connectSpotify();
+    return;
+  }
+
+  if (name === "Local Music") {
+    localMusicInputRef.current?.click();
     return;
   }
 
@@ -285,6 +321,18 @@ const connectSpotify = () => {
       />
 
       <div className="video-overlay" />
+
+      {localMusicUrl && (
+        <audio ref={audioRef} src={localMusicUrl} loop preload="metadata" />
+      )}
+
+      <input
+        ref={localMusicInputRef}
+        type="file"
+        accept="audio/*"
+        className="local-music-input"
+        onChange={handleLocalMusic}
+      />
 
       {/* ======================================
           OPTIONAL LOCAL AUDIO
@@ -473,13 +521,17 @@ const connectSpotify = () => {
               <strong>
                 {selectedMusic === "No Music"
                   ? "No Music"
-                  : "Lo-fi Study Vibes"}
+                  : selectedMusic === "Local Music" && localMusicName
+                    ? localMusicName
+                    : "Spotify"}
               </strong>
 
               <span>
                 {selectedMusic === "No Music"
                   ? "Music disabled"
-                  : "Chill Beats"}
+                  : selectedMusic === "Local Music"
+                    ? "From your device"
+                    : "Spotify connected"}
               </span>
             </div>
           </div>
@@ -564,6 +616,7 @@ const connectSpotify = () => {
                   <MusicIcon type={option.icon} />
 
                   <span>{option.name}</span>
+                  {option.name === "Local Music" && <Upload size={15} />}
                 </div>
 
                 <ChevronRight size={17} />
