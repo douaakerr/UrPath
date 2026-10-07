@@ -113,19 +113,19 @@ function Progress() {
         <div className="progress-chart">
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={chartData} margin={{ top: 10, right: 8, left: -18, bottom: 0 }}>
-              <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
-              <XAxis dataKey="name" tick={{ fill: "var(--chart-muted)", fontSize: 11 }} axisLine={false} tickLine={false} />
+              <CartesianGrid stroke="#dce8f5" vertical={false} />
+              <XAxis dataKey="name" tick={{ fill: "#6f8196", fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis allowDecimals={false} tick={{ fill: "var(--chart-muted)", fontSize: 10 }} axisLine={false} tickLine={false} />
               <Tooltip
-                cursor={{ fill: "var(--chart-hover)" }}
+                cursor={{ fill: "#e8f3ff" }}
                 contentStyle={{
-                  background: "var(--chart-tooltip-bg)",
+                  background: "#ffffff",
                   border: "1px solid var(--border)",
                   borderRadius: 10,
                   color: "var(--text-primary)",
                 }}
               />
-              <Bar dataKey="value" fill="var(--chart-primary)" radius={[5, 5, 0, 0]} maxBarSize={48} />
+              <Bar dataKey="value" fill="#5ca9ff" radius={[5, 5, 0, 0]} maxBarSize={48} />
             </BarChart>
           </ResponsiveContainer>
         </div>
