@@ -5,9 +5,7 @@ import {
   Clock3,
   Flame,
   Play,
-  RotateCcw,
   Target,
-  X,
   Plus,
   ChevronDown,
 } from "lucide-react";
@@ -50,9 +48,6 @@ function Dashboard() {
   const roadmap = getActiveRoadmap();
   const resetOnboarding = useOnboardingStore((state) => state.resetOnboarding);
   const [user, setUser] = useState(null);
-  const [focusOpen, setFocusOpen] = useState(false);
-  const [focusRunning, setFocusRunning] = useState(false);
-  const [focusSeconds, setFocusSeconds] = useState(25 * 60);
 
   useEffect(() => {
     fetchRoadmaps();
@@ -70,21 +65,7 @@ function Dashboard() {
     missingProgress.forEach((id) => fetchProgress(id));
   }, [roadmaps, progressByRoadmap, fetchProgress]);
 
-  useEffect(() => {
-    if (!focusRunning) return undefined;
 
-    const timer = window.setInterval(() => {
-      setFocusSeconds((value) => {
-        if (value <= 1) {
-          setFocusRunning(false);
-          return 0;
-        }
-        return value - 1;
-      });
-    }, 1000);
-
-    return () => window.clearInterval(timer);
-  }, [focusRunning]);
 
   const { overallProgress, currentMilestone } = getStats();
   const milestones = roadmap?.milestones || [];
@@ -140,10 +121,7 @@ function Dashboard() {
     });
   }, [milestones]);
 
-  const resetFocus = () => {
-    setFocusRunning(false);
-    setFocusSeconds(25 * 60);
-  };
+
 
   if (loading && !roadmap) {
     return (
@@ -428,8 +406,8 @@ function Dashboard() {
 
           <div className="focus-ring">
             <div>
-              <strong>{formatTime(focusSeconds)}</strong>
-              <span>{focusRunning ? "Stay focused" : "Ready when you are"}</span>
+              <strong>25:00</strong>
+              <span>Ready when you are</span>
             </div>
           </div>
 
@@ -437,56 +415,15 @@ function Dashboard() {
             <button
               type="button"
               className="focus-main-button"
-              onClick={() => {
-                setFocusOpen(true);
-                setFocusRunning(true);
-              }}
+              onClick={() => navigate("/focus")}
             >
               <Play size={15} fill="currentColor" /> Start focus
-            </button>
-            <button type="button" className="focus-reset" onClick={resetFocus} aria-label="Reset timer">
-              <RotateCcw size={16} />
             </button>
           </div>
         </article>
       </section>
 
-      {focusOpen && (
-        <div className="focus-overlay">
-          <button
-            className="focus-close"
-            type="button"
-            onClick={() => {
-              setFocusOpen(false);
-              setFocusRunning(false);
-            }}
-            aria-label="Close focus mode"
-          >
-            <X size={20} />
-          </button>
 
-          <div className="focus-scene" aria-hidden="true"><div /><div /><div /></div>
-
-          <div className="focus-content">
-            <span>URPATH · FOCUS SESSION</span>
-            <h2>{currentMilestone?.title || roadmap.title}</h2>
-            <div className="focus-full-ring">
-              <strong>{formatTime(focusSeconds)}</strong>
-              <small>
-                {focusRunning ? "Stay with it." : focusSeconds === 0 ? "Session complete." : "Paused."}
-              </small>
-            </div>
-
-            <div className="focus-full-actions">
-              <button type="button" onClick={() => setFocusRunning((value) => !value)}>
-                {focusRunning ? "Pause" : "Resume"}
-              </button>
-              <button type="button" onClick={resetFocus}>Reset</button>
-              <button type="button" onClick={() => navigate("/focus")}>Open Focus Mode</button>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
