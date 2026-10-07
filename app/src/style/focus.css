@@ -937,3 +937,6 @@ body,
     font-size: 35px;
   }
 }
+
+.local-music-input{display:none}
+.music-providers .provider-left{display:flex;align-items:center;gap:10px}
