@@ -6,3 +6,5 @@
 .today-panel{background:linear-gradient(145deg,rgba(92,169,255,.07),rgba(255,255,255,.72));}
 .roadmap-progress:hover{background:rgba(92,169,255,.025);}
 @media(max-width:520px){.progress-chart{padding:8px 2px 0;}}
+
+.progress-chart-panel{background:linear-gradient(145deg,rgba(92,169,255,.045),rgba(255,255,255,.7));}.progress-chart{padding:14px 8px 2px;border:1px solid rgba(92,169,255,.12);border-radius:16px;background:rgba(255,255,255,.38);}.today-panel{background:linear-gradient(145deg,rgba(92,169,255,.07),rgba(255,255,255,.72));}.roadmap-progress:hover{background:rgba(92,169,255,.025);}@media(max-width:520px){.progress-chart{padding:8px 2px 0;}}
