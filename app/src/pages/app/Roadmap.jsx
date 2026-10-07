@@ -82,10 +82,19 @@ function Roadmap() {
           quizzesResponse?.data?.quizzes ||
           [];
 
+        const taskIndex = (milestone.tasks || []).findIndex(
+          (item) => String(item._id) === String(task._id),
+        );
+
+        if (taskIndex < 0) {
+          throw new Error("Unable to find this quiz task in the roadmap.");
+        }
+
         const existingQuiz = quizzes.find(
           (quiz) =>
-            String(quiz.taskId) === String(task._id) ||
-            String(quiz.task?._id) === String(task._id),
+            String(quiz.roadmap) === String(activeRoadmap.id) &&
+            Number(quiz.weekNumber) === Number(milestone.weekNumber) &&
+            quiz.title === task.title,
         );
 
         if (existingQuiz?._id) {
@@ -96,7 +105,7 @@ function Roadmap() {
         const response = await generateQuiz({
           roadmapId: activeRoadmap.id,
           weekNumber: milestone.weekNumber,
-          taskId: task._id,
+          taskIndex,
         });
 
         const generatedQuiz =
