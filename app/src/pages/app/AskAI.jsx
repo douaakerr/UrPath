@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { ArrowUp, Bot, User } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowUp, Bot, FileText, Paperclip, User } from "lucide-react";
 import { sendLearningChat } from "../../services/aiService";
 import { getCourses } from "../../services/courseService";
 import "../../style/ask-ai.css";
@@ -13,6 +13,8 @@ function AskAI() {
   const [courses, setCourses] = useState([]);
   const [courseId, setCourseId] = useState("");
   const [lessonId, setLessonId] = useState("");
+  const [mode, setMode] = useState("course");
+  const fileInputRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
@@ -88,7 +90,7 @@ function AskAI() {
 
     const text = message.trim();
 
-    if (!text || sending || !selectedCourse || !selectedLesson) return;
+    if (!text || sending || mode !== "course" || !selectedCourse || !selectedLesson) return;
 
     setMessages((current) => [...current, { role: "user", text }]);
     setMessage("");
@@ -144,10 +146,31 @@ function AskAI() {
       <header className="ask-ai-header">
         <span>LEARNING ASSISTANT</span>
         <h1>Ask UrPath</h1>
-        <p>Ask questions using the real course and lesson you are studying.</p>
+        <p>Choose what you want UrPath to understand before you ask.</p>
       </header>
 
       <section className="ask-ai-card">
+        <div className="ask-ai-modebar">
+          <button
+            type="button"
+            className={mode === "course" ? "is-active" : ""}
+            onClick={() => { setMode("course"); setError(""); }}
+          >
+            <Bot size={16} />
+            Ask about my course
+          </button>
+          <button
+            type="button"
+            className={mode === "file" ? "is-active" : ""}
+            onClick={() => { setMode("file"); setMessages([]); setError(""); }}
+          >
+            <FileText size={16} />
+            Ask about a PDF
+          </button>
+        </div>
+
+        {mode === "course" ? (
+        <>
         {courses.length > 0 ? (
           <div className="ask-ai-context">
             <select
@@ -177,7 +200,12 @@ function AskAI() {
               ) : (
                 <option value="">No lessons available</option>
               )}
-            </select>
+                </select>
+              </label>
+              <div className="ask-ai-context-note">
+                <span className="ask-ai-context-note__dot" />
+                UrPath will use this course and lesson as the context for your question.
+              </div>
           </div>
         ) : (
           <div className="ask-ai-empty">
@@ -232,6 +260,35 @@ function AskAI() {
               </button>
             </form>
           </>
+        )}
+
+        </>
+        ) : (
+          <div className="ask-ai-file-panel">
+            <div className="ask-ai-file-icon"><FileText size={30} /></div>
+            <h2>Ask about a document</h2>
+            <p>Upload a PDF and ask questions about its content, notes, or a specific section.</p>
+            <button
+              type="button"
+              className="ask-ai-upload"
+              onClick={() => fileInputRef.current?.click()}
+              disabled
+            >
+              <Paperclip size={17} />
+              Choose PDF
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,application/pdf"
+              hidden
+              disabled
+            />
+            <div className="ask-ai-file-note">
+              <strong>PDF analysis is the next AI step.</strong>
+              <span>The current learning-chat API only understands course/lesson context, so this UI is prepared without pretending PDF analysis is already connected.</span>
+            </div>
+          </div>
         )}
 
         {error && <p className="ask-ai-error">{error}</p>}
