@@ -15,3 +15,9 @@
 @media(max-width:430px){.navbar{padding:0 14px}.navbar__actions{gap:5px}.navbar__get-started{height:37px;font-size:12px;padding:0 11px}.navbar__theme,.navbar__icon-button,.navbar__profile,.navbar__menu{width:37px;height:37px}}
 
 .navbar__profile{overflow:hidden}.navbar__profile img{width:100%;height:100%;object-fit:cover}
+
+/* Mobile app navigation trigger */
+.navbar__mobile-brand{display:none;align-items:center;gap:8px;margin-right:auto}
+.navbar__mobile-logo{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(145deg,#6db6ff,#438fe8);color:#fff;text-decoration:none;font-size:15px;font-weight:700;box-shadow:0 6px 18px rgba(92,169,255,.18)}
+.navbar__mobile-name{color:var(--navbar-text);font-size:15px;font-weight:700;letter-spacing:-.25px}
+@media(max-width:700px){.navbar--app{justify-content:space-between}.navbar--app .navbar__mobile-brand{display:flex}.navbar--app .navbar__actions{margin-left:0}.navbar--app .navbar__menu{display:grid}}
