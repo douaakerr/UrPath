@@ -21,7 +21,7 @@ function Roadmap() {
 
   const activeRoadmap = getActiveRoadmap();
   const [courses, setCourses] = useState([]);
-  const [loadingCourses, setLoadingCourses] = useState(false);
+  const [coursesRoadmapId, setCoursesRoadmapId] = useState(null);
   const [generatingTaskId, setGeneratingTaskId] = useState(null);
   const [courseError, setCourseError] = useState("");
 
@@ -33,22 +33,21 @@ function Roadmap() {
     if (!activeRoadmap?.id) return;
 
     let mounted = true;
-    setLoadingCourses(true);
     setCourseError("");
 
     getCourses({ roadmapId: activeRoadmap.id })
       .then((response) => {
         if (!mounted) return;
         setCourses(response?.courses || response?.data?.courses || []);
+        setCoursesRoadmapId(activeRoadmap.id);
       })
       .catch((err) => {
         if (mounted) {
           setCourseError(err.response?.data?.message || "Unable to load your courses.");
+          setCoursesRoadmapId(activeRoadmap.id);
         }
       })
-      .finally(() => {
-        if (mounted) setLoadingCourses(false);
-      });
+      .finally(() => {});
 
     return () => {
       mounted = false;
@@ -115,6 +114,7 @@ function Roadmap() {
   }
 
   const { total, completed, remaining, overallProgress } = getStats();
+  const loadingCourses = Boolean(activeRoadmap?.id && coursesRoadmapId !== activeRoadmap.id);
 
   return (
     <main className="roadmap-page">
