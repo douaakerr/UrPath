@@ -744,4 +744,9 @@
 }
 
 
-.google-login-btn{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;height:50px;padding:0 16px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.58);color:var(--text-primary);font-size:.84rem;font-weight:700;cursor:pointer;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}.google-login-btn span{width:25px;height:25px;display:grid;place-items:center;border-radius:7px;background:#fff;border:1px solid rgba(40,40,40,.12);color:#4285f4;font-size:.9rem;font-weight:800;line-height:1}.google-login-btn:hover{transform:translateY(-1px);border-color:rgba(92,169,255,.3);background:rgba(255,255,255,.75);box-shadow:0 8px 22px rgba(38,65,95,.1)}[data-theme="dark"] .google-login-btn{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.1)}[data-theme="dark"] .google-login-btn:hover{background:rgba(255,255,255,.09)}
+/* Google button only — original auth layout stays unchanged */
+.google-login-btn{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;height:50px;padding:0 16px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.58);color:var(--text-primary);font-size:.84rem;font-weight:700;cursor:pointer;transition:transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.google-login-btn span{width:25px;height:25px;display:grid;place-items:center;border-radius:7px;background:#fff;border:1px solid rgba(40,40,40,.12);color:#4285f4;font-size:.9rem;font-weight:800;line-height:1}
+.google-login-btn:hover{transform:translateY(-1px);border-color:rgba(92,169,255,.3);background:rgba(255,255,255,.75);box-shadow:0 8px 22px rgba(38,65,95,.1)}
+[data-theme="dark"] .google-login-btn{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.1)}
+[data-theme="dark"] .google-login-btn:hover{background:rgba(255,255,255,.09)}
