@@ -1,79 +1,44 @@
-/* URPATH UI POLISH — human, tactile, quiet */
+/* URPATH UI POLISH — shared visual system */
 :root {
-  --bg-elevated: #fffdf7;
-  --surface-strong: rgba(255,253,247,.9);
-  --surface-hover: rgba(49,92,74,.065);
-  --radius-lg: 20px;
-  --radius-md: 12px;
+  --bg-elevated: #ffffff;
+  --surface-strong: rgba(255,255,255,.78);
+  --surface-hover: rgba(92,169,255,.065);
+  --radius-lg: 22px;
+  --radius-md: 14px;
 }
-
 [data-theme="dark"] {
-  --bg-elevated: #18241d;
-  --surface-strong: rgba(24,35,29,.92);
-  --surface-hover: rgba(125,169,143,.08);
+  --bg-elevated: #0d2038;
+  --surface-strong: rgba(13,32,56,.82);
+  --surface-hover: rgba(101,173,255,.075);
 }
 
 /* Shared page rhythm */
 .profile-page,.ask-ai-page,.notifications-page,.courses-page,.course-details-page,.progress-page,.focus-page,.projects-page {
   min-height: 100%;
 }
-
 .profile-card,.ask-ai-card,.notifications-card,.progress-panel,.focus-card,.project-card,.courses-search,.course-card,.course-hero,.lesson-list,.lesson-content {
-  box-shadow: 0 14px 40px rgba(43,57,48,.07);
+  box-shadow: 0 18px 55px rgba(7,25,45,.075);
 }
-
 [data-theme="dark"] .profile-card,[data-theme="dark"] .ask-ai-card,[data-theme="dark"] .notifications-card,[data-theme="dark"] .progress-panel,[data-theme="dark"] .focus-card,[data-theme="dark"] .project-card,[data-theme="dark"] .courses-search,[data-theme="dark"] .course-card,[data-theme="dark"] .course-hero,[data-theme="dark"] .lesson-list,[data-theme="dark"] .lesson-content {
-  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  box-shadow: 0 22px 70px rgba(0,0,0,.2);
 }
 
-/* Shared controls */
-button,.courses-button,.profile-actions button,.quiz-submit {
-  transition: transform .18s ease,border-color .18s ease,background .18s ease,opacity .18s ease;
-}
-
-.profile-actions button:not(:disabled):hover,.courses-button:hover,.quiz-submit:not(:disabled):hover {
-  transform: translateY(-1px);
-}
-
-input,textarea,select { color-scheme: inherit; }
-input::placeholder,textarea::placeholder { color: var(--text-muted); opacity: .8; }
+/* Buttons and interactive surfaces */
+button,.courses-button,.profile-actions button,.quiz-submit { transition: transform .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease; }
+button:not(:disabled):hover { }
+.profile-actions button:not(:disabled):hover,.courses-button:hover,.quiz-submit:not(:disabled):hover { transform: translateY(-1px); }
 
 /* Dashboard */
 .dashboard-page { max-width: 1560px; margin: 0 auto; }
-.dashboard-stats article,.workspace-panel,.journey-card,.today-card {
-  transition: transform .2s ease,border-color .2s ease,background .2s ease;
-}
-.dashboard-stats article:hover,.workspace-panel:hover,.today-card:hover {
-  border-color: rgba(49,92,74,.2);
-}
+.dashboard-stats article,.workspace-panel,.journey-card,.today-card { transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+.dashboard-stats article:hover,.workspace-panel:hover,.today-card:hover { border-color: rgba(92,169,255,.2); }
 .dashboard-stats article:hover { transform: translateY(-1px); }
 
-/* Calm overrides for legacy blue surfaces */
-.navbar__get-started,.auth-button,.projects-add,.projects-empty button,.courses-button,.quiz-submit,.journey-button,.focus-main-button {
-  background: var(--color-primary-dark);
-}
+/* Form controls */
+input,textarea,select { color-scheme: inherit; }
+input::placeholder,textarea::placeholder { color: var(--text-muted); opacity: .8; }
 
-.navbar__get-started:hover,.auth-button:hover {
-  filter: none;
-}
-
-.sidebar__logo {
-  background: linear-gradient(145deg,#557866,#315c4a);
-  box-shadow: 0 8px 24px rgba(49,92,74,.18);
-}
-
-.sidebar__item:hover { background: rgba(49,92,74,.055); }
-.sidebar__item--active { background: rgba(49,92,74,.09); }
-
-.roadmap-week--current { border-color: rgba(194,138,58,.38); }
-.roadmap-task__icon { color: var(--color-primary); }
-.roadmap-summary__heading strong { color: var(--color-accent); }
-
-.progress-chart-panel { margin-top: 18px; }
-.progress-chart { width: 100%; min-height: 250px; }
-.progress-chart-panel .recharts-cartesian-grid-horizontal line { stroke: var(--chart-grid); }
-.progress-chart-panel .recharts-tooltip-cursor { fill: var(--chart-hover); }
-
+/* Mobile shell */
 @media (max-width: 768px) {
   .dashboard-layout__content { padding-bottom: 20px; }
   .dashboard-page { padding: 24px 18px 42px; }
@@ -84,7 +49,6 @@ input::placeholder,textarea::placeholder { color: var(--text-muted); opacity: .8
   .journey-card { grid-template-columns: 1fr; min-height: 300px; }
   .journey-mountain { min-height: 145px; }
 }
-
 @media (max-width: 560px) {
   .dashboard-page { padding: 20px 14px 34px; }
   .dashboard-header { margin-bottom: 19px; }
@@ -96,18 +60,15 @@ input::placeholder,textarea::placeholder { color: var(--text-muted); opacity: .8
   .calendar-summary { flex-direction: column; align-items: flex-start; }
 }
 
+/* Consistent compact headings on narrow screens */
 @media (max-width: 600px) {
-  .profile-page,.ask-ai-page,.notifications-page,.courses-page,.course-details-page,.progress-page {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  .profile-header h1,.ask-ai-header h1,.notifications-page h1,.courses-header h1,.course-hero h1,.progress-header h1 {
-    font-size: 32px;
-  }
+  .profile-page,.ask-ai-page,.notifications-page,.courses-page,.course-details-page,.progress-page { padding-left: 16px; padding-right: 16px; }
+  .profile-header h1,.ask-ai-header h1,.notifications-page h1,.courses-header h1,.course-hero h1,.progress-header h1 { font-size: 32px; }
   .profile-card,.ask-ai-card,.notifications-card { border-radius: 18px; }
   .profile-card { padding: 20px; }
   .profile-identity { align-items: flex-start; }
 }
+
 
 /* Mobile navigation */
 .sidebar__mobile-close{display:none}
