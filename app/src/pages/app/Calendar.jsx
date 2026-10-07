@@ -24,11 +24,14 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+const today = new Date();
+const sessionDate = (day, hours, minutes = 0) => new Date(today.getFullYear(), today.getMonth(), day, hours, minutes);
+
 const initialSessions = [
   {
     id: 1,
     title: "React Components",
-    start: new Date(2026, 8, 12, 10, 0),
+    start: sessionDate(2, 10),
     end: new Date(2026, 8, 12, 11, 30),
     type: "learning",
     category: "Frontend",
@@ -36,7 +39,7 @@ const initialSessions = [
   {
     id: 2,
     title: "JavaScript Quiz",
-    start: new Date(2026, 8, 15, 18, 0),
+    start: sessionDate(5, 18),
     end: new Date(2026, 8, 15, 18, 30),
     type: "quiz",
     category: "JavaScript",
@@ -44,7 +47,7 @@ const initialSessions = [
   {
     id: 3,
     title: "MongoDB Review",
-    start: new Date(2026, 8, 18, 16, 0),
+    start: sessionDate(9, 16),
     end: new Date(2026, 8, 18, 17, 0),
     type: "review",
     category: "Backend",
@@ -52,7 +55,7 @@ const initialSessions = [
   {
     id: 4,
     title: "API Architecture",
-    start: new Date(2026, 8, 22, 14, 0),
+    start: sessionDate(13, 14),
     end: new Date(2026, 8, 22, 15, 30),
     type: "project",
     category: "Full Stack",
@@ -60,7 +63,7 @@ const initialSessions = [
   {
     id: 5,
     title: "Node.js Practice",
-    start: new Date(2026, 8, 25, 17, 0),
+    start: sessionDate(18, 17),
     end: new Date(2026, 8, 25, 18, 30),
     type: "learning",
     category: "Backend",
@@ -68,7 +71,7 @@ const initialSessions = [
   {
     id: 6,
     title: "Weekly Review",
-    start: new Date(2026, 8, 28, 19, 0),
+    start: sessionDate(24, 19),
     end: new Date(2026, 8, 28, 20, 0),
     type: "review",
     category: "Progress",
@@ -78,9 +81,7 @@ const initialSessions = [
 function Calendar() {
   const [sessions, setSessions] = useState(initialSessions);
 
-  const [selectedDate, setSelectedDate] = useState(
-    new Date(2026, 8, 12)
-  );
+  const [selectedDate, setSelectedDate] = useState(today);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -221,9 +222,7 @@ function Calendar() {
                 LEARNING PLAN
               </span>
 
-              <h2>
-                September <span>2026</span>
-              </h2>
+              <h2>{format(selectedDate, "MMMM")} <span>{format(selectedDate, "yyyy")}</span></h2>
             </div>
 
             <div className="calendar-legend">
@@ -252,7 +251,8 @@ function Calendar() {
               endAccessor="end"
               defaultView="month"
               views={["month"]}
-              defaultDate={new Date(2026, 8, 12)}
+              date={selectedDate}
+              onNavigate={setSelectedDate}
               selectable
               popup
               eventPropGetter={eventPropGetter}
