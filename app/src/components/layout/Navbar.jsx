@@ -1,4 +1,4 @@
-import { Sun, Moon, Bell, UserCircle } from "lucide-react";
+import { Sun, Moon, Bell, UserCircle, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getProfile } from "../../services/profileService";
@@ -37,6 +37,15 @@ function Navbar({ app = false, onMenu }) {
 
   return (
     <header className={`navbar ${app ? "navbar--app" : "navbar--public"}`}>
+      {app && (
+        <div className="navbar__mobile-brand">
+          <button type="button" className="navbar__menu" onClick={onMenu} aria-label="Open navigation">
+            <Menu size={20} strokeWidth={1.9} />
+          </button>
+          <Link to="/dashboard" className="navbar__mobile-logo" aria-label="UrPath home"><span>U</span></Link>
+          <span className="navbar__mobile-name">UrPath</span>
+        </div>
+      )}
       {!app && (
         <nav className="navbar__links">
           <a href="#who-we-are">Who We Are</a>
