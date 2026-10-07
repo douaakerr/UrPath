@@ -664,6 +664,29 @@ import { Router } from "express";
  *           schema: { type: object, additionalProperties: true }
  *     responses:
  *       200: { description: AI response returned }
+
+ * @swagger
+ * /ai/pdf-chat:
+ *   post:
+ *     tags: [AI]
+ *     summary: Ask the AI about an uploaded PDF
+ *     security: [{ cookieAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required: [file, message]
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200: { description: AI response generated from the PDF }
+ *       400: { description: Invalid PDF or missing message }
  */
 
 import ai from "./aiRoutes.js";
