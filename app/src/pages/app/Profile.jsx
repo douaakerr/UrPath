@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { Camera, Check, UserCircle } from "lucide-react";
+import { Camera, Check, LogOut, UserCircle } from "lucide-react";
+import { useNavigate } from "react-router";
 import { getProfile, updateProfile, uploadProfilePhoto, deleteProfilePhoto } from "../../services/profileService";
+import { logoutUser } from "../../services/authService";
 import "../../style/profile.css";
 
 function Profile() {
   const inputRef = useRef(null);
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -73,6 +77,22 @@ function Profile() {
     }
   };
 
+  const handleLogout = async () => {
+    if (loggingOut) return;
+
+    setLoggingOut(true);
+    setError("");
+
+    try {
+      await logoutUser();
+      window.dispatchEvent(new Event("urpath:logout"));
+      navigate("/login", { replace: true });
+    } catch (err) {
+      setError(err.response?.data?.message || "Unable to log out. Please try again.");
+      setLoggingOut(false);
+    }
+  };
+
   if (!user && !error) return <main className="profile-page"><div className="progress-state">Loading profile...</div></main>;
   if (error && !user) return <main className="profile-page"><div className="progress-state progress-state--error">{error}</div></main>;
 
@@ -110,15 +130,26 @@ function Profile() {
           </label>
 
           <div className="profile-actions">
-            <button type="submit" disabled={saving}>{saving ? "Saving..." : "Save changes"}</button>
+            <button type="submit" disabled={saving || loggingOut}>{saving ? "Saving..." : "Save changes"}</button>
             {user.profilePhoto && (
-              <button type="button" onClick={removePhoto} className="profile-remove">Remove photo</button>
+              <button type="button" onClick={removePhoto} className="profile-remove" disabled={loggingOut}>Remove photo</button>
             )}
           </div>
 
           {message && <p className="profile-success"><Check size={15} />{message}</p>}
           {error && <p className="profile-error">{error}</p>}
         </form>
+
+        <div className="profile-logout">
+          <div>
+            <strong>Sign out of UrPath</strong>
+            <p>End your current session on this device.</p>
+          </div>
+          <button type="button" onClick={handleLogout} disabled={loggingOut}>
+            <LogOut size={16} />
+            {loggingOut ? "Signing out..." : "Log out"}
+          </button>
+        </div>
 
         <input ref={inputRef} hidden type="file" accept="image/png,image/jpeg,image/webp" onChange={upload} />
       </section>
