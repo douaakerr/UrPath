@@ -84,6 +84,9 @@ export default function FocusPage() {
   const [isMuted, setIsMuted] = useState(false);
   const [localMusicUrl, setLocalMusicUrl] = useState("");
   const [localMusicName, setLocalMusicName] = useState("");
+  const [spotifyUrl, setSpotifyUrl] = useState("");
+  const [spotifyEmbedUrl, setSpotifyEmbedUrl] = useState("");
+  const [spotifyError, setSpotifyError] = useState("");
 
   const audioRef = useRef(null);
   const localMusicInputRef = useRef(null);
@@ -206,23 +209,53 @@ export default function FocusPage() {
     )}:${String(secs).padStart(2, "0")}`;
   };
 
-const connectSpotify = () => {
-  const apiBaseUrl = import.meta.env.VITE_API_URL;
+const loadSpotifyEmbed = () => {
+  const value = spotifyUrl.trim();
 
-  if (!apiBaseUrl) {
-    console.error("VITE_API_URL is not configured.");
+  if (!value) {
+    setSpotifyError("Paste a Spotify track, playlist, album, artist, show, or episode link.");
+    setSpotifyEmbedUrl("");
     return;
   }
 
-  // Use the same host as the app's authenticated API requests so the
-  // UrPath JWT cookie is included when Spotify login starts.
-  const spotifyLoginUrl = new URL("/api/v1/spotify/login", apiBaseUrl);
-  window.location.assign(spotifyLoginUrl.toString());
+  try {
+    const url = new URL(value);
+
+    if (!["open.spotify.com", "www.open.spotify.com"].includes(url.hostname)) {
+      throw new Error("Invalid Spotify host");
+    }
+
+    const parts = url.pathname.split("/").filter(Boolean);
+    const supportedTypes = new Set([
+      "track",
+      "playlist",
+      "album",
+      "artist",
+      "show",
+      "episode",
+    ]);
+
+    if (parts.length < 2 || !supportedTypes.has(parts[0])) {
+      throw new Error("Unsupported Spotify URL");
+    }
+
+    const [, id] = parts;
+
+    setSpotifyEmbedUrl(
+      `https://open.spotify.com/embed/${parts[0]}/${encodeURIComponent(id)}`,
+    );
+    setSpotifyError("");
+    setIsMusicPlaying(false);
+  } catch {
+    setSpotifyError(
+      "Use a Spotify link like https://open.spotify.com/track/... or /playlist/...",
+    );
+    setSpotifyEmbedUrl("");
+  }
 };
 
   const toggleMusic = async () => {
-   
-    if (selectedMusic === "No Music") {
+    if (selectedMusic === "No Music" || selectedMusic === "Spotify") {
       return;
     }
 
@@ -281,9 +314,10 @@ const connectSpotify = () => {
   };
 
   const selectMusic = (name) => {
-  
   if (name === "Spotify") {
-    connectSpotify();
+    setSelectedMusic("Spotify");
+    setIsMusicPlaying(false);
+    setSpotifyError("");
     return;
   }
 
@@ -531,10 +565,64 @@ const connectSpotify = () => {
                   ? "Music disabled"
                   : selectedMusic === "Local Music"
                     ? "From your device"
-                    : "Spotify connected"}
+                    : "Spotify Embed"}
               </span>
             </div>
           </div>
+
+          {selectedMusic === "Spotify" && (
+            <div className="spotify-embed-panel">
+              <div className="spotify-embed-intro">
+                <strong>Listen with Spotify</strong>
+                <span>Paste a Spotify link. No UrPath Spotify login is needed.</span>
+              </div>
+
+              <div className="spotify-embed-form">
+                <input
+                  type="url"
+                  value={spotifyUrl}
+                  onChange={(event) => {
+                    setSpotifyUrl(event.target.value);
+                    if (spotifyError) setSpotifyError("");
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      loadSpotifyEmbed();
+                    }
+                  }}
+                  placeholder="Paste Spotify link"
+                  aria-label="Spotify link"
+                />
+
+                <button type="button" onClick={loadSpotifyEmbed}>
+                  Load
+                </button>
+              </div>
+
+              {spotifyError && (
+                <p className="spotify-embed-error">{spotifyError}</p>
+              )}
+
+              {spotifyEmbedUrl ? (
+                <div className="spotify-embed-frame">
+                  <iframe
+                    src={spotifyEmbedUrl}
+                    title="Spotify player"
+                    width="100%"
+                    height="152"
+                    frameBorder="0"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div className="spotify-embed-empty">
+                  <Music2 size={18} />
+                  <span>Your Spotify player will appear here.</span>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* MUSIC PROGRESS */}
           <div className="music-progress">
@@ -570,13 +658,17 @@ const connectSpotify = () => {
               type="button"
               className="play-circle"
               onClick={toggleMusic}
-              disabled={selectedMusic === "No Music"}
+              disabled={
+                selectedMusic === "No Music" || selectedMusic === "Spotify"
+              }
               title={
                 selectedMusic === "No Music"
                   ? "Select music first"
-                  : isMusicPlaying
-                    ? "Pause music"
-                    : "Play music"
+                  : selectedMusic === "Spotify"
+                    ? "Use the Spotify player"
+                    : isMusicPlaying
+                      ? "Pause music"
+                      : "Play music"
               }
             >
               {isMusicPlaying ? (
