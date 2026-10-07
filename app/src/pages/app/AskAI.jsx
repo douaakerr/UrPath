@@ -170,50 +170,45 @@ function AskAI() {
         </div>
 
         {mode === "course" ? (
-        <>
-        {courses.length > 0 ? (
-          <div className="ask-ai-context">
-            <select
-              value={courseId}
-              onChange={(event) => selectCourse(event.target.value)}
-              aria-label="Select course"
-            >
-              {courses.map((course) => (
-                <option key={course._id} value={course._id}>
-                  {course.title}
-                </option>
-              ))}
-            </select>
+          <>
+            {courses.length > 0 ? (
+              <div className="ask-ai-context">
+                <label>
+                  <span>Course</span>
+                  <select value={courseId} onChange={(event) => selectCourse(event.target.value)}>
+                    {courses.map((course) => (
+                      <option key={course._id} value={course._id}>{course.title}</option>
+                    ))}
+                  </select>
+                </label>
 
-            <select
-              value={selectedLesson?._id || ""}
-              onChange={(event) => selectLesson(event.target.value)}
-              aria-label="Select lesson"
-              disabled={!lessons.length}
-            >
-              {lessons.length ? (
-                lessons.map((lesson) => (
-                  <option key={lesson._id} value={lesson._id}>
-                    {lesson.title}
-                  </option>
-                ))
-              ) : (
-                <option value="">No lessons available</option>
-              )}
-                </select>
-              </label>
-              <div className="ask-ai-context-note">
-                <span className="ask-ai-context-note__dot" />
-                UrPath will use this course and lesson as the context for your question.
+                <label>
+                  <span>Lesson</span>
+                  <select
+                    value={selectedLesson?._id || ""}
+                    onChange={(event) => selectLesson(event.target.value)}
+                    disabled={!lessons.length}
+                  >
+                    {lessons.length ? lessons.map((lesson) => (
+                      <option key={lesson._id} value={lesson._id}>{lesson.title}</option>
+                    )) : (
+                      <option value="">No lessons available</option>
+                    )}
+                  </select>
+                </label>
+
+                <div className="ask-ai-context-note">
+                  <span className="ask-ai-context-note__dot" />
+                  UrPath will use this course and lesson as the context for your question.
+                </div>
               </div>
-          </div>
-        ) : (
-          <div className="ask-ai-empty">
-            <Bot size={30} />
-            <h2>No course yet</h2>
-            <p>Create a course from your roadmap before using Ask UrPath.</p>
-          </div>
-        )}
+            ) : (
+              <div className="ask-ai-empty">
+                <Bot size={30} />
+                <h2>No course yet</h2>
+                <p>Create a course from your roadmap before using Ask UrPath.</p>
+              </div>
+            )}
 
         {selectedLesson && (
           <>
