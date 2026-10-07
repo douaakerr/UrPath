@@ -7,6 +7,15 @@ import {
   PlayCircle,
   Trophy,
 } from "lucide-react";
+import { useMemo } from "react";
+import {
+  Background,
+  Controls,
+  Handle,
+  Position,
+  ReactFlow,
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 import "../../style/roadmap.css";
 
 function getTaskIcon(type) {
@@ -14,6 +23,38 @@ function getTaskIcon(type) {
   if (type === "quiz") return <Trophy size={15} />;
   return <BookOpen size={15} />;
 }
+
+function RoadmapNode({ data }) {
+  return (
+    <button
+      type="button"
+      className={`roadmap-node roadmap-node--${data.status || "upcoming"}`}
+      onClick={data.onClick}
+    >
+      <Handle type="target" position={Position.Top} className="roadmap-handle" />
+      <div className="roadmap-node__number">{data.number}</div>
+      <div className="roadmap-node__body">
+        <span>{data.label}</span>
+        <strong>{data.title}</strong>
+        {data.topics?.length > 0 && (
+          <div className="roadmap-node__topics">
+            {data.topics.slice(0, 3).map((topic, index) => (
+              <em key={`${topic}-${index}`}>{topic}</em>
+            ))}
+            {data.topics.length > 3 && <em>+{data.topics.length - 3}</em>}
+          </div>
+        )}
+        <div className="roadmap-node__footer">
+          <span>{data.progress}% complete</span>
+          <ChevronRight size={14} />
+        </div>
+      </div>
+      <Handle type="source" position={Position.Bottom} className="roadmap-handle" />
+    </button>
+  );
+}
+
+const nodeTypes = { roadmap: RoadmapNode };
 
 function RoadmapFlow({
   roadmap,
@@ -23,7 +64,57 @@ function RoadmapFlow({
 }) {
   const milestones = roadmap?.milestones || [];
 
-  if (!roadmap) {
+  const nodes = useMemo(
+    () =>
+      milestones.map((milestone, index) => {
+        const tasks = milestone.tasks || [];
+        const firstTask = tasks.find((task) => !task.completed) || tasks[0];
+
+        return {
+          id: String(milestone.id || `milestone-${index}`),
+          type: "roadmap",
+          position: {
+            x: index % 2 === 0 ? 80 : 390,
+            y: Math.floor(index / 2) * 235 + 30,
+          },
+          data: {
+            number: String(milestone.weekNumber || index + 1).padStart(2, "0"),
+            label: `WEEK ${milestone.weekNumber || index + 1}`,
+            title: milestone.title,
+            topics: milestone.topics || [],
+            progress: milestone.progress || 0,
+            status: milestone.status || "upcoming",
+            onClick: () =>
+              firstTask &&
+              onTaskAction?.({
+                task: firstTask,
+                milestone,
+                course: courses.find(
+                  (item) => String(item.taskId) === String(firstTask._id),
+                ),
+              }),
+          },
+        };
+      }),
+    [milestones, courses, onTaskAction],
+  );
+
+  const edges = useMemo(
+    () =>
+      milestones.slice(0, -1).map((milestone, index) => ({
+        id: `edge-${index}`,
+        source: String(milestone.id || `milestone-${index}`),
+        target: String(
+          milestones[index + 1]?.id || `milestone-${index + 1}`,
+        ),
+        type: "smoothstep",
+        animated: milestones[index + 1]?.status === "current",
+        className: "roadmap-edge",
+      })),
+    [milestones],
+  );
+
+  if (!roadmap || milestones.length === 0) {
     return (
       <div className="roadmap-empty">
         <h2>No roadmap yet</h2>
@@ -33,108 +124,23 @@ function RoadmapFlow({
   }
 
   return (
-    <div className="roadmap-board">
-      {milestones.map((milestone, index) => {
-        const tasks = milestone.tasks || [];
-
-        return (
-          <section
-            className={`roadmap-week ${milestone.status === "current" ? "roadmap-week--current" : ""} ${milestone.status === "completed" ? "roadmap-week--completed" : ""}`}
-            key={milestone.id}
-          >
-            <div className="roadmap-week__header">
-              <div className="roadmap-week__number">
-                {String(milestone.weekNumber || index + 1).padStart(2, "0")}
-              </div>
-
-              <div className="roadmap-week__heading">
-                <span>WEEK {milestone.weekNumber || index + 1}</span>
-                <h3>{milestone.title}</h3>
-                {milestone.description && <p>{milestone.description}</p>}
-              </div>
-
-              <div className="roadmap-week__progress">
-                <strong>{milestone.progress || 0}%</strong>
-                <div>
-                  <span style={{ width: `${milestone.progress || 0}%` }} />
-                </div>
-              </div>
-            </div>
-
-            {milestone.topics?.length > 0 && (
-              <div className="roadmap-topics">
-                {milestone.topics.map((topic, topicIndex) => (
-                  <span key={`${topic}-${topicIndex}`}>{topic}</span>
-                ))}
-              </div>
-            )}
-
-            <div className="roadmap-task-list">
-              {tasks.length === 0 && (
-                <p className="roadmap-no-tasks">No tasks were added to this week.</p>
-              )}
-
-              {tasks.map((task, taskIndex) => {
-                const course = courses.find(
-                  (item) => String(item.taskId) === String(task._id),
-                );
-                const completed = Boolean(task.completed);
-                const generating = generatingTaskId === task._id;
-
-                return (
-                  <article
-                    className={`roadmap-task ${completed ? "roadmap-task--completed" : ""}`}
-                    key={task._id || `${milestone.id}-${taskIndex}`}
-                  >
-                    <div className="roadmap-task__status">
-                      {completed ? (
-                        <span className="roadmap-task__done"><Check size={14} /></span>
-                      ) : (
-                        <Circle size={17} />
-                      )}
-                    </div>
-
-                    <div className="roadmap-task__icon">
-                      {getTaskIcon(task.type)}
-                    </div>
-
-                    <div className="roadmap-task__content">
-                      <div className="roadmap-task__top">
-                        <span className="roadmap-task__type">{task.type || "lesson"}</span>
-                        {completed && <span className="roadmap-task__completed">Completed</span>}
-                      </div>
-                      <h4>{task.title}</h4>
-                    </div>
-
-                    {!completed ? (
-                      <button
-                        type="button"
-                        className="roadmap-task__action"
-                        disabled={generating}
-                        onClick={() => onTaskAction?.({ task, milestone, course })}
-                      >
-                        {generating ? (
-                          "Generating..."
-                        ) : course ? (
-                          <>Continue <ChevronRight size={15} /></>
-                        ) : task.type === "project" ? (
-                          <>Open project <ChevronRight size={15} /></>
-                        ) : task.type === "quiz" ? (
-                          <>Open quiz <ChevronRight size={15} /></>
-                        ) : (
-                          <>Start course <PlayCircle size={15} /></>
-                        )}
-                      </button>
-                    ) : (
-                      <div className="roadmap-task__complete-icon"><Check size={15} /></div>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        );
-      })}
+    <div className="roadmap-flow">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        fitView
+        fitViewOptions={{ padding: 0.2 }}
+        nodesDraggable={false}
+        nodesConnectable={false}
+        zoomOnDoubleClick={false}
+        minZoom={0.55}
+        maxZoom={1.25}
+        proOptions={{ hideAttribution: true }}
+      >
+        <Background gap={28} size={1} className="roadmap-flow__background" />
+        <Controls showInteractive={false} />
+      </ReactFlow>
     </div>
   );
 }
