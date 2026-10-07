@@ -2,17 +2,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
 :root {
-  --cream: #f5f0ff;
-  --muted: rgba(245, 240, 255, 0.68);
-  --line: rgba(245, 240, 255, 0.22);
+  --cream: #eef7f1;
+  --muted: rgba(238, 247, 241, 0.72);
+  --line: rgba(210, 235, 221, 0.24);
 
-  --purple: #a78bfa;
-  --purple-light: #c4b5fd;
-  --purple-bright: #c084fc;
-  --pink-purple: #e879f9;
+  --purple: #79b89a;
+  --purple-light: #a8d7ba;
+  --purple-bright: #8fc8aa;
+  --pink-purple: #e8b66a;
 
-  --glass: rgba(31, 26, 42, 0.42);
-  --glass-hover: rgba(67, 51, 91, 0.52);
+  --glass: rgba(23, 64, 48, 0.38);
+  --glass-hover: rgba(45, 98, 72, 0.48);
 }
 
 * {
@@ -29,7 +29,7 @@ body,
 
 .focus-page {
   font-family: "Inter", sans-serif;
-  background: #18151f;
+  background: #17382b;
   color: var(--cream);
 }
 
@@ -51,7 +51,7 @@ body,
   overflow: hidden;
   isolation: isolate;
 
-  background: #18151f;
+  background: #17382b;
 }
 
 /* =========================================
@@ -86,15 +86,15 @@ body,
   background:
     linear-gradient(
       90deg,
-      rgba(15, 12, 21, 0.62) 0%,
-      rgba(24, 19, 31, 0.34) 50%,
-      rgba(18, 14, 25, 0.58) 100%
+      rgba(12, 45, 31, 0.32) 0%,
+      rgba(20, 72, 48, 0.18) 50%,
+      rgba(13, 51, 35, 0.28) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(12, 9, 17, 0.36),
-      rgba(12, 9, 17, 0.10) 45%,
-      rgba(12, 9, 17, 0.60)
+      rgba(12, 52, 35, 0.18),
+      rgba(16, 78, 50, 0.04) 45%,
+      rgba(12, 55, 38, 0.30)
     );
 }
 
@@ -124,7 +124,7 @@ body,
 
   gap: 9px;
 
-  color: rgba(104, 10, 227, 0.94);
+  color: #d8b46a;
 
   font-size: 15px;
 
@@ -701,9 +701,9 @@ body,
 
   border-radius: 50%;
 
-  background: #f0e9ff;
+  background: #e7d5aa;
 
-  color: #4e3e68;
+  color: #214b38;
 }
 
 .music-controls .play-circle:hover {
