@@ -8,3 +8,13 @@
 @media(max-width:520px){.progress-chart{padding:8px 2px 0;}}
 
 .progress-chart-panel{background:linear-gradient(145deg,rgba(92,169,255,.045),rgba(255,255,255,.7));}.progress-chart{padding:14px 8px 2px;border:1px solid rgba(92,169,255,.12);border-radius:16px;background:rgba(255,255,255,.38);}.today-panel{background:linear-gradient(145deg,rgba(92,169,255,.07),rgba(255,255,255,.72));}.roadmap-progress:hover{background:rgba(92,169,255,.025);}@media(max-width:520px){.progress-chart{padding:8px 2px 0;}}
+/* Recharts light theme — prevent the chart and hover tooltip from falling back to black */
+.progress-chart .recharts-wrapper,.progress-chart .recharts-surface{background:transparent!important;}
+.progress-chart .recharts-tooltip-wrapper{filter:drop-shadow(0 8px 20px rgba(25,60,95,.12));}
+.progress-chart .recharts-default-tooltip{background:#fff!important;border:1px solid #dce8f5!important;border-radius:10px!important;box-shadow:0 8px 24px rgba(25,60,95,.10)!important;color:#24364b!important;}
+.progress-chart .recharts-tooltip-label,.progress-chart .recharts-tooltip-item,.progress-chart .recharts-tooltip-item-list{color:#24364b!important;}
+.progress-chart .recharts-tooltip-item-name,.progress-chart .recharts-tooltip-item-separator,.progress-chart .recharts-tooltip-item-value{color:#24364b!important;}
+.progress-chart .recharts-cartesian-axis-tick-value{fill:#6f8196!important;}
+.progress-chart .recharts-cartesian-grid-horizontal line{stroke:#dce8f5!important;}
+.progress-chart .recharts-bar-rectangle path{fill:#5ca9ff!important;}
+.progress-chart .recharts-bar-rectangle:hover path{fill:#4a96e8!important;}
