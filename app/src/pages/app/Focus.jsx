@@ -195,9 +195,17 @@ export default function FocusPage() {
   };
 
 const connectSpotify = () => {
-  window.location.assign(
-     "http://127.0.0.1:5000/api/v1/spotify/login"
-  );
+  const apiBaseUrl = import.meta.env.VITE_API_URL;
+
+  if (!apiBaseUrl) {
+    console.error("VITE_API_URL is not configured.");
+    return;
+  }
+
+  // Use the same host as the app's authenticated API requests so the
+  // UrPath JWT cookie is included when Spotify login starts.
+  const spotifyLoginUrl = new URL("/api/v1/spotify/login", apiBaseUrl);
+  window.location.assign(spotifyLoginUrl.toString());
 };
 
   const toggleMusic = async () => {
