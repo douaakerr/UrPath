@@ -79,3 +79,7 @@
   .navbar__brand-mark { width: 33px; height: 33px; border-radius: 10px; }
   .navbar__brand-word { font-size: 21px; }
 }
+
+.navbar--auth{justify-content:space-between;background:var(--navbar-bg);border-bottom:1px solid var(--navbar-border);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.navbar--auth .navbar__links,.navbar--auth .navbar__login,.navbar--auth .navbar__get-started{display:none}
+.navbar--auth .navbar__actions{margin-left:auto}
