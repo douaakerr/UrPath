@@ -32,7 +32,7 @@ const slides = [
     title: "Keep moving",
     accent: "toward your goal.",
     text: "Learn through courses, practice with quizzes and projects, ask UrPath when you get stuck, and see the progress you make along the way.",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2200&q=88",
+    image: "https://thumbs.dreamstime.com/b/person-climbing-slope-toward-mountain-peak-setting-goals-human-performance-limits-growth-mindset-motivation-concept-ai-328850378.jpg?w=992",
     label: "FROM YOUR FIRST STEP TO YOUR SUMMIT",
     color: "blue",
   },
