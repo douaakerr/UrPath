@@ -172,7 +172,7 @@ function Dashboard() {
             </select>
             <ChevronDown size={15} />
           </label>
-          <button className="dashboard-new-path" type="button" onClick={() => navigate("/onboarding")}>
+          <button className="dashboard-new-path" type="button" onClick={() => { resetOnboarding(); navigate("/onboarding"); }}>
             <Plus size={16} /> Learn something new
           </button>
           <button
