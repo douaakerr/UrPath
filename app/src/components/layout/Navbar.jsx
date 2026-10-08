@@ -5,7 +5,7 @@ import { getProfile } from "../../services/profileService";
 import { useThemeStore } from "../../stores/themeStore";
 import "../../style/navbar.css";
 
-function Navbar({ app = false, onMenu }) {
+function Navbar({ app = false, auth = false, onMenu }) {
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const [profilePhoto, setProfilePhoto] = useState("");
@@ -36,7 +36,7 @@ function Navbar({ app = false, onMenu }) {
   }, [app]);
 
   return (
-    <header className={`navbar ${app ? "navbar--app" : "navbar--public"}`}>
+    <header className={`navbar ${app ? "navbar--app" : auth ? "navbar--auth" : "navbar--public"}`}>
       {app && (
         <div className="navbar__mobile-brand">
           <button type="button" className="navbar__menu" onClick={onMenu} aria-label="Open navigation">
