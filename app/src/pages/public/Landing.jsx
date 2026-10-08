@@ -16,6 +16,7 @@ import { Link } from "react-router";
 import { useRef } from "react";
 import Navbar from "../../components/layout/Navbar";
 import { getDomainImage, getLearningImage } from "../../utils/learningImages";
+import forestVideo from "../../assets/video/forest_wind.mp4";
 import "../../style/landing.css";
 
 const domains = [
@@ -253,7 +254,7 @@ function Landing() {
 
       <section className="landing__focus">
         <video className="landing__focus-video" autoPlay muted loop playsInline preload="metadata">
-          <source src="/src/assets/video/forest_wind.mp4" type="video/mp4" />
+          <source src={forestVideo} type="video/mp4" />
         </video>
         <div className="landing__focus-overlay" />
         <Reveal className="landing__focus-content">
