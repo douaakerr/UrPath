@@ -3,6 +3,7 @@ import { BookOpen, Clock3, Layers3, Search } from "lucide-react";
 import { Link } from "react-router";
 import { getCourses } from "../../services/courseService";
 import "../../style/courses.css";
+import { getLearningImage } from "../../utils/learningImages";
 
 function normalizeCourses(response) {
   if (Array.isArray(response)) return response;
@@ -97,6 +98,16 @@ function Courses() {
 
             return (
               <Link to={`/courses/${course._id}`} className="course-card" key={course._id}>
+                <div className="course-card__image">
+                  <img
+                    src={getLearningImage(course.domain, course.subdomain)}
+                    alt={course.subdomain || course.domain || course.title || "Course"}
+                    loading="lazy"
+                  />
+                  <div className="course-card__image-overlay">
+                    <span>{course.subdomain || course.domain || "Learning path"}</span>
+                  </div>
+                </div>
                 <div className="course-card__top">
                   <span className="course-card__domain">{course.domain || "Learning path"}</span>
                   <span className="course-card__level">{course.level || "beginner"}</span>
