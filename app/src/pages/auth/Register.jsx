@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
-import { registerUser } from "../../services/authService";
+import { loginUser, registerUser } from "../../services/authService";
 import "../../style/auth.css";
 import Navbar from "../../components/layout/Navbar";
 
@@ -65,15 +65,14 @@ function Register() {
 
       console.log("Registration successful:", data);
 
-      setSuccess(
-        data?.message ||
-          "Account created successfully. Redirecting..."
-      );
+      // Sign in immediately so the protected setup route can open.
+      await loginUser({
+        email: formData.email.trim(),
+        password: formData.password,
+      });
 
-      // Give the user a moment to see the success message
-      setTimeout(() => {
-        navigate("/login");
-      }, 1200);
+      setSuccess("Account created successfully. Let's set up your learning path.");
+      navigate("/onboarding", { replace: true });
     } catch (err) {
       console.error(
         err.response?.data?.message ||
