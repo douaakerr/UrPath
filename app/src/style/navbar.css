@@ -90,3 +90,13 @@
 .navbar__brand-word { font-family:inherit; font-size:1.55rem; font-weight:750; letter-spacing:-.045em; color:var(--navbar-text); }
 .navbar__brand-word span { color:var(--navbar-accent); }
 .navbar--auth { justify-content:flex-start; }
+
+
+/* Public navigation: brand left, section links centered, account actions right. */
+.navbar--public { justify-content:space-between; }
+.navbar--public .navbar__brand { margin-right:24px; }
+.navbar--public .navbar__links { flex:1; justify-content:center; margin:0; gap:clamp(14px,2.4vw,34px); }
+.navbar--public .navbar__actions { flex:0 0 auto; margin-left:24px; }
+.navbar--public .navbar__get-started { background:var(--navbar-accent); color:#fff; border-color:transparent; box-shadow:none; }
+:root[data-theme="dark"] .navbar--public .navbar__get-started { background:#8ec8ff; color:#10243a; }
+@media(max-width:700px) { .navbar--public .navbar__brand { margin-right:auto; } .navbar--public .navbar__actions { margin-left:auto; } }
