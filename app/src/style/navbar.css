@@ -83,3 +83,10 @@
 .navbar--auth{justify-content:space-between;background:var(--navbar-bg);border-bottom:1px solid var(--navbar-border);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 .navbar--auth .navbar__links,.navbar--auth .navbar__login,.navbar--auth .navbar__get-started{display:none}
 .navbar--auth .navbar__actions{margin-left:auto}
+
+/* Wordmark uses the simple typography from the original auth branding */
+.navbar__brand { display:inline-flex; align-items:center; text-decoration:none; color:var(--navbar-text); flex:0 0 auto; }
+.navbar__brand-mark { display:none; }
+.navbar__brand-word { font-family:inherit; font-size:1.55rem; font-weight:750; letter-spacing:-.045em; color:var(--navbar-text); }
+.navbar__brand-word span { color:var(--navbar-accent); }
+.navbar--auth { justify-content:flex-start; }
