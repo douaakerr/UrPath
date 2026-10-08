@@ -92,16 +92,7 @@ function Register() {
     <main className="auth-page register-page">
       <div className="auth-overlay" />
 
-      {/* Brand */}
-      <div className="auth-brand">
-        <Link to="/" className="auth-logo">
-          Ur<span>Path</span>
-        </Link>
-
-        <p>Develop yourself. Build your path.</p>
-      </div>
-
-      {/* Glass panel */}
+{/* Glass panel */}
       <section className="auth-glass">
         <div className="auth-content">
 
