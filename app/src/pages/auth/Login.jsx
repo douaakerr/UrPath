@@ -50,21 +50,12 @@ function Login() {
 
   return (
     <>
-      <Navbar />
+      <Navbar auth />
 
       <main className="auth-page">
         <div className="auth-overlay" />
 
-        {/* Brand */}
-        <div className="auth-brand">
-          <Link to="/" className="auth-logo">
-            Ur<span>Path</span>
-          </Link>
-
-          <p>Develop yourself. Build your path.</p>
-        </div>
-
-        {/* Authentication panel */}
+{/* Authentication panel */}
         <section className="auth-glass">
           <div className="auth-content">
             {/* Header */}
