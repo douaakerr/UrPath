@@ -30,6 +30,7 @@ import {
 import { getLearningDomains } from "../../services/learningDomainService";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import "../../style/setUpLearning.css";
+import { getDomainImage, getLearningImage } from "../../utils/learningImages";
 
 // Dynamic Icon Mapping
 const getDomainIcon = (name) => {
@@ -431,6 +432,10 @@ export default function SetUpLearning() {
                       }
                     }}
                   >
+                    <div className="domain-card__image">
+                      <img src={getDomainImage(domain.name)} alt="" loading="lazy" />
+                      <div className="domain-card__image-overlay" />
+                    </div>
                     <div className="domain-top">
                       <div className="domain-icon-wrap">
                         <Icon size={22} strokeWidth={2} />
@@ -633,13 +638,20 @@ export default function SetUpLearning() {
                         }
                       }}
                     >
-                      <div className="subdomain-indicator">
-                        {isSelected && <Check size={12} strokeWidth={3} />}
+                      <div className="subdomain-card__image">
+                        <img src={getLearningImage(selectedDomain?.name, sub.name)} alt="" loading="lazy" />
+                        <div className="subdomain-card__image-overlay" />
                       </div>
 
-                      <div className="subdomain-content">
+                      <div className="subdomain-card__body">
+                        <div className="subdomain-indicator">
+                          {isSelected && <Check size={12} strokeWidth={3} />}
+                        </div>
+
+                        <div className="subdomain-content">
                         <h4 className="subdomain-name">{sub.name}</h4>
-                        {sub.description && <p className="subdomain-desc">{sub.description}</p>}
+                          {sub.description && <p className="subdomain-desc">{sub.description}</p>}
+                        </div>
                       </div>
                     </div>
                   );
