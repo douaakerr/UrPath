@@ -67,7 +67,7 @@
 .landing__hero-photo-wrap { position: relative; height: clamp(420px, 45vw, 570px); overflow: hidden; border-radius: 8px 8px 90px 8px; background: #cbd8d7; }
 .landing__hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
 .landing__hero-photo-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(13,32,40,.65), transparent 43%), linear-gradient(135deg, rgba(44,95,134,.12), transparent 60%); }
-.landing__photo-index { position: absolute; top: 22px; left: 22px; padding: 9px 12px; border: 1px solid rgba(255,255,255,.45); border-radius: 4px; background: rgba(17,39,48,.3); color: #fff; font-size: 11px; backdrop-filter: blur(8px); }
+.landing__photo-index { position: absolute; top: 22px; left: 22px; padding: 9px 12px; border: 1px solid rgba(255,255,255,.45); border-radius: 4px; background: rgba(17,39,48,.3); color: #fff; font-size: 11px; }
 .landing__photo-index span:first-child { font-weight: 800; }
 .landing__photo-index span:last-child { color: rgba(255,255,255,.65); }
 .landing__photo-caption { position: absolute; right: 26px; bottom: 27px; left: 26px; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #fff; }
