@@ -1,4 +1,4 @@
-import { Sun, Moon, Bell, UserCircle, Menu, Mountain } from "lucide-react";
+import { Sun, Moon, Bell, UserCircle, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getProfile } from "../../services/profileService";
@@ -49,7 +49,6 @@ function Navbar({ app = false, auth = false, onMenu }) {
       {!app && (
         <>
           <Link to="/" className="navbar__brand" aria-label="UrPath home">
-            <span className="navbar__brand-mark"><Mountain size={19} strokeWidth={2.1} /></span>
             <span className="navbar__brand-word">Ur<span>Path</span></span>
           </Link>
           <nav className="navbar__links">
@@ -78,7 +77,7 @@ function Navbar({ app = false, auth = false, onMenu }) {
           {theme === "dark" ? <Sun size={19} strokeWidth={1.8} /> : <Moon size={19} strokeWidth={1.8} />}
         </button>
 
-        {!app && !auth && (
+        {!app && (
           <>
             <Link to="/login" className="navbar__login">Login</Link>
             <Link to="/register" className="navbar__get-started">Get Started</Link>
