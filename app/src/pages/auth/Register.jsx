@@ -88,7 +88,7 @@ function Register() {
   return (
     <>
     
-    <Navbar auth />
+    <Navbar />
     <main className="auth-page register-page">
       <div className="auth-overlay" />
 
