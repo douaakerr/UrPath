@@ -6,7 +6,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router";
 import Navbar from "../../components/layout/Navbar";
-import { getDomainImage, getLearningImage } from "../../utils/learningImages";
+import { getDomainImage } from "../../utils/learningImages";
 import mountainsLight from "../../assets/image/mountains_light.png";
 import mountainsDark from "../../assets/image/mountains_dark.png";
 import "../../style/landing.css";
