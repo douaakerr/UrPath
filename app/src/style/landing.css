@@ -464,3 +464,46 @@
   .landing__summit-photo-label { top: 14px; right: 14px; }
   .landing__summit-photo-caption { left: 16px; bottom: 17px; font-size: 8px; }
 }
+
+
+/* Subtle color accents and staggered journey cards. */
+.landing__note--pink { border-top-color: #6b9fc9; }
+.landing__note--yellow { border-top-color: #6ba6a0; }
+.landing__note--green { border-top-color: #9992c2; }
+.landing__note--pink svg { color: #477fae; }
+.landing__note--yellow svg { color: #4f918b; }
+.landing__note--green svg { color: #827bb0; }
+.landing__note-connector {
+  color: #91a9c1;
+  width: 25px;
+  height: 25px;
+}
+.landing__lost-notes > .landing__note:nth-child(1) { margin-top: 0; }
+.landing__lost-notes > .landing__note-connector:nth-child(2) {
+  margin-top: 74px;
+  transform: rotate(25deg);
+}
+.landing__lost-notes > .landing__note:nth-child(3) { margin-top: 58px; }
+.landing__lost-notes > .landing__note-connector:nth-child(4) {
+  margin-top: 148px;
+  transform: rotate(25deg);
+}
+.landing__lost-notes > .landing__note:nth-child(5) { margin-top: 116px; }
+:root[data-theme="dark"] .landing__note--pink { border-top-color: #80b5e1; }
+:root[data-theme="dark"] .landing__note--yellow { border-top-color: #79bcb5; }
+:root[data-theme="dark"] .landing__note--green { border-top-color: #aaa2d7; }
+:root[data-theme="dark"] .landing__note--pink svg { color: #9dcdf3; }
+:root[data-theme="dark"] .landing__note--yellow svg { color: #92d2cb; }
+:root[data-theme="dark"] .landing__note--green svg { color: #c2b9f1; }
+
+@media(max-width:700px) {
+  .landing__lost-notes { align-items: center; gap: 12px; }
+  .landing__lost-notes > .landing__note:nth-child(1),
+  .landing__lost-notes > .landing__note:nth-child(3),
+  .landing__lost-notes > .landing__note:nth-child(5) { margin-top: 0; }
+  .landing__lost-notes > .landing__note-connector:nth-child(2),
+  .landing__lost-notes > .landing__note-connector:nth-child(4) {
+    margin-top: 0;
+    transform: rotate(90deg);
+  }
+}
