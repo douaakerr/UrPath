@@ -1,4 +1,4 @@
-import { Sun, Moon, Bell, UserCircle, Menu } from "lucide-react";
+import { Sun, Moon, Bell, UserCircle, Menu, Mountain } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getProfile } from "../../services/profileService";
@@ -47,11 +47,18 @@ function Navbar({ app = false, onMenu }) {
         </div>
       )}
       {!app && (
-        <nav className="navbar__links">
-          <a href="#who-we-are">Who We Are</a>
-          <a href="#features">Features</a>
-          <a href="#why-urpath">Why UrPath</a>
-        </nav>
+        <>
+          <Link to="/" className="navbar__brand" aria-label="UrPath home">
+            <span className="navbar__brand-mark"><Mountain size={19} strokeWidth={2.1} /></span>
+            <span className="navbar__brand-word">Ur<span>Path</span></span>
+          </Link>
+          <nav className="navbar__links">
+            <a href="#the-problem">Why UrPath</a>
+            <a href="#domains">Explore skills</a>
+            <a href="#how-it-works">How it works</a>
+            <a href="#features">Features</a>
+          </nav>
+        </>
       )}
 
       <div className="navbar__actions">
