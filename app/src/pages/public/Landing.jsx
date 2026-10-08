@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  ArrowDownRight, ArrowRight, BookOpen, BrainCircuit, Check, CheckCircle2,
+  ArrowDown, ArrowDownRight, ArrowRight, BookOpen, BrainCircuit, Check, CheckCircle2,
   ChevronLeft, ChevronRight, CircleHelp, Compass, Flag, Layers3,
   LineChart, Map, Play, Sparkles, Target, Timer, Trophy,
 } from "lucide-react";
