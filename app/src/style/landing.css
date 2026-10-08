@@ -1,15 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap");
 
 .landing {
-  --land-bg: #f8f5ec;
-  --land-paper: #fffdf7;
-  --land-text: #19312d;
-  --land-muted: #687772;
-  --land-line: rgba(25, 49, 45, .14);
-  --land-green: #376b51;
-  --land-coral: #dc795f;
-  --land-yellow: #edc96d;
-  --land-lilac: #a99bcf;
+  --land-bg: #f5f8fc;
+  --land-paper: #ffffff;
+  --land-text: #10243a;
+  --land-muted: #627286;
+  --land-line: rgba(16, 36, 58, .13);
+  --land-green: #28699e;
+  --land-coral: #e76f51;
+  --land-yellow: #f4a261;
+  --land-lilac: #9d8ac7;
   --land-sky: #79b7d6;
   background: var(--land-bg);
   color: var(--land-text);
@@ -18,14 +18,14 @@
   transition: background .25s ease, color .25s ease;
 }
 :root[data-theme="dark"] .landing {
-  --land-bg: #111c1a;
-  --land-paper: #1b2925;
-  --land-text: #f3f0e7;
-  --land-muted: #b0bdb5;
-  --land-line: rgba(239, 243, 232, .14);
-  --land-green: #9ec8a7;
-  --land-coral: #f19b7e;
-  --land-yellow: #e8c879;
+  --land-bg: #0c1726;
+  --land-paper: #142337;
+  --land-text: #f4f8fc;
+  --land-muted: #b6c4d5;
+  --land-line: rgba(225, 237, 249, .13);
+  --land-green: #8ec8ff;
+  --land-coral: #ff9b7a;
+  --land-yellow: #f4c27a;
   --land-lilac: #c4b5e7;
   --land-sky: #91cce8;
 }
@@ -200,3 +200,54 @@
 @media (prefers-reduced-motion: reduce) {
   .landing *, .landing *::before, .landing *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+
+/* Landing refresh: UrPath navy and blue, with warm coral and amber accents. */
+.landing__hero { background:#10243a; }
+.landing__hero-shade { background:linear-gradient(90deg,rgba(8,24,43,.84) 0%,rgba(8,24,43,.62) 48%,rgba(8,24,43,.24) 100%),linear-gradient(0deg,rgba(8,24,43,.42),transparent 42%); }
+.landing__hero .landing__eyebrow,.landing__closing-copy .landing__eyebrow { color:#ffc18f; }
+.landing__hero h1 span { color:#ffb078; }
+.landing__primary { background:#f4a261; color:#10243a; }
+.landing__primary:hover { background:#ffc18f; }
+.landing__roadmap-board { background:#10243a; }
+.landing__roadmap-title span { color:#ffb078; }
+.landing__trail:before { background:rgba(244,162,97,.62); }
+.landing__trail-step>span { border-color:rgba(244,162,97,.78);background:#10243a;color:#ffc18f; }
+.landing__roadmap-foot { color:#ffc18f; }
+.landing__closing { background:#10243a; }
+.landing__closing-shade { background:linear-gradient(90deg,rgba(8,24,43,.88),rgba(8,24,43,.62) 55%,rgba(8,24,43,.18)); }
+.landing__tone--mint { --tone-bg:#dceaf8;--tone-fg:#245783;--tone-border:#c2d9ef; }
+.landing__tone--peach { --tone-bg:#ffe1d4;--tone-fg:#934b36;--tone-border:#f4c6b5; }
+.landing__tone--lilac { --tone-bg:#e9e1f8;--tone-fg:#65518c;--tone-border:#d7c9ed; }
+.landing__tone--butter { --tone-bg:#fff0cf;--tone-fg:#7a5727;--tone-border:#f0d9a6; }
+.landing__tone--coral { --tone-bg:#ffe1d4;--tone-fg:#934b36;--tone-border:#f4c6b5; }
+.landing__tone--sky { --tone-bg:#dceaf8;--tone-fg:#245783;--tone-border:#c2d9ef; }
+:root[data-theme="dark"] .landing__tone--mint { --tone-bg:#1d3650;--tone-fg:#a9d8ff;--tone-border:#2d4e6d; }
+:root[data-theme="dark"] .landing__tone--peach { --tone-bg:#4a2c2a;--tone-fg:#ffb49a;--tone-border:#6a4038; }
+:root[data-theme="dark"] .landing__tone--lilac { --tone-bg:#332c4c;--tone-fg:#d1c0fa;--tone-border:#4c426c; }
+:root[data-theme="dark"] .landing__tone--butter { --tone-bg:#453824;--tone-fg:#ffdc91;--tone-border:#66502f; }
+:root[data-theme="dark"] .landing__tone--coral { --tone-bg:#4a2c2a;--tone-fg:#ffb49a;--tone-border:#6a4038; }
+:root[data-theme="dark"] .landing__tone--sky { --tone-bg:#1d3650;--tone-fg:#a9d8ff;--tone-border:#2d4e6d; }
+
+/* The mountain is an explanatory illustration, never a full-screen hiking photo. */
+.landing__summit { display:grid;grid-template-columns:.92fr 1.08fr;align-items:center;gap:70px;width:min(1160px,calc(100% - 64px));margin:0 auto;padding:130px 0; }
+.landing__summit-copy h2 { font-size:clamp(40px,4.7vw,62px); }
+.landing__summit-copy>div>p:not(.landing__eyebrow) { max-width:520px;color:var(--land-muted);font-size:15px; }
+.landing__goal-map { --goal-panel:var(--land-paper);--goal-slope-start:#c8dcf2;--goal-slope-end:#f8c6a8;--goal-outline:#8daac7;--goal-path:#e76f51;--goal-start:#28699e;--goal-step:#e76f51;--goal-flag:#e76f51;--goal-flag-pole:#10243a;padding:24px 25px 20px;border:1px solid var(--land-line);border-radius:18px;background:var(--land-paper);box-shadow:0 25px 70px rgba(16,36,58,.09); }
+:root[data-theme="dark"] .landing__goal-map { --goal-slope-start:#203d5c;--goal-slope-end:#6b4c4b;--goal-outline:#4f7294;--goal-path:#ff9b7a;--goal-start:#8ec8ff;--goal-step:#ff9b7a;--goal-flag:#ff9b7a;--goal-flag-pole:#eaf2fb; }
+.landing__goal-map-top { display:flex;justify-content:space-between;gap:12px;color:var(--land-muted);font-size:9px;font-weight:800;letter-spacing:.14em; }
+.landing__goal-illustration { display:block;width:100%;height:auto;margin:8px 0 0;overflow:visible; }
+.goal-svg-label { fill:var(--land-muted);font-size:10px;font-weight:800;letter-spacing:1.3px; }
+.goal-svg-label--goal { fill:var(--land-coral); }
+.landing__goal-map-legend { display:flex;flex-wrap:wrap;gap:12px 18px;padding:10px 0 17px;border-bottom:1px solid var(--land-line);color:var(--land-muted);font-size:10px; }
+.landing__goal-map-legend span { display:inline-flex;align-items:center;gap:7px; }
+.landing__legend-dot { width:8px;height:8px;display:inline-block;border-radius:50%; }
+.landing__legend-dot--start { background:#28699e; }
+.landing__legend-dot--step { background:#e76f51; }
+.landing__goal-map-legend svg { color:var(--land-coral); }
+.landing__goal-note { display:flex;align-items:center;gap:9px;padding-top:16px;color:var(--land-text);font-size:11px;font-weight:650; }
+.landing__goal-note svg { flex:none;color:var(--land-coral); }
+.landing__footer-mark { width:31px;height:31px;display:grid;place-items:center;border-radius:9px;background:var(--land-coral);color:#10243a; }
+.landing__footer-brand .navbar__brand-mark { display:none; }
+@media(max-width:1000px) { .landing__summit { grid-template-columns:1fr;gap:38px;padding:100px 0; }.landing__goal-map { max-width:760px; } }
+@media(max-width:650px) { .landing__summit { width:calc(100% - 36px);padding:90px 0; }.landing__goal-map { padding:17px 14px; }.landing__goal-map-legend { gap:10px 13px; } }
