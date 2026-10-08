@@ -10,39 +10,39 @@ import "../../style/landing.css";
 
 const slides = [
   {
-    eyebrow: "YOUR NEXT CHAPTER STARTS HERE",
-    title: "You want to learn something new.",
-    accent: "But where do you even start?",
-    text: "Too many tutorials. Too many roadmaps. No clear next step. UrPath helps you turn that lost feeling into a plan you can actually follow.",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2200&q=88",
-    label: "EVERY SKILL STARTS WITH A FIRST STEP",
+    eyebrow: "WANT TO LEARN SOMETHING NEW?",
+    title: "You have the motivation.",
+    accent: "But no idea where to start.",
+    text: "Too many tutorials. Too many choices. No clear next step. UrPath helps you find a starting point and turn a new interest into a plan you can follow.",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&q=88",
+    label: "FEELING LOST IS A PLACE TO START, NOT A DEAD END",
     color: "sage",
   },
   {
-    eyebrow: "YOUR GOAL. YOUR PACE.",
-    title: "You do not need to know the whole way.",
-    accent: "Just the next step.",
-    text: "Whether it is AI, design, languages, business or something completely different, UrPath helps you find your starting point and build from there.",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&q=88",
-    label: "MANY DIRECTIONS. ONE PLACE TO BEGIN.",
+    eyebrow: "ONE STEP AT A TIME",
+    title: "You don't need to figure out",
+    accent: "the whole journey today.",
+    text: "UrPath helps you understand what to learn first, what comes next, and how each step brings you closer to the skill you want.",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=2200&q=88",
+    label: "A CLEAR NEXT STEP MAKES ALL THE DIFFERENCE",
     color: "coral",
   },
   {
-    eyebrow: "FROM CURIOSITY TO CAPABILITY",
-    title: "Make your ambition",
-    accent: "a path you can follow.",
-    text: "Get a roadmap, learn through focused courses, practice what you know and see your progress grow — one small win at a time.",
-    image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2200&q=88",
-    label: "YOUR GOAL IS CLOSER THAN IT FEELS",
+    eyebrow: "PICTURE WHAT YOU CAN ACHIEVE",
+    title: "Your goal is the summit.",
+    accent: "UrPath helps you reach it.",
+    text: "Every milestone brings you closer. Set your sights on the skill you want, follow your roadmap and celebrate how far you've come.",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2200&q=88",
+    label: "FROM YOUR FIRST STEP TO YOUR SUMMIT",
     color: "lavender",
   },
 ];
 
 const domains = [
-  { name: "Technology", detail: "AI, web development, data science, cybersecurity and more.", color: "mint", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85" },
-  { name: "Design & creative", detail: "UI/UX, illustration, photography, animation and creative work.", color: "peach", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1000&q=85" },
-  { name: "Languages", detail: "Build a routine for English, French, Korean, Japanese and more.", color: "lilac", image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1000&q=85" },
-  { name: "Business & science", detail: "Explore finance, marketing, mathematics, biology and beyond.", color: "butter", image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Technology", detail: "AI, web development, data science, cybersecurity and more.", color: "mint", image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Design & creative", detail: "UI/UX, illustration, photography, animation and creative work.", color: "peach", image: "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Languages", detail: "Build a routine for English, French, Korean, Japanese and more.", color: "lilac", image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Business & science", detail: "Explore finance, marketing, mathematics, biology and beyond.", color: "sky", image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=85" },
 ];
 
 const steps = [
