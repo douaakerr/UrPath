@@ -1322,3 +1322,8 @@
 .subdomain-card__body .subdomain-content {
   min-width: 0;
 }
+
+.subdomain-card--other {
+  display: flex;
+  padding: 18px 20px;
+}
