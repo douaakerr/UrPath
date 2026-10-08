@@ -78,7 +78,7 @@ function Navbar({ app = false, auth = false, onMenu }) {
           {theme === "dark" ? <Sun size={19} strokeWidth={1.8} /> : <Moon size={19} strokeWidth={1.8} />}
         </button>
 
-        {!app && (
+        {!app && !auth && (
           <>
             <Link to="/login" className="navbar__login">Login</Link>
             <Link to="/register" className="navbar__get-started">Get Started</Link>
