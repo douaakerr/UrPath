@@ -10,31 +10,31 @@ import "../../style/landing.css";
 
 const slides = [
   {
-    eyebrow: "WANT TO LEARN SOMETHING NEW?",
-    title: "You have the motivation.",
-    accent: "But no idea where to start.",
-    text: "Too many tutorials. Too many choices. No clear next step. UrPath helps you find a starting point and turn a new interest into a plan you can follow.",
+    eyebrow: "AN ADAPTIVE LEARNING PLATFORM",
+    title: "Learn what you need,",
+    accent: "skip what you know.",
+    text: "Take a 10-minute placement check and get a learning path built around your level. UrPath helps you focus on the lessons that move you forward.",
     image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2200&q=88",
-    label: "FEELING LOST IS A PLACE TO START, NOT A DEAD END",
-    color: "sage",
+    label: "START WITH YOUR LEVEL, NOT SOMEONE ELSE'S",
+    color: "blue",
   },
   {
-    eyebrow: "ONE STEP AT A TIME",
-    title: "You don't need to figure out",
-    accent: "the whole journey today.",
-    text: "UrPath helps you understand what to learn first, what comes next, and how each step brings you closer to the skill you want.",
+    eyebrow: "FROM UNCERTAINTY TO A CLEAR PLAN",
+    title: "Know what to learn",
+    accent: "and what comes next.",
+    text: "Turn a big goal into an ordered roadmap of topics and milestones, so you can focus on one useful next step at a time.",
     image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=2200&q=88",
-    label: "A CLEAR NEXT STEP MAKES ALL THE DIFFERENCE",
-    color: "coral",
+    label: "YOUR GOAL, BROKEN INTO CLEAR STEPS",
+    color: "blue",
   },
   {
-    eyebrow: "PICTURE WHAT YOU CAN ACHIEVE",
-    title: "Your goal is the summit.",
-    accent: "UrPath helps you reach it.",
-    text: "Every milestone brings you closer. Set your sights on the skill you want, follow your roadmap and celebrate how far you've come.",
+    eyebrow: "MAKE YOUR PROGRESS VISIBLE",
+    title: "Keep moving",
+    accent: "toward your goal.",
+    text: "Learn through courses, practice with quizzes and projects, ask UrPath when you get stuck, and see the progress you make along the way.",
     image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2200&q=88",
     label: "FROM YOUR FIRST STEP TO YOUR SUMMIT",
-    color: "lavender",
+    color: "blue",
   },
 ];
 
@@ -126,9 +126,10 @@ function Landing() {
               <h1>{slide.title}<span>{slide.accent}</span></h1>
               <p className="landing__hero-lead">{slide.text}</p>
               <div className="landing__hero-actions">
-                <Link to="/register" className="landing__primary">Build my path <ArrowRight size={17} /></Link>
+                <Link to="/register" className="landing__primary">Start your path <ArrowRight size={17} /></Link>
                 <a href="#how-it-works" className="landing__hero-secondary"><Play size={14} fill="currentColor" /> See how it works</a>
               </div>
+              <p className="landing__hero-trust">10-minute placement check <span aria-hidden="true">·</span> Start at your level</p>
             </motion.div>
           </AnimatePresence>
           <div className="landing__hero-bottom">
@@ -159,16 +160,23 @@ function Landing() {
           <p>You do not need more noise. You need a path that helps you move forward.</p>
         </Reveal>
         <Reveal className="landing__lost-notes" delay={0.12}>
-          <div className="landing__note landing__note--pink"><span>01 / THE START</span><strong>“I don't know where to begin.”</strong></div>
-          <div className="landing__note landing__note--yellow"><span>02 / THE MIDDLE</span><strong>“What should I learn next?”</strong></div>
-          <div className="landing__note landing__note--green"><span>03 / THE DOUBT</span><strong>“Am I getting any better?”</strong></div>
-          <div className="landing__note-stamp"><Compass size={23} /><span>LET'S FIND YOUR WAY</span></div>
+          <a href="#domains" className="landing__note landing__note--pink">
+            <span>01 / THE START</span><strong>“I don't know where to begin.”</strong><ArrowRight size={18} />
+          </a>
+          <ArrowRight className="landing__note-connector" size={20} aria-hidden="true" />
+          <a href="#why-urpath" className="landing__note landing__note--yellow">
+            <span>02 / THE MIDDLE</span><strong>“What should I learn next?”</strong><ArrowRight size={18} />
+          </a>
+          <ArrowRight className="landing__note-connector" size={20} aria-hidden="true" />
+          <a href="#features" className="landing__note landing__note--green">
+            <span>03 / THE DOUBT</span><strong>“Am I getting any better?”</strong><ArrowRight size={18} />
+          </a>
         </Reveal>
       </section>
 
       <section className="landing__summit">
         <div className="landing__summit-photo" role="img" aria-label="A mountain summit representing a learning goal">
-          <img src="https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=1800&q=88" alt="" loading="lazy" />
+          <img src="https://thumbs.dreamstime.com/b/person-climbing-slope-toward-mountain-peak-setting-goals-human-performance-limits-growth-mindset-motivation-concept-ai-328850378.jpg?w=992" alt="" loading="lazy" />
           <div className="landing__summit-photo-shade" />
           <div className="landing__summit-photo-label"><Flag size={17} /><span>THE SUMMIT</span><strong>Goal achieved</strong></div>
           <div className="landing__summit-photo-caption">YOUR GOAL IS WORTH THE JOURNEY</div>
