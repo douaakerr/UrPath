@@ -14,7 +14,7 @@ const slides = [
     title: "You have the motivation.",
     accent: "But no idea where to start.",
     text: "Too many tutorials. Too many choices. No clear next step. UrPath helps you find a starting point and turn a new interest into a plan you can follow.",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&q=88",
+    image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2200&q=88",
     label: "FEELING LOST IS A PLACE TO START, NOT A DEAD END",
     color: "sage",
   },
@@ -23,7 +23,7 @@ const slides = [
     title: "You don't need to figure out",
     accent: "the whole journey today.",
     text: "UrPath helps you understand what to learn first, what comes next, and how each step brings you closer to the skill you want.",
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=2200&q=88",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2200&q=88",
     label: "A CLEAR NEXT STEP MAKES ALL THE DIFFERENCE",
     color: "coral",
   },
@@ -41,8 +41,8 @@ const slides = [
 const domains = [
   { name: "Technology", detail: "AI, web development, data science, cybersecurity and more.", color: "mint", image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1000&q=85" },
   { name: "Design & creative", detail: "UI/UX, illustration, photography, animation and creative work.", color: "peach", image: "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=1000&q=85" },
-  { name: "Languages", detail: "Build a routine for English, French, Korean, Japanese and more.", color: "lilac", image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=85" },
-  { name: "Business & science", detail: "Explore finance, marketing, mathematics, biology and beyond.", color: "sky", image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Languages", detail: "Build a routine for English, French, Korean, Japanese and more.", color: "lilac", image: "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Business & science", detail: "Explore finance, marketing, mathematics, biology and beyond.", color: "sky", image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=85" },
 ];
 
 const steps = [
@@ -260,7 +260,7 @@ function Landing() {
       </section>
 
       <section className="landing__closing">
-        <div className="landing__closing-image"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=85" alt="Students learning together" loading="lazy" /></div>
+        <div className="landing__closing-image"><img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=1600&q=85" alt="Students learning together" loading="lazy" /></div>
         <div className="landing__closing-shade" />
         <Reveal className="landing__closing-copy">
           <p className="landing__eyebrow">YOU DON'T HAVE TO FIGURE IT ALL OUT TODAY</p>
