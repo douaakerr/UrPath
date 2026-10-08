@@ -23,7 +23,7 @@ const slides = [
     title: "You don't need to figure out",
     accent: "the whole journey today.",
     text: "UrPath helps you understand what to learn first, what comes next, and how each step brings you closer to the skill you want.",
-    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2200&q=88",
+    image: "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=2200&q=88",
     label: "A CLEAR NEXT STEP MAKES ALL THE DIFFERENCE",
     color: "coral",
   },
