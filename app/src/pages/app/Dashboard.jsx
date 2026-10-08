@@ -24,6 +24,7 @@ import {
 } from "recharts";
 import { useOnboardingStore } from "../../stores/onboardingStore";
 import "../../style/dashboard.css";
+import { getLearningImage } from "../../utils/learningImages";
 
 const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -205,6 +206,15 @@ function Dashboard() {
             <button type="button" onClick={() => navigate("/roadmap")} className="journey-button">
               Open roadmap <ArrowRight size={16} />
             </button>
+          </div>
+          <div className="journey-card__image">
+            <img
+              src={getLearningImage(roadmap.domain, roadmap.subdomain)}
+              alt={roadmap.subdomain || roadmap.domain || "Current learning path"}
+            />
+            <div className="journey-card__image-overlay">
+              <span>{roadmap.subdomain || roadmap.domain || "Your path"}</span>
+            </div>
           </div>
         </article>
 
