@@ -1065,3 +1065,52 @@ body,
     width: 100%;
   }
 }
+
+
+/* Timer-only focus layout */
+.focus-content {
+  width: min(560px, calc(100% - 40px));
+  margin: clamp(28px, 6vh, 64px) auto 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.focus-content .focus-section {
+  width: 100%;
+  max-width: 440px;
+  align-items: center;
+}
+
+.focus-content .section-heading {
+  text-align: center;
+}
+
+.focus-content .heading-title {
+  justify-content: center;
+}
+
+.focus-content .timer-wrapper {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+  .topbar {
+    padding: 20px 22px;
+  }
+
+  .focus-content {
+    width: calc(100% - 32px);
+    margin-top: 7vh;
+  }
+
+  .focus-content .timer-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+
+  .focus-content .timer-value {
+    font-size: 36px;
+  }
+}
