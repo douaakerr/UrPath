@@ -288,3 +288,8 @@
 :root[data-theme="dark"] .landing__summit-photo-label { background:rgba(8,19,33,.64); }
 @media(max-width:1000px) { .landing__summit { grid-template-columns:1fr; gap:38px; padding:100px 0; }.landing__summit-photo { min-height:420px; } }
 @media(max-width:650px) { .landing__summit { width:calc(100% - 36px); padding:90px 0; }.landing__summit-photo { min-height:350px; }.landing__summit-photo-label { top:14px;right:14px; }.landing__summit-photo-caption { left:16px;bottom:17px;font-size:8px; } }
+
+
+/* Replace the old yellow paper-note accent with the same coral used by the primary actions. */
+.landing__note--yellow { background:#f4d5cb; color:#653d35; }
+:root[data-theme="dark"] .landing__note--yellow { background:#482f34; color:#ffd0c3; }
