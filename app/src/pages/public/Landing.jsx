@@ -167,36 +167,20 @@ function Landing() {
       </section>
 
       <section className="landing__summit">
+        <div className="landing__summit-photo" role="img" aria-label="A mountain summit representing a learning goal">
+          <img src="https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=1800&q=88" alt="" loading="lazy" />
+          <div className="landing__summit-photo-shade" />
+          <div className="landing__summit-photo-label"><Flag size={17} /><span>THE SUMMIT</span><strong>Goal achieved</strong></div>
+          <div className="landing__summit-photo-caption">YOUR GOAL IS WORTH THE JOURNEY</div>
+        </div>
         <div className="landing__summit-copy">
           <Reveal>
             <p className="landing__eyebrow">THE IDEA BEHIND URPATH</p>
-            <h2>Your goal is the summit.<br /><em>Your roadmap gets you there.</em></h2>
-            <p>The summit represents the skill you want to achieve. The flag marks the moment you reach your goal. Between here and there, you need clear steps — not guesswork. UrPath turns a big ambition into a learning path you can follow, one milestone at a time.</p>
+            <h2>Your goal is the summit.<br /><em>Every lesson is a step closer.</em></h2>
+            <p>The mountain is a symbol, not the subject. The summit represents the skill you want to achieve; the flag marks your goal. Your roadmap is the route between where you are today and where you want to be — broken into clear, manageable milestones.</p>
             <Link to="/register" className="landing__mountain-link">Find your first step <ArrowRight size={17} /></Link>
           </Reveal>
         </div>
-        <Reveal className="landing__goal-map">
-          <div className="landing__goal-map-top"><span>YOUR LEARNING JOURNEY</span><span>01 — 05</span></div>
-          <svg className="landing__goal-illustration" viewBox="0 0 620 370" role="img" aria-label="An illustrated learning journey from your starting point through milestones to a flag marking your goal">
-            <defs><linearGradient id="goalSlope" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stopColor="var(--goal-slope-start)" /><stop offset="100%" stopColor="var(--goal-slope-end)" /></linearGradient></defs>
-            <path d="M18 315 L150 198 L224 250 L348 102 L422 173 L510 66 L604 315 Z" fill="url(#goalSlope)" opacity=".92" />
-            <path d="M18 315 L150 198 L224 250 L348 102 L422 173 L510 66 L604 315" fill="none" stroke="var(--goal-outline)" strokeWidth="2" strokeLinejoin="round" />
-            <path d="M55 300 C105 285 112 240 168 237 S250 250 282 204 S340 154 381 168 S455 135 510 66" fill="none" stroke="var(--goal-path)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 10" />
-            <circle cx="70" cy="294" r="9" fill="var(--goal-start)" stroke="var(--goal-panel)" strokeWidth="4" />
-            <circle cx="168" cy="237" r="9" fill="var(--goal-step)" stroke="var(--goal-panel)" strokeWidth="4" />
-            <circle cx="282" cy="204" r="9" fill="var(--goal-step)" stroke="var(--goal-panel)" strokeWidth="4" />
-            <circle cx="381" cy="168" r="9" fill="var(--goal-step)" stroke="var(--goal-panel)" strokeWidth="4" />
-            <path d="M510 66 V25" stroke="var(--goal-flag-pole)" strokeWidth="3" strokeLinecap="round" /><path d="M512 26 L553 39 L512 52 Z" fill="var(--goal-flag)" />
-            <circle cx="510" cy="66" r="13" fill="var(--goal-panel)" stroke="var(--goal-flag)" strokeWidth="3" /><path d="M504 66 L509 71 L517 60" fill="none" stroke="var(--goal-flag)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            <text x="34" y="340" className="goal-svg-label">START HERE</text><text x="510" y="13" className="goal-svg-label goal-svg-label--goal" textAnchor="middle">YOUR GOAL</text>
-          </svg>
-          <div className="landing__goal-map-legend">
-            <span><i className="landing__legend-dot landing__legend-dot--start" /> Starting point</span>
-            <span><i className="landing__legend-dot landing__legend-dot--step" /> Learning milestones</span>
-            <span><Flag size={15} /> Goal achieved</span>
-          </div>
-          <div className="landing__goal-note"><Sparkles size={16} /><span>One clear next step is better than a hundred open tabs.</span></div>
-        </Reveal>
       </section>
 
       <section id="domains" className="landing__domains landing__section-wrap">
