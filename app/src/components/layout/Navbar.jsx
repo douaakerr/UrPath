@@ -80,7 +80,7 @@ function Navbar({ app = false, auth = false, onMenu }) {
         {!app && (
           <>
             <Link to="/login" className="navbar__login">Login</Link>
-            <Link to="/register" className="navbar__get-started">Get Started</Link>
+            <Link to="/register" className="navbar__get-started">Register</Link>
           </>
         )}
 
