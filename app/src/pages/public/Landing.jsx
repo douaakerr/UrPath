@@ -81,12 +81,12 @@ const workflow = [
 ];
 
 const capabilities = [
-  { icon: Layers3, title: "A roadmap with direction", text: "See the foundations, the next topics and the milestones that connect them." },
-  { icon: BookOpen, title: "Courses and resources", text: "Study through structured lessons and discover videos or other useful resources." },
-  { icon: BrainCircuit, title: "Ask UrPath", text: "Get help with confusing concepts and ask questions while you learn." },
-  { icon: CheckCircle2, title: "Quizzes and projects", text: "Check what you understand and turn theory into practical work." },
-  { icon: LineChart, title: "Progress analytics", text: "See learning activity and progress over time instead of relying on guesswork." },
-  { icon: Timer, title: "Focus Mode", text: "Set aside a study session and give one learning goal your attention." },
+  { icon: Layers3, title: "A roadmap with direction", text: "See the foundations, the next topics and the milestones that connect them.", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=85", alt: "Planning a learning roadmap in a notebook" },
+  { icon: BookOpen, title: "Courses and resources", text: "Study through structured lessons and discover videos or other useful resources.", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85", alt: "Studying with a laptop and online resources" },
+  { icon: BrainCircuit, title: "Ask UrPath", text: "Get help with confusing concepts and ask questions while you learn.", image: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=85", alt: "Notes and ideas being worked through" },
+  { icon: CheckCircle2, title: "Quizzes and projects", text: "Check what you understand and turn theory into practical work.", image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=85", alt: "Hands-on work at a computer" },
+  { icon: LineChart, title: "Progress analytics", text: "See learning activity and progress over time instead of relying on guesswork.", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85", alt: "Data dashboard with charts and analytics" },
+  { icon: Timer, title: "Focus Mode", text: "Set aside a study session and give one learning goal your attention.", image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=85", alt: "A calm focused workspace with a laptop" },
 ];
 
 const weeklyProgress = [
@@ -242,7 +242,7 @@ function Landing() {
             <Reveal className="landing__workflow-step" key={number} delay={index * 0.07}>
               <div className="landing__workflow-top"><span>{number}</span><Icon size={22} /></div>
               <h3>{title}</h3><p>{text}</p>
-              {index < workflow.length - 1 && <ArrowRight className="landing__workflow-arrow" size={19} />}
+              <span className="landing__workflow-progress" aria-hidden="true"><span /></span>
             </Reveal>
           ))}
         </div>
@@ -343,9 +343,13 @@ function Landing() {
             <h2>Everything supports<br /><em>the same goal: your growth.</em></h2>
           </Reveal>
           <div className="landing__capability-grid">
-            {capabilities.map(({ icon: Icon, title, text }, index) => (
-              <Reveal className="landing__capability" key={title} delay={index * 0.045}>
-                <div className="landing__capability-icon"><Icon size={20} /></div><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p>
+            {capabilities.map(({ icon: Icon, title, text, image, alt }, index) => (
+              <Reveal className="landing__capability" key={title} delay={index * 0.065}>
+                <div className="landing__capability-photo"><img src={image} alt={alt} loading="lazy" /><span className="landing__capability-number">0{index + 1}</span></div>
+                <div className="landing__capability-body">
+                  <div className="landing__capability-icon"><Icon size={20} /></div>
+                  <h3>{title}</h3><p>{text}</p>
+                </div>
               </Reveal>
             ))}
           </div>
