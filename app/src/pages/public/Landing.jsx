@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import {
   ArrowDown, ArrowRight, BarChart3, BookOpen, Brain, CheckCircle2,
-  Compass, GraduationCap, Layers3, Mountain, Play, Sparkles, Target, Timer,
+  Compass, Flag, GraduationCap, Layers3, MapPinned, Play, Sparkles, Target, Timer,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router";
 import Navbar from "../../components/layout/Navbar";
-import { getDomainImage } from "../../utils/learningImages";
-import mountainsLight from "../../assets/image/mountains_light.png";
-import mountainsDark from "../../assets/image/mountains_dark.png";
 import "../../style/landing.css";
 
 const slides = [
@@ -17,7 +14,7 @@ const slides = [
     title: "You want to learn something new.",
     accent: "But where do you even start?",
     text: "Too many tutorials. Too many roadmaps. No clear next step. UrPath helps you turn that lost feeling into a plan you can actually follow.",
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2200&q=88",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2200&q=88",
     label: "EVERY SUMMIT STARTS WITH A FIRST STEP",
     color: "sage",
   },
@@ -26,7 +23,7 @@ const slides = [
     title: "You do not need to know the whole way.",
     accent: "Just the next step.",
     text: "Whether it is AI, design, languages, business or something completely different, UrPath helps you find your starting point and build from there.",
-    image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2200&q=88",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=2200&q=88",
     label: "MANY DIRECTIONS. ONE PLACE TO BEGIN.",
     color: "coral",
   },
@@ -35,23 +32,23 @@ const slides = [
     title: "Make your ambition",
     accent: "a path you can follow.",
     text: "Get a roadmap, learn through focused courses, practice what you know and see your progress grow — one small win at a time.",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88",
+    image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2200&q=88",
     label: "YOUR SUMMIT IS CLOSER THAN IT FEELS",
     color: "lavender",
   },
 ];
 
 const domains = [
-  { name: "Technology", detail: "AI, web development, data science, cybersecurity and more.", color: "mint" },
-  { name: "Design & creative", detail: "UI/UX, illustration, photography, animation and creative work.", color: "peach" },
-  { name: "Languages", detail: "Build a routine for English, French, Korean, Japanese and more.", color: "lilac" },
-  { name: "Business & science", detail: "Explore finance, marketing, mathematics, biology and beyond.", color: "butter" },
+  { name: "Technology", detail: "AI, web development, data science, cybersecurity and more.", color: "mint", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Design & creative", detail: "UI/UX, illustration, photography, animation and creative work.", color: "peach", image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Languages", detail: "Build a routine for English, French, Korean, Japanese and more.", color: "lilac", image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1000&q=85" },
+  { name: "Business & science", detail: "Explore finance, marketing, mathematics, biology and beyond.", color: "butter", image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1000&q=85" },
 ];
 
 const steps = [
   { number: "01", title: "Tell us your goal", text: "Choose the skill you want to learn, even if you are not sure how to begin.", icon: Compass, color: "mint" },
   { number: "02", title: "Find your starting point", text: "Share your level so your path can start where you are — not at page one by default.", icon: Target, color: "peach" },
-  { number: "03", title: "Follow your trail", text: "Get a roadmap that breaks a big ambition into clear topics and smaller milestones.", icon: Mountain, color: "lilac" },
+  { number: "03", title: "Follow your trail", text: "Get a roadmap that breaks a big ambition into clear topics and smaller milestones.", icon: MapPinned, color: "lilac" },
   { number: "04", title: "Learn, practice, repeat", text: "Use lessons, videos, quizzes and projects to turn knowledge into real skills.", icon: GraduationCap, color: "butter" },
 ];
 
@@ -135,7 +132,7 @@ function Landing() {
             </motion.div>
           </AnimatePresence>
           <div className="landing__hero-bottom">
-            <span className="landing__hero-caption"><Mountain size={16} /> {slide.label}</span>
+            <span className="landing__hero-caption"><Flag size={16} /> {slide.label}</span>
             <div className="landing__slide-controls" aria-label="Hero slides">
               {slides.map((item, index) => (
                 <button
@@ -169,18 +166,37 @@ function Landing() {
         </Reveal>
       </section>
 
-      <section className="landing__mountain">
-        <img className="landing__mountain-light" src={mountainsLight} alt="" />
-        <img className="landing__mountain-dark" src={mountainsDark} alt="" />
-        <div className="landing__mountain-shade" />
-        <Reveal className="landing__mountain-copy">
-          <p className="landing__eyebrow">EVERY GOAL HAS A SUMMIT</p>
-          <h2>Your goal is the summit.<br /><span>Your roadmap is the trail.</span></h2>
-          <p>You do not climb a mountain in one jump. You take one step, reach one marker, learn what the next stretch needs — and keep going. UrPath brings that same clarity to learning.</p>
-          <Link to="/register" className="landing__mountain-link">Find your first step <ArrowRight size={17} /></Link>
+      <section className="landing__summit">
+        <div className="landing__summit-copy">
+          <Reveal>
+            <p className="landing__eyebrow">THE IDEA BEHIND URPATH</p>
+            <h2>Your goal is the summit.<br /><em>Your roadmap gets you there.</em></h2>
+            <p>The summit represents the skill you want to achieve. The flag marks the moment you reach your goal. Between here and there, you need clear steps — not guesswork. UrPath turns a big ambition into a learning path you can follow, one milestone at a time.</p>
+            <Link to="/register" className="landing__mountain-link">Find your first step <ArrowRight size={17} /></Link>
+          </Reveal>
+        </div>
+        <Reveal className="landing__goal-map">
+          <div className="landing__goal-map-top"><span>YOUR LEARNING JOURNEY</span><span>01 — 05</span></div>
+          <svg className="landing__goal-illustration" viewBox="0 0 620 370" role="img" aria-label="An illustrated learning journey from your starting point through milestones to a flag marking your goal">
+            <defs><linearGradient id="goalSlope" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stopColor="var(--goal-slope-start)" /><stop offset="100%" stopColor="var(--goal-slope-end)" /></linearGradient></defs>
+            <path d="M18 315 L150 198 L224 250 L348 102 L422 173 L510 66 L604 315 Z" fill="url(#goalSlope)" opacity=".92" />
+            <path d="M18 315 L150 198 L224 250 L348 102 L422 173 L510 66 L604 315" fill="none" stroke="var(--goal-outline)" strokeWidth="2" strokeLinejoin="round" />
+            <path d="M55 300 C105 285 112 240 168 237 S250 250 282 204 S340 154 381 168 S455 135 510 66" fill="none" stroke="var(--goal-path)" strokeWidth="4" strokeLinecap="round" strokeDasharray="3 10" />
+            <circle cx="70" cy="294" r="9" fill="var(--goal-start)" stroke="var(--goal-panel)" strokeWidth="4" />
+            <circle cx="168" cy="237" r="9" fill="var(--goal-step)" stroke="var(--goal-panel)" strokeWidth="4" />
+            <circle cx="282" cy="204" r="9" fill="var(--goal-step)" stroke="var(--goal-panel)" strokeWidth="4" />
+            <circle cx="381" cy="168" r="9" fill="var(--goal-step)" stroke="var(--goal-panel)" strokeWidth="4" />
+            <path d="M510 66 V25" stroke="var(--goal-flag-pole)" strokeWidth="3" strokeLinecap="round" /><path d="M512 26 L553 39 L512 52 Z" fill="var(--goal-flag)" />
+            <circle cx="510" cy="66" r="13" fill="var(--goal-panel)" stroke="var(--goal-flag)" strokeWidth="3" /><path d="M504 66 L509 71 L517 60" fill="none" stroke="var(--goal-flag)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <text x="34" y="340" className="goal-svg-label">START HERE</text><text x="510" y="13" className="goal-svg-label goal-svg-label--goal" textAnchor="middle">YOUR GOAL</text>
+          </svg>
+          <div className="landing__goal-map-legend">
+            <span><i className="landing__legend-dot landing__legend-dot--start" /> Starting point</span>
+            <span><i className="landing__legend-dot landing__legend-dot--step" /> Learning milestones</span>
+            <span><Flag size={15} /> Goal achieved</span>
+          </div>
+          <div className="landing__goal-note"><Sparkles size={16} /><span>One clear next step is better than a hundred open tabs.</span></div>
         </Reveal>
-        <div className="landing__summit-label"><Mountain size={18} /><span>YOUR GOAL</span><strong>THE SUMMIT</strong></div>
-        <div className="landing__trail-label"><span>ONE STEP AT A TIME</span><i /></div>
       </section>
 
       <section id="domains" className="landing__domains landing__section-wrap">
@@ -192,7 +208,7 @@ function Landing() {
         <div className="landing__domain-grid">
           {domains.map((item, index) => (
             <Reveal className={`landing__domain-card landing__tone--${item.color}`} key={item.name} delay={index * 0.06}>
-              <div className="landing__domain-photo"><img src={getDomainImage(item.name === "Design & creative" ? "Arts & Creative" : item.name === "Business & science" ? "Business" : item.name)} alt="" loading="lazy" /></div>
+              <div className="landing__domain-photo"><img src={item.image} alt="" loading="lazy" /></div>
               <div className="landing__domain-body"><span>0{index + 1} / EXPLORE</span><h3>{item.name}</h3><p>{item.detail}</p><ArrowRight size={18} /></div>
             </Reveal>
           ))}
@@ -260,7 +276,7 @@ function Landing() {
       </section>
 
       <section className="landing__closing">
-        <div className="landing__closing-image"><img src="https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=1600&q=85" alt="Mountain summit above the clouds" loading="lazy" /></div>
+        <div className="landing__closing-image"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1600&q=85" alt="Students learning together" loading="lazy" /></div>
         <div className="landing__closing-shade" />
         <Reveal className="landing__closing-copy">
           <p className="landing__eyebrow">YOU DON'T HAVE TO FIGURE IT ALL OUT TODAY</p>
@@ -271,9 +287,9 @@ function Landing() {
       </section>
 
       <footer className="landing__footer">
-        <Link to="/" className="landing__footer-brand"><span className="navbar__brand-mark"><Mountain size={18} /></span><strong>UrPath</strong></Link>
+        <Link to="/" className="landing__footer-brand"><span className="landing__footer-mark"><Flag size={17} /></span><strong>UrPath</strong></Link>
         <span>Develop yourself. Build your path.</span>
-        <a href="#top" onClick={(event) => { event.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Back to summit ↑</a>
+        <a href="#top" onClick={(event) => { event.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Back to top ↑</a>
       </footer>
     </main>
   );
