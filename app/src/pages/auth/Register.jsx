@@ -24,6 +24,10 @@ function Register() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/v1/auth/google`;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -129,6 +133,19 @@ function Register() {
             className="auth-form"
             onSubmit={handleSubmit}
           >
+            <button
+              type="button"
+              className="google-login-btn"
+              onClick={handleGoogleLogin}
+            >
+              <span aria-hidden="true">G</span>
+              Continue with Google
+            </button>
+
+            <div className="auth-divider">
+              <span>or sign up with email</span>
+            </div>
+
             {/* Full name */}
             <div className="form-group">
               <label htmlFor="name">
