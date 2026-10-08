@@ -15,7 +15,7 @@ const slides = [
     accent: "But where do you even start?",
     text: "Too many tutorials. Too many roadmaps. No clear next step. UrPath helps you turn that lost feeling into a plan you can actually follow.",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=2200&q=88",
-    label: "EVERY SUMMIT STARTS WITH A FIRST STEP",
+    label: "EVERY SKILL STARTS WITH A FIRST STEP",
     color: "sage",
   },
   {
@@ -33,7 +33,7 @@ const slides = [
     accent: "a path you can follow.",
     text: "Get a roadmap, learn through focused courses, practice what you know and see your progress grow — one small win at a time.",
     image: "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=2200&q=88",
-    label: "YOUR SUMMIT IS CLOSER THAN IT FEELS",
+    label: "YOUR GOAL IS CLOSER THAN IT FEELS",
     color: "lavender",
   },
 ];
@@ -48,7 +48,7 @@ const domains = [
 const steps = [
   { number: "01", title: "Tell us your goal", text: "Choose the skill you want to learn, even if you are not sure how to begin.", icon: Compass, color: "mint" },
   { number: "02", title: "Find your starting point", text: "Share your level so your path can start where you are — not at page one by default.", icon: Target, color: "peach" },
-  { number: "03", title: "Follow your trail", text: "Get a roadmap that breaks a big ambition into clear topics and smaller milestones.", icon: MapPinned, color: "lilac" },
+  { number: "03", title: "Follow your roadmap", text: "Get a roadmap that breaks a big ambition into clear topics and smaller milestones.", icon: MapPinned, color: "lilac" },
   { number: "04", title: "Learn, practice, repeat", text: "Use lessons, videos, quizzes and projects to turn knowledge into real skills.", icon: GraduationCap, color: "butter" },
 ];
 
@@ -257,7 +257,7 @@ function Landing() {
           </Reveal>
         </div>
         <Reveal className="landing__roadmap-board">
-          <div className="landing__roadmap-title"><span>YOUR TRAIL / EXAMPLE</span><strong>Artificial Intelligence</strong></div>
+          <div className="landing__roadmap-title"><span>ROADMAP PREVIEW / EXAMPLE</span><strong>Artificial Intelligence</strong></div>
           <div className="landing__trail">
             {[
               ["01", "Python foundations", "Get comfortable with the tools"],
@@ -280,7 +280,7 @@ function Landing() {
         <div className="landing__closing-shade" />
         <Reveal className="landing__closing-copy">
           <p className="landing__eyebrow">YOU DON'T HAVE TO FIGURE IT ALL OUT TODAY</p>
-          <h2>Every summit begins<br />with a first step.</h2>
+          <h2>Every new skill begins<br />with a first step.</h2>
           <p>Bring your curiosity. UrPath will help you find a direction, understand what comes next and keep going.</p>
           <Link to="/register" className="landing__primary">Let's build your path <ArrowRight size={17} /></Link>
         </Reveal>
