@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import {
   ArrowDownRight, ArrowRight, BookOpen, BrainCircuit, Check, CheckCircle2,
-  ChevronLeft, ChevronRight, CircleHelp, Compass, Flag, Focus, GraduationCap,
-  Layers3, LineChart, Map, Play, Sparkles, Target, Timer, Trophy,
+  ChevronLeft, ChevronRight, CircleHelp, Compass, Flag, Layers3,
+  LineChart, Map, Play, Sparkles, Target, Timer, Trophy,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import {
