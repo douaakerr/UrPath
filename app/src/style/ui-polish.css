@@ -25,7 +25,7 @@
 
 /* Buttons and interactive surfaces */
 button,.courses-button,.profile-actions button,.quiz-submit { transition: transform .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease; }
-button:not(:disabled):hover { }
+
 .profile-actions button:not(:disabled):hover,.courses-button:hover,.quiz-submit:not(:disabled):hover { transform: translateY(-1px); }
 
 /* Dashboard */
