@@ -1,3 +1,4 @@
+
 import { generateText } from "../../aiService.js";
 import { retrieveKnowledge } from "../../rag/retriever.js";
 
@@ -108,22 +109,20 @@ Format:
 {
   "title": "...",
   "level": "${level}",
- "skills": [
-  {
-    "name": "...",
-    "level": "beginner",
-    "status": "weak",
-    "source": "assessed"
-  }
-],
+  "skills": [
+    {
+      "name": "...",
+      "level": "beginner",
+      "status": "weak",
+      "source": "assessed"
+    }
+  ],
   "weeks": [
     {
       "week": 1,
       "title": "...",
       "objective": "...",
-      "topics": [
-        "..."
-      ],
+      "topics": ["..."],
       "tasks": [
         {
           "title": "...",
@@ -134,7 +133,7 @@ Format:
   ]
 }
 
-Rules:
+RULES:
 
 - Create exactly 6 weeks.
 - Start from the learner's actual level.
@@ -145,7 +144,16 @@ Rules:
 - Each week must have a clear objective.
 - Each week must contain 2 to 4 topics.
 - Each week must contain 2 to 4 tasks.
-- Use task types: lesson, practice, project, quiz.
+
+TASK TYPE CONSTRAINT — MUST FOLLOW:
+- Every task's "type" MUST be exactly one of:
+  "lesson", "practice", "project", "quiz".
+- Never return "reflection", "reading", "review", or any other type.
+- For reflection or review activities, use "practice".
+- For reading or learning explanations, use "lesson".
+- For practical projects, use "project".
+- Before returning JSON, verify every task type against the allowed list.
+
 - Include at least one practical project.
 - The roadmap must directly help achieve the user's goal.
 - Do not include unrelated technologies or concepts.
@@ -157,7 +165,8 @@ VERY IMPORTANT SKILL STATUS RULES:
 - A skill below 40% should be "weak".
 - Do not invent weak skills that contradict the assessment.
 - Do not mark a strong assessment skill as weak.
-- You may introduce new skills required for the learner's goal, but clearly distinguish them from assessed weak skills.
+- You may introduce new skills required for the learner's goal,
+  but clearly distinguish them from assessed weak skills.
 - The assessment results must influence the roadmap.
 
 SKILL SOURCE RULES:
@@ -166,7 +175,8 @@ SKILL SOURCE RULES:
 - Assessed skills MUST use the status determined by the assessment.
 - Do not change an assessed skill from weak to learning or strong.
 - Do not change an assessed skill from strong to learning or weak.
-- Skills introduced because they are useful for the learner's goal must use source "recommended".
+- Skills introduced because they are useful for the learner's goal
+  must use source "recommended".
 - Recommended skills may have status "learning".
 - Do not invent assessment results.
 
@@ -189,40 +199,57 @@ Return JSON only.
     maxTokens: 3500,
   });
 
- const roadmap = parseJson(response);
+  const roadmap = parseJson(response);
 
-const assessedSkills = new Map(
-  skillAnalysis.map((skill) => [
-    skill.skill.toLowerCase().trim(),
-    skill,
-  ])
-);
-
-roadmap.skills = roadmap.skills.map((skill) => {
-  const assessed = assessedSkills.get(
-    skill.name.toLowerCase().trim()
+  const assessedSkills = new Map(
+    skillAnalysis.map((skill) => [
+      skill.skill.toLowerCase().trim(),
+      skill,
+    ])
   );
 
-  if (assessed) {
+  roadmap.skills = roadmap.skills.map((skill) => {
+    const assessed = assessedSkills.get(
+      skill.name.toLowerCase().trim()
+    );
+
+    if (assessed) {
+      return {
+        ...skill,
+        status: assessed.status,
+        source: "assessed",
+      };
+    }
+
     return {
       ...skill,
-      status: assessed.status,
-      source: "assessed",
+      source: "recommended",
     };
-  }
+  });
 
-  return {
-    ...skill,
-    source: "recommended",
-  };
-});
+  const allowedTaskTypes = new Set([
+    "lesson",
+    "practice",
+    "project",
+    "quiz",
+  ]);
 
-return roadmap;
+  roadmap.weeks = roadmap.weeks.map((week) => ({
+    ...week,
+    tasks: week.tasks.map((task) => ({
+      ...task,
+      type: allowedTaskTypes.has(task.type)
+        ? task.type
+        : "practice",
+    })),
+  }));
+
+  return roadmap;
 };
 
 const parseJson = (text) => {
   const cleaned = text
-    .replace(/```json/g, "")
+    .replace(/```json/gi, "")
     .replace(/```/g, "")
     .trim();
 
