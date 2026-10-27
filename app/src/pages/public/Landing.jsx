@@ -19,7 +19,7 @@ const slides = [
     title: "Learn a new skill.",
     accent: "Find your way forward.",
     text: "UrPath turns the thing you want to learn into a personal plan — shaped around what you already know and what you need next.",
-    image: "https://www.onrec.com/sites/onrec/directory/files/AdobeStock_235776060.jpeg",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=88",
     imageAlt: "People learning and developing new skills",
     tag: "START WHERE YOU ARE",
     number: "01",
@@ -29,7 +29,7 @@ const slides = [
     title: "Less guessing.",
     accent: "More meaningful progress.",
     text: "Get a clear roadmap with topics in the right order, then work through lessons, recommended resources, quizzes and projects.",
-    image: "https://thumbs.dreamstime.com/z/my-learning-plan-inscription-sheet-230785692.jpg",
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=88",
     imageAlt: "A written learning plan on paper",
     tag: "KNOW YOUR NEXT STEP",
     number: "02",
@@ -39,7 +39,7 @@ const slides = [
     title: "Every step counts.",
     accent: "Make the summit yours.",
     text: "Your goal is the summit. UrPath helps you break the climb into smaller milestones and see how far you have come.",
-    image: "https://thumbs.dreamstime.com/b/conquer-summit-stay-focused-mission-snowy-mountain-path-to-success-embark-visual-journey-pinnacle-achievement-401418541.jpg",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=88",
     imageAlt: "A mountain summit representing a long-term goal",
     tag: "YOUR PROGRESS, MADE VISIBLE",
     number: "03",
@@ -56,13 +56,13 @@ const domains = [
   {
     title: "Design & creative",
     detail: "UI/UX, visual design, illustration, photography and creative tools.",
-    image: "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=1000&q=85",
+    image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=1000&q=85",
     label: "MAKE IDEAS REAL",
   },
   {
     title: "Languages",
     detail: "Create a structured path for English, French, Korean and more.",
-    image: "https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?auto=format&fit=crop&w=1000&q=85",
+    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1000&q=85",
     label: "OPEN NEW DOORS",
   },
   {
@@ -81,9 +81,9 @@ const workflow = [
 ];
 
 const capabilities = [
-  { icon: Layers3, title: "A roadmap with direction", text: "See the foundations, the next topics and the milestones that connect them.", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=85", alt: "Planning a learning roadmap in a notebook" },
+  { icon: Layers3, title: "A roadmap with direction", text: "See the foundations, the next topics and the milestones that connect them.", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85", alt: "Planning a learning roadmap in a notebook" },
   { icon: BookOpen, title: "Courses and resources", text: "Study through structured lessons and discover videos or other useful resources.", image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85", alt: "Studying with a laptop and online resources" },
-  { icon: BrainCircuit, title: "Ask UrPath", text: "Get help with confusing concepts and ask questions while you learn.", image: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=85", alt: "Notes and ideas being worked through" },
+  { icon: BrainCircuit, title: "Ask UrPath", text: "Get help with confusing concepts and ask questions while you learn.", image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=85", alt: "Notes and ideas being worked through" },
   { icon: CheckCircle2, title: "Quizzes and projects", text: "Check what you understand and turn theory into practical work.", image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=85", alt: "Hands-on work at a computer" },
   { icon: LineChart, title: "Progress analytics", text: "See learning activity and progress over time instead of relying on guesswork.", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85", alt: "Data dashboard with charts and analytics" },
   { icon: Timer, title: "Focus Mode", text: "Set aside a study session and give one learning goal your attention.", image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=85", alt: "A calm focused workspace with a laptop" },
@@ -138,7 +138,8 @@ function Landing() {
   const nextSlide = () => setActiveSlide((current) => (current + 1) % slides.length);
 
   return (
-    <main className="landing">
+    <main className="landing" id="top">
+      <div className="landing__ambient" aria-hidden="true"><span /><span /><span /><span /><span /><span /><i /><i /><i /></div>
       <Navbar />
 
       <section className="landing__hero" aria-label="Introducing UrPath">
@@ -205,7 +206,7 @@ function Landing() {
       <section id="what-is-urpath" className="landing__intro landing__wrap">
         <Reveal className="landing__intro-heading">
           <p className="landing__eyebrow"><span />WHAT IS URPATH?</p>
-          <h2>A personal learning guide,<br /><em>from first step to real skill.</em></h2>
+          <h2>What if learning felt clearer?<br /><em>One step at a time.</em></h2>
         </Reveal>
         <Reveal className="landing__intro-body" delay={0.1}>
           <p>UrPath is a learning platform that helps you turn a goal into a plan you can actually follow. Instead of jumping between random tutorials and wondering what to study next, you get a roadmap shaped around your current level.</p>
@@ -216,13 +217,13 @@ function Landing() {
 
       <section className="landing__friction">
         <div className="landing__friction-image">
-          <img src="https://gadflyonthewallblog.wordpress.com/wp-content/uploads/2021/09/thumbnail_screen-shot-2021-09-30-at-3.57.56-pm.jpg" alt="A learner thinking through where to begin" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1200&q=88" alt="A learner thinking through where to begin" loading="lazy" />
           <div className="landing__friction-image-label"><CircleHelp size={17} /><span>TOO MANY OPTIONS. NO CLEAR ORDER.</span></div>
         </div>
         <Reveal className="landing__friction-copy">
           <p className="landing__eyebrow"><span />SOUND FAMILIAR?</p>
-          <h2>You want to learn.<br /><em>But what comes first?</em></h2>
-          <p>You save tutorials, open ten tabs, start a course and then find another one. It can be hard to tell which topics matter, what depends on what, and whether you are improving.</p>
+          <h2>You want to learn.<br /><em>Where do you begin?</em></h2>
+          <p>Too many tutorials. Too many directions. UrPath turns that uncertainty into a clear next step — based on your goal, your current level, and the progress you make.</p>
           <div className="landing__friction-points">
             <div><span>01</span><p><strong>Find your starting point</strong><small>Begin from your level, not from assumptions.</small></p></div>
             <div><span>02</span><p><strong>Know what comes next</strong><small>Follow a sequence instead of guessing.</small></p></div>
@@ -311,12 +312,12 @@ function Landing() {
               <div className="landing__area-chart">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={weeklyProgress} margin={{ top: 10, right: 8, left: -20, bottom: 0 }}>
-                    <defs><linearGradient id="landingProgressFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#367f91" stopOpacity={0.25} /><stop offset="95%" stopColor="#367f91" stopOpacity={0.015} /></linearGradient></defs>
+                    <defs><linearGradient id="landingProgressFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#7188ff" stopOpacity={0.25} /><stop offset="95%" stopColor="#7188ff" stopOpacity={0.015} /></linearGradient></defs>
                     <CartesianGrid strokeDasharray="3 5" vertical={false} stroke="var(--land-chart-grid)" />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "var(--land-chart-muted)", fontSize: 11 }} dy={10} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fill: "var(--land-chart-muted)", fontSize: 10 }} />
                     <Tooltip contentStyle={{ border: "1px solid var(--land-line)", borderRadius: 10, background: "var(--land-paper)", color: "var(--land-text)", fontSize: 12 }} formatter={(value) => [value + "%", "Progress"]} />
-                    <Area type="monotone" dataKey="progress" stroke="#367f91" strokeWidth={3} fill="url(#landingProgressFill)" activeDot={{ r: 5, fill: "#c28d55", stroke: "var(--land-paper)", strokeWidth: 2 }} />
+                    <Area type="monotone" dataKey="progress" stroke="#7188ff" strokeWidth={3} fill="url(#landingProgressFill)" activeDot={{ r: 5, fill: "#f08acb", stroke: "var(--land-paper)", strokeWidth: 2 }} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -325,7 +326,7 @@ function Landing() {
               <div className="landing__chart-heading"><div><h4>Goal completion</h4><p>Sample roadmap</p></div></div>
               <div className="landing__donut-wrap">
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart><Pie data={skillProgress} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius="68%" outerRadius="86%" startAngle={90} endAngle={-270} paddingAngle={2} stroke="none"><Cell fill="#367f91" /><Cell fill="var(--land-chart-rest)" /></Pie></PieChart>
+                  <PieChart><Pie data={skillProgress} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius="68%" outerRadius="86%" startAngle={90} endAngle={-270} paddingAngle={2} stroke="none"><Cell fill="#7188ff" /><Cell fill="var(--land-chart-rest)" /></Pie></PieChart>
                 </ResponsiveContainer>
                 <div className="landing__donut-center"><strong>68%</strong><span>complete</span></div>
               </div>
@@ -357,17 +358,17 @@ function Landing() {
       </section>
 
       <section className="landing__summit">
-        <div className="landing__summit-image"><img src="https://thumbs.dreamstime.com/b/conquer-summit-stay-focused-mission-snowy-mountain-path-to-success-embark-visual-journey-pinnacle-achievement-401418541.jpg" alt="A snowy summit standing for a meaningful learning goal" loading="lazy" /><div className="landing__summit-image-shade" /><div className="landing__summit-label"><Flag size={17} /><span>YOUR SUMMIT</span><strong>The skill you set out to achieve</strong></div></div>
+        <div className="landing__summit-image"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=88" alt="A snowy summit standing for a meaningful learning goal" loading="lazy" /><div className="landing__summit-image-shade" /><div className="landing__summit-label"><Flag size={17} /><span>YOUR SUMMIT</span><strong>The skill you set out to achieve</strong></div></div>
         <Reveal className="landing__summit-copy">
           <p className="landing__eyebrow"><span />THE IDEA BEHIND THE NAME</p>
           <h2>Your goal is the summit.<br /><em>Your roadmap is the route.</em></h2>
-          <p>The mountain is a metaphor for learning, not the subject of the platform. The summit represents the skill you want to reach. Each topic is a step, each milestone is progress, and the flag marks the goal you are working toward.</p>
+          <p>Big goals become easier to approach when you can see the next step. UrPath helps you turn curiosity into a learning plan, keep your momentum, and notice the progress you make along the way.</p>
           <Link to="/register" className="landing__button landing__button--primary">Start your journey <ArrowRight size={17} /></Link>
         </Reveal>
       </section>
 
       <section className="landing__closing">
-        <div className="landing__closing-image"><img src="https://www.onrec.com/sites/onrec/directory/files/AdobeStock_235776060.jpeg" alt="" loading="lazy" /></div>
+        <div className="landing__closing-image"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=88" alt="" loading="lazy" /></div>
         <div className="landing__closing-shade" />
         <Reveal className="landing__closing-content">
           <p className="landing__eyebrow"><span />YOU DO NOT NEED EVERY ANSWER TODAY</p>

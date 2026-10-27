@@ -425,3 +425,13 @@
     margin-left: auto;
   }
 }
+
+
+/* Keep the original UrPath logo colours; use gradients only for the action button. */
+.navbar--public .navbar__get-started {
+  background:linear-gradient(120deg,#586df5,#8a78f8 62%,#df7bc4);
+  color:#fff;border-color:transparent;box-shadow:0 7px 20px rgba(102,104,232,.22);
+}
+:root[data-theme="dark"] .navbar--public .navbar__get-started {
+  background:linear-gradient(120deg,#7188ff,#a78bfa 62%,#f08acb);color:#10142c;
+}
