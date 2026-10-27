@@ -1,17 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap");
 
 .landing {
-  --land-bg: #f6f7f4;
-  --land-paper: #fff;
-  --land-text: #172b3a;
-  --land-muted: #667783;
-  --land-line: #dfe6e5;
-  --land-blue: #2c5f86;
-  --land-teal: #527f9f;
-  --land-sand: #c28d55;
-  --land-chart-grid: #e2e7ec;
-  --land-chart-muted: #7c8b92;
-  --land-chart-rest: #e3e8ed;
+  --land-bg: #f8f7ff;
+  --land-paper: #ffffff;
+  --land-text: #191b36;
+  --land-muted: #686985;
+  --land-line: #e6e3f5;
+  --land-blue: #586df5;
+  --land-teal: #8a78f8;
+  --land-sand: #ed83c6;
+  --land-chart-grid: #e6e3f5;
+  --land-chart-muted: #8584a2;
+  --land-chart-rest: #e8e6f6;
   background: var(--land-bg);
   color: var(--land-text);
   overflow: clip;
@@ -19,17 +19,17 @@
   transition: background .25s ease, color .25s ease;
 }
 :root[data-theme="dark"] .landing {
-  --land-bg: #0e1b24;
-  --land-paper: #142630;
-  --land-text: #edf4f3;
-  --land-muted: #a8b9be;
-  --land-line: rgba(221,238,237,.14);
-  --land-blue: #83b7d9;
-  --land-teal: #9cc8e2;
-  --land-sand: #d6ad7b;
-  --land-chart-grid: #2b414a;
-  --land-chart-muted: #a8b9be;
-  --land-chart-rest: #2b414a;
+  --land-bg: #0b1024;
+  --land-paper: #141a35;
+  --land-text: #f7f6ff;
+  --land-muted: #b4b4d2;
+  --land-line: rgba(190,183,255,.17);
+  --land-blue: #91a1ff;
+  --land-teal: #c0a5ff;
+  --land-sand: #f08acb;
+  --land-chart-grid: #2a2d50;
+  --land-chart-muted: #b4b4d2;
+  --land-chart-rest: #2a2d50;
 }
 .landing *, .landing *::before, .landing *::after { box-sizing: border-box; }
 .landing img { max-width: 100%; }
@@ -373,4 +373,79 @@
 }
 @media(prefers-reduced-motion:reduce) {
   .landing *, .landing *::before, .landing *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+
+/* Blue / lavender / pink visual identity with restrained ambient motion */
+.landing {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 8% 10%, rgba(113,136,255,.10), transparent 34%),
+    radial-gradient(ellipse at 90% 28%, rgba(240,138,203,.10), transparent 30%),
+    var(--land-bg);
+}
+:root[data-theme="dark"] .landing {
+  background:
+    radial-gradient(ellipse at 9% 12%, rgba(113,136,255,.17), transparent 35%),
+    radial-gradient(ellipse at 92% 38%, rgba(184,132,255,.12), transparent 32%),
+    radial-gradient(ellipse at 52% 75%, rgba(240,138,203,.07), transparent 30%),
+    var(--land-bg);
+}
+.landing__ambient { position:absolute; z-index:-1; inset:0; overflow:hidden; pointer-events:none; }
+.landing__ambient span, .landing__ambient i {
+  position:absolute; display:block; border-radius:999px; opacity:.48;
+  animation:landing-drift 15s ease-in-out infinite alternate;
+}
+.landing__ambient span:nth-child(1) { width:7px;height:7px;left:7%;top:13%;background:#7188ff; }
+.landing__ambient span:nth-child(2) { width:5px;height:5px;left:88%;top:20%;background:#f08acb;animation-delay:-3s; }
+.landing__ambient span:nth-child(3) { width:9px;height:9px;left:78%;top:48%;background:#a78bfa;animation-delay:-7s; }
+.landing__ambient span:nth-child(4) { width:4px;height:4px;left:17%;top:58%;background:#f08acb;animation-delay:-4s; }
+.landing__ambient span:nth-child(5) { width:6px;height:6px;left:93%;top:75%;background:#7188ff;animation-delay:-9s; }
+.landing__ambient span:nth-child(6) { width:5px;height:5px;left:42%;top:83%;background:#a78bfa;animation-delay:-6s; }
+.landing__ambient i:nth-of-type(1) { width:160px;height:160px;left:-95px;top:31%;border:1px solid rgba(113,136,255,.16); }
+.landing__ambient i:nth-of-type(2) { width:230px;height:230px;right:-145px;top:57%;border:1px solid rgba(240,138,203,.14);animation-delay:-5s; }
+.landing__ambient i:nth-of-type(3) { width:95px;height:95px;right:16%;top:9%;border:1px solid rgba(167,139,250,.17);animation-delay:-8s; }
+@keyframes landing-drift {
+  from { transform:translate3d(-6px,-12px,0) rotate(0deg); }
+  to { transform:translate3d(14px,18px,0) rotate(8deg); }
+}
+.landing__hero {
+  background:
+    radial-gradient(ellipse at 76% 20%, rgba(113,136,255,.12), transparent 35%),
+    radial-gradient(ellipse at 14% 82%, rgba(240,138,203,.09), transparent 30%);
+}
+.landing__hero-photo-wrap, .landing__domain-photo, .landing__capability-photo,
+.landing__friction-image, .landing__summit-image { overflow:hidden; }
+.landing__hero-photo, .landing__domain-photo img, .landing__capability-photo img,
+.landing__friction-image img, .landing__summit-image img, .landing__closing-image img {
+  transition:transform .8s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+}
+.landing__hero-photo-wrap:hover .landing__hero-photo,
+.landing__domain-card:hover .landing__domain-photo img,
+.landing__capability:hover .landing__capability-photo img,
+.landing__friction-image:hover img, .landing__summit-image:hover img { transform:scale(1.045); }
+.landing__eyebrow > span { background:linear-gradient(135deg,#7188ff,#f08acb);box-shadow:0 0 16px rgba(167,139,250,.25); }
+.landing__hero h1 em, .landing h2 em {
+  color:var(--land-blue);
+  background:linear-gradient(100deg,#7188ff 5%,#a78bfa 54%,#f08acb 100%);
+  background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.landing__button--primary {
+  background:linear-gradient(115deg,#596ff3,#8877f6 58%,#dc79c2);
+  border-color:transparent;box-shadow:0 10px 28px rgba(105,104,236,.22);
+}
+.landing__button--primary:hover { box-shadow:0 14px 34px rgba(105,104,236,.3);transform:translateY(-2px); }
+.landing__workflow-step, .landing__domain-card, .landing__capability,
+.landing__analytics, .landing__roadmap-preview { border-color:var(--land-line); }
+.landing__workflow-progress > span, .landing__roadmap-item.is-current .landing__roadmap-node,
+.landing__chart-legend i, .landing__donut-key span:first-child i {
+  background:linear-gradient(135deg,#7188ff,#c08bfa 60%,#f08acb);
+}
+.landing__roadmap-item.is-complete .landing__roadmap-node { color:#fff;background:#7188ff;border-color:#7188ff; }
+.landing__summit-image-shade, .landing__closing-shade { background:linear-gradient(90deg,rgba(10,13,35,.78),rgba(10,13,35,.18)); }
+.landing__closing { background:#0b1024; }
+.landing__closing-content h2 em { color:#f08acb; }
+@media (prefers-reduced-motion:reduce) {
+  .landing__ambient span, .landing__ambient i { animation:none !important; }
 }
