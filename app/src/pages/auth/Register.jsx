@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { loginUser, registerUser } from "../../services/authService";
+import { useOnboardingStore } from "../../stores/onboardingStore";
 import "../../style/auth.css";
 import Navbar from "../../components/layout/Navbar";
 
@@ -83,6 +84,8 @@ function Register() {
       });
 
       setSuccess("Account created successfully. Let's set up your learning path.");
+      // Start every new account at setup step 1, not persisted previous state.
+      useOnboardingStore.getState().resetOnboarding();
       navigate("/onboarding", { replace: true });
     } catch (err) {
       console.error(
