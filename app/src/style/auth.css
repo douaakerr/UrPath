@@ -750,3 +750,63 @@
 .google-login-btn:hover{transform:translateY(-1px);border-color:rgba(92,169,255,.3);background:rgba(255,255,255,.75);box-shadow:0 8px 22px rgba(38,65,95,.1)}
 [data-theme="dark"] .google-login-btn{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.1)}
 [data-theme="dark"] .google-login-btn:hover{background:rgba(255,255,255,.09)}
+
+
+/* Accessible authentication feedback */
+.auth-message {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.auth-message strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.84rem;
+}
+
+.auth-message p { margin: 0; }
+
+.auth-message:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.auth-success {
+  border: 1px solid rgba(40, 145, 100, 0.25);
+  background: rgba(40, 145, 100, 0.09);
+  color: #23764f;
+}
+
+[data-theme="dark"] .auth-success { color: #91e0b7; }
+
+.google-login-btn:disabled,
+.password-toggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.google-login-btn:focus-visible,
+.password-toggle:focus-visible,
+.auth-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .auth-page { padding-top: 88px; padding-bottom: 76px; }
+  .auth-glass { width: 100%; padding: 30px 22px; border-radius: 20px; }
+  .auth-heading { margin-bottom: 25px; }
+  .auth-form { gap: 17px; }
+  .form-group input, .auth-button, .google-login-btn { min-height: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-glass { animation: none; }
+  .auth-button, .google-login-btn, .form-group input { transition: none; }
+}
