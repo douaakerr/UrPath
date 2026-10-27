@@ -33,15 +33,45 @@ function Assessment() {
   const [generationAttempt, setGenerationAttempt] = useState(0);
 
   const domain = selectedDomain?.name || "";
-  const subdomain = useMemo(() => {
+    const subdomain = useMemo(() => {
     if (domain.toLowerCase() === "languages") {
-      return selectedLanguage === "another" ? customLanguage : selectedLanguage;
+      return selectedLanguage === "another"
+        ? customLanguage.trim()
+        : selectedLanguage;
     }
-    if (domain.toLowerCase() === "other") return customLearningSubject;
-    return selectedSubdomain?.name || customSubdomain;
-  }, [domain, selectedLanguage, customLanguage, customLearningSubject, selectedSubdomain, customSubdomain]);
 
-  const assessmentGoal = goal === "custom" ? customGoal : goal;
+    if (domain.toLowerCase() === "other") {
+      return customLearningSubject.trim();
+    }
+
+    if (selectedSubdomain?.name === "__other__") {
+      return customSubdomain.trim();
+    }
+
+    return selectedSubdomain?.name || customSubdomain.trim();
+  }, [
+    domain,
+    selectedLanguage,
+    customLanguage,
+    customLearningSubject,
+    selectedSubdomain,
+    customSubdomain,
+  ]);
+
+   const GOAL_DESCRIPTIONS = {
+    scratch: "Learn from scratch, starting with the fundamentals.",
+    improve: "Improve existing skills and deepen understanding.",
+    projects: "Build practical, real-world projects.",
+    career: "Prepare for a career and become job-ready.",
+    exam: "Prepare for an exam or certification.",
+    explore: "Explore the subject and discover its possibilities.",
+  };
+
+  const assessmentGoal =
+    goal === "custom"
+      ? customGoal.trim()
+      : GOAL_DESCRIPTIONS[goal] || goal;
+      
   const learnerLevel = experienceLevel === "complete_beginner" ? "beginner" : experienceLevel;
 
   useEffect(() => {
