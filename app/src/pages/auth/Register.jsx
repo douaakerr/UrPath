@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { loginUser, registerUser } from "../../services/authService";
@@ -23,6 +23,17 @@ function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const errorRef = useRef(null);
+
+  useEffect(() => {
+    if (error) {
+      errorRef.current?.focus();
+      errorRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [error]);
 
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/v1/auth/google`;
@@ -115,8 +126,14 @@ function Register() {
 
           {/* Error */}
           {error && (
-            <div className="auth-message auth-error">
-              {error}
+            <div
+              ref={errorRef}
+              className="auth-message auth-error"
+              role="alert"
+              tabIndex={-1}
+            >
+              <strong>Couldn't create your account</strong>
+              <p>{error}</p>
             </div>
           )}
 
@@ -136,6 +153,7 @@ function Register() {
               type="button"
               className="google-login-btn"
               onClick={handleGoogleLogin}
+              disabled={loading}
             >
               <span aria-hidden="true">G</span>
               Continue with Google
@@ -160,6 +178,7 @@ function Register() {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                  disabled={loading}
               />
             </div>
 
@@ -178,6 +197,7 @@ function Register() {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                  disabled={loading}
               />
             </div>
 
@@ -201,6 +221,7 @@ function Register() {
                   value={formData.password}
                   onChange={handleChange}
                   required
+                  disabled={loading}
                 />
 
                 <button
@@ -216,6 +237,7 @@ function Register() {
                       ? "Hide password"
                       : "Show password"
                   }
+                  disabled={loading}
                 >
                   {showPassword ? (
                     <EyeOff
@@ -252,6 +274,7 @@ function Register() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
+                  disabled={loading}
                 />
 
                 <button
@@ -267,6 +290,7 @@ function Register() {
                       ? "Hide password"
                       : "Show password"
                   }
+                  disabled={loading}
                 >
                   {showConfirmPassword ? (
                     <EyeOff
