@@ -1,7 +1,7 @@
 import "../../style/auth.css";
 
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 import Navbar from "../../components/layout/Navbar";
@@ -16,6 +16,17 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const errorRef = useRef(null);
+
+  useEffect(() => {
+    if (errorMessage) {
+      errorRef.current?.focus();
+      errorRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [errorMessage]);
 
   const handleGoogleLogin = () => {
   window.location.href = `${import.meta.env.VITE_API_URL}/v1/auth/google`;
@@ -71,8 +82,14 @@ function Login() {
 
             {/* Error */}
             {errorMessage && (
-              <div className="auth-error" role="alert">
-                {errorMessage}
+              <div
+                ref={errorRef}
+                className="auth-message auth-error"
+                role="alert"
+                tabIndex={-1}
+              >
+                <strong>Couldn't sign you in</strong>
+                <p>{errorMessage}</p>
               </div>
             )}
 
@@ -82,6 +99,7 @@ function Login() {
                 type="button"
                 className="google-login-btn"
                 onClick={handleGoogleLogin}
+                disabled={loading}
               >
                 <span>G</span>
                 Continue with Google
