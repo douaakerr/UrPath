@@ -1,4 +1,4 @@
-import { Sun, Moon, Bell, UserCircle, Menu } from "lucide-react";
+import { Sun, Moon, Bell, UserCircle, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getProfile } from "../../services/profileService";
@@ -10,6 +10,7 @@ function Navbar({ app = false, auth = false, onMenu }) {
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const [profilePhoto, setProfilePhoto] = useState("");
   const [profileName, setProfileName] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     if (!app) return;
@@ -51,14 +52,26 @@ function Navbar({ app = false, auth = false, onMenu }) {
           <Link to="/" className="navbar__brand" aria-label="UrPath home">
             <span className="navbar__brand-word">Ur<span>Path</span></span>
           </Link>
-          <nav className="navbar__links">
-            <a href="#why-urpath">Why UrPath</a>
-            <a href="#explore">Explore skills</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#features">Features</a>
+          <nav className={`navbar__links ${mobileOpen ? "is-open" : ""}`}>
+            <a href="#why-urpath" onClick={() => setMobileOpen(false)}>Why UrPath</a>
+            <a href="#explore" onClick={() => setMobileOpen(false)}>Explore skills</a>
+            <a href="#how-it-works" onClick={() => setMobileOpen(false)}>How it works</a>
+            <a href="#features" onClick={() => setMobileOpen(false)}>Features</a>
           </nav>
         </>
       )}
+
+        {!app && !auth && (
+          <button
+            type="button"
+            className="navbar__public-menu"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        )}
 
       <div className="navbar__actions">
         {app && (
