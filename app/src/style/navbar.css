@@ -276,7 +276,7 @@
   place-items: center;
   border-radius: 12px;
   background: linear-gradient(145deg, #e9c86f, #d8a94b);
-  color: #203b30;
+  color: #18213a;
   box-shadow: 0 5px 15px rgba(180, 133, 45, 0.2);
 }
 .navbar__brand-word {
@@ -311,13 +311,13 @@
   color: var(--navbar-text);
 }
 .navbar--public .navbar__get-started {
-  background: #203b30;
+  background: #18213a;
   border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 7px 18px rgba(23, 52, 39, 0.17);
+  box-shadow: 0 7px 18px rgba(55, 83, 160, 0.18);
 }
 :root[data-theme="dark"] .navbar--public .navbar__get-started {
   background: #e9c86f;
-  color: #203b30;
+  color: #18213a;
 }
 @media (max-width: 900px) {
   .navbar--public .navbar__links {
@@ -429,20 +429,20 @@
 
 /* Landing page: align navigation with the forest-and-sage identity. */
 .navbar--public .navbar__brand-word span {
-  color: #789878;
+  color: #a78bfa;
 }
 .navbar--public .navbar__get-started {
-  background: #315c46;
+  background: #5c8cff;
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 7px 18px rgba(23, 52, 39, 0.17);
+  box-shadow: 0 7px 18px rgba(55, 83, 160, 0.18);
 }
 :root[data-theme="dark"] .navbar--public .navbar__brand-word span {
-  color: #b5d0ad;
+  color: #f0a0d8;
 }
 :root[data-theme="dark"] .navbar--public .navbar__get-started {
-  background: #c4d9b7;
-  color: #1b3427;
+  background: #a78bfa;
+  color: #10182d;
 }
 .navbar__public-menu {
   display: none;
@@ -479,7 +479,7 @@
     border: 1px solid var(--navbar-border);
     border-radius: 14px;
     background: var(--navbar-bg);
-    box-shadow: 0 18px 45px rgba(10, 25, 17, .18);
+    box-shadow: 0 18px 45px rgba(7, 12, 32, .2);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
   }
