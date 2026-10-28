@@ -97,7 +97,7 @@ export const spotifyLogin = (req, res) => {
     res.cookie("spotify_oauth_state", state, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 10 * 60 * 1000,
     });
 
