@@ -24,7 +24,6 @@ export const createEmbedding = async (text, inputType = "query") => {
         model: EMBEDDING_MODEL,
         input_type: inputType,
         encoding_format: "float",
-        dimensions: 768,
         truncate: "END",
       },
       {
@@ -38,9 +37,9 @@ export const createEmbedding = async (text, inputType = "query") => {
 
     const embedding = response.data?.data?.[0]?.embedding;
 
-    if (!Array.isArray(embedding) || embedding.length !== 768) {
+    if (!Array.isArray(embedding) || embedding.length !== 2048) {
       throw new Error(
-        `NVIDIA returned an invalid embedding (expected 768 dimensions, received ${embedding?.length ?? 0})`
+        `NVIDIA returned an invalid embedding (expected 2048 dimensions, received ${embedding?.length ?? 0})`
       );
     }
 
