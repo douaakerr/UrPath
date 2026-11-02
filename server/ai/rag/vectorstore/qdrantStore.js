@@ -5,7 +5,7 @@ import { v5 as uuidv5 } from "uuid";
 const COLLECTION_NAME =
   process.env.QDRANT_COLLECTION || "urpath_knowledge_nvidia";
 
-const VECTOR_SIZE = 768;
+const VECTOR_SIZE = 2048;
 
 const qdrant = new QdrantClient({
   url: process.env.QDRANT_URL || "http://localhost:6333",
