@@ -103,17 +103,36 @@ export const getProgressByRoadmap = async (req, res) => {
   try {
     const { roadmapId } = req.params;
 
-    const progress = await Progress.findOne({
+    const roadmap = await Roadmap.findOne({
+      _id: roadmapId,
       user: req.user._id,
-      roadmap: roadmapId,
-    }).populate("roadmap");
+    });
 
-    if (!progress) {
+    if (!roadmap) {
       return res.status(404).json({
         success: false,
-        message: "Progress not found",
+        message: "Roadmap not found",
       });
     }
+
+    const progress = await Progress.findOneAndUpdate(
+      {
+        user: req.user._id,
+        roadmap: roadmap._id,
+      },
+      {
+        $setOnInsert: {
+          user: req.user._id,
+          roadmap: roadmap._id,
+          totalTasks: calculateTotalTasks(roadmap),
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true,
+      }
+    ).populate("roadmap");
 
     return res.json({
       success: true,
