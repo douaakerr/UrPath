@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { resetPassword } from "../../services/authService";
 import "../../style/auth.css";
+import Navbar from "../../components/layout/Navbar";
 function ResetPassword() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -50,16 +51,8 @@ function ResetPassword() {
   };
   return (
     <main className="auth-page">
-      {" "}
-      <div className="auth-overlay" />{" "}
-      <div className="auth-brand">
-        {" "}
-        <Link to="/" className="auth-logo">
-          {" "}
-          Ur<span>Path</span>{" "}
-        </Link>{" "}
-        <p>Develop yourself. Build your path.</p>{" "}
-      </div>{" "}
+      <Navbar auth />
+      <div className="auth-overlay" />
       <section className="auth-glass">
         {" "}
         <div className="auth-content">
