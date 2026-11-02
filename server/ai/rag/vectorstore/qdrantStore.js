@@ -6,9 +6,15 @@ const COLLECTION_NAME =
   process.env.QDRANT_COLLECTION || "urpath_knowledge_nvidia";
 
 const VECTOR_SIZE = 2048;
+const QDRANT_URL = process.env.QDRANT_URL || "http://localhost:6333";
+const QDRANT_PORT = Number(
+  process.env.QDRANT_PORT || (QDRANT_URL.startsWith("https://") ? 443 : 6333)
+);
 
 const qdrant = new QdrantClient({
-  url: process.env.QDRANT_URL || "http://localhost:6333",
+  url: QDRANT_URL,
+  port: QDRANT_PORT,
+  timeout: 30000,
 });
 
 const URPATH_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
