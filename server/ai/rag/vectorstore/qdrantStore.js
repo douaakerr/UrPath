@@ -14,7 +14,7 @@ const QDRANT_PORT = Number(
 const qdrant = new QdrantClient({
   url: QDRANT_URL,
   port: QDRANT_PORT,
-  timeout: 30000,
+  timeout: 60000,
 });
 
 const URPATH_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
