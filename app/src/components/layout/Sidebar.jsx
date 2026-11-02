@@ -28,7 +28,7 @@ const navigation = [
 ];
 
 function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
-  const isCollapsed = isCollapsed && !mobileOpen;
+  const isCollapsed = collapsed && !mobileOpen;
 
   return (
     <aside className={"sidebar " + (isCollapsed ? "sidebar--collapsed " : "") + (mobileOpen ? "sidebar--mobile-open" : "")}>
