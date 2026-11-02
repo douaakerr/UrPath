@@ -28,12 +28,14 @@ const navigation = [
 ];
 
 function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
+  const isCollapsed = isCollapsed && !mobileOpen;
+
   return (
-    <aside className={"sidebar " + (collapsed ? "sidebar--collapsed " : "") + (mobileOpen ? "sidebar--mobile-open" : "")}>
+    <aside className={"sidebar " + (isCollapsed ? "sidebar--collapsed " : "") + (mobileOpen ? "sidebar--mobile-open" : "")}>
       <div className="sidebar__brand">
-        <Link to="/dashboard" className="sidebar__brand-link" title={collapsed ? "UrPath" : undefined} onClick={onNavigate}>
+        <Link to="/dashboard" className="sidebar__brand-link" title={isCollapsed ? "UrPath" : undefined} onClick={onNavigate}>
           <div className="sidebar__logo"><span>U</span></div>
-          {!collapsed && (
+          {!isCollapsed && (
             <div className="sidebar__brand-text">
               <span className="sidebar__brand-name">UrPath</span>
               <span className="sidebar__brand-subtitle">Learn. Build. Grow.</span>
@@ -45,7 +47,7 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
       <nav className="sidebar__nav" aria-label="Main navigation">
         {navigation.map((group) => (
           <div className="sidebar__group" key={group.section}>
-            {!collapsed && <p className="sidebar__section-title">{group.section}</p>}
+            {!isCollapsed && <p className="sidebar__section-title">{group.section}</p>}
             <div className="sidebar__items">
               {group.items.map((item) => {
                 const Icon = item.icon;
@@ -53,13 +55,13 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
                   <NavLink
                     key={item.path}
                     to={item.path}
-                    title={collapsed ? item.label : undefined}
+                    title={isCollapsed ? item.label : undefined}
                     onClick={onNavigate}
                     className={({ isActive }) => "sidebar__item " + (isActive ? "sidebar__item--active" : "")}
                   >
                     <span className="sidebar__item-icon"><Icon size={19} strokeWidth={1.8} /></span>
-                    {!collapsed && <span className="sidebar__item-label">{item.label}</span>}
-                    {item.label === "Ask UrPath AI" && !collapsed && <span className="sidebar__ai-indicator" />}
+                    {!isCollapsed && <span className="sidebar__item-label">{item.label}</span>}
+                    {item.label === "Ask UrPath AI" && !isCollapsed && <span className="sidebar__ai-indicator" />}
                   </NavLink>
                 );
               })}
@@ -71,8 +73,8 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onNavigate }) {
         <img src={mountainsLight} alt="" className="sidebar__mountain sidebar__mountain--light" />
         <img src={mountainsDark} alt="" className="sidebar__mountain sidebar__mountain--dark" />
       </div>
-      <button type="button" className="sidebar__toggle" onClick={onToggle} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
-        {collapsed ? <ChevronRight size={16} strokeWidth={2.2} /> : <ChevronLeft size={16} strokeWidth={2.2} />}
+      <button type="button" className="sidebar__toggle" onClick={onToggle} aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}>
+        {isCollapsed ? <ChevronRight size={16} strokeWidth={2.2} /> : <ChevronLeft size={16} strokeWidth={2.2} />}
       </button>
     </aside>
   );
