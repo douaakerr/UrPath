@@ -86,12 +86,14 @@ function Navbar({ app = false, auth = false, authPage = "", onMenu }) {
         )}
 
         {auth && (
-          <Link
-            to={authPage === "login" ? "/register" : "/login"}
-            className="navbar__get-started navbar__auth-action"
-          >
-            {authPage === "login" ? "Create account" : "Sign in"}
-          </Link>
+          <>
+            <Link to="/login" className="navbar__login navbar__auth-login">
+              Login
+            </Link>
+            <Link to="/register" className="navbar__get-started navbar__auth-action">
+              Register
+            </Link>
+          </>
         )}
 
         {app && (
