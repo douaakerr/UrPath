@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 
 dotenv.config();
 
-process.env.QDRANT_COLLECTION =
-  process.env.QDRANT_COLLECTION || "urpath_knowledge_nvidia";
+process.env.QDRANT_COLLECTION = "urpath_knowledge_nvidia";
 
 import connectDB from "../config/connectDb.js";
 import KnowledgeDocument from "../models/knowledgeDocument.js";
