@@ -356,9 +356,14 @@
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
-.navbar--auth .navbar__links,
-.navbar--auth .navbar__login {
+.navbar--auth .navbar__links {
   display: none;
+}
+.navbar--auth .navbar__auth-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--navbar-text);
 }
 .navbar--auth .navbar__auth-action {
   display: inline-flex;
@@ -471,4 +476,8 @@ html { scroll-behavior: smooth; }
 }
 @media (max-width: 700px) {
   .navbar--public .navbar__links { display: none; }
+}
+
+.navbar--auth .navbar__actions {
+  gap: 12px;
 }
