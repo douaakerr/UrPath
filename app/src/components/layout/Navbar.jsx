@@ -51,12 +51,6 @@ function Navbar({ app = false, auth = false, onMenu }) {
           <Link to="/" className="navbar__brand" aria-label="UrPath home">
             <span className="navbar__brand-word">Ur<span>Path</span></span>
           </Link>
-          <nav className="navbar__links">
-            <a href="#the-problem">Why UrPath</a>
-            <a href="#domains">Explore skills</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#features">Features</a>
-          </nav>
         </>
       )}
 
