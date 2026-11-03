@@ -3,21 +3,26 @@ import { createEmbedding } from "../../../services/embeddingService.js";
 import { v5 as uuidv5 } from "uuid";
 
 const COLLECTION_NAME =
-  process.env.QDRANT_COLLECTION || "urpath_knowledge";
+  process.env.QDRANT_COLLECTION || "urpath_knowledge_nvidia";
+
+const VECTOR_SIZE = 2048;
+const QDRANT_URL = process.env.QDRANT_URL || "http://localhost:6333";
+const QDRANT_PORT = Number(
+  process.env.QDRANT_PORT || (QDRANT_URL.startsWith("https://") ? 443 : 6333)
+);
 
 const qdrant = new QdrantClient({
-  url: process.env.QDRANT_URL || "http://localhost:6333",
+  url: QDRANT_URL,
+  port: QDRANT_PORT,
+  timeout: 60000,
 });
 
 const URPATH_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
 
-const toPointId = (id) => {
-  return uuidv5(String(id), URPATH_NAMESPACE);
-};
+const toPointId = (id) => uuidv5(String(id), URPATH_NAMESPACE);
 
 export const ensureCollection = async () => {
   const collections = await qdrant.getCollections();
-
   const exists = collections.collections.some(
     (collection) => collection.name === COLLECTION_NAME
   );
@@ -25,7 +30,7 @@ export const ensureCollection = async () => {
   if (!exists) {
     await qdrant.createCollection(COLLECTION_NAME, {
       vectors: {
-        size: 768,
+        size: VECTOR_SIZE,
         distance: "Cosine",
       },
     });
@@ -34,17 +39,13 @@ export const ensureCollection = async () => {
   }
 };
 
-export const upsertKnowledge = async ({
-  id,
-  text,
-  metadata = {},
-}) => {
+export const upsertKnowledge = async ({ id, text, metadata = {} }) => {
   if (!text?.trim()) {
     throw new Error("Knowledge text is required");
   }
 
-  const embedding = await createEmbedding(text);
-
+  await ensureCollection();
+  const embedding = await createEmbedding(text, "passage");
   const pointId = toPointId(id);
 
   await qdrant.upsert(COLLECTION_NAME, {
@@ -62,10 +63,7 @@ export const upsertKnowledge = async ({
     ],
   });
 
-  return {
-    id: pointId,
-    originalId: id || null,
-  };
+  return { id: pointId, originalId: id || null };
 };
 
 export const searchKnowledge = async ({
@@ -80,70 +78,30 @@ export const searchKnowledge = async ({
     throw new Error("Query is required");
   }
 
-  const embedding = await createEmbedding(query);
-
+  await ensureCollection();
+  const embedding = await createEmbedding(query, "query");
   const must = [];
 
   if (domain) {
-    must.push({
-      key: "domain",
-      match: {
-        value: domain,
-      },
-    });
+    must.push({ key: "domain", match: { value: domain } });
   }
 
   if (subdomain) {
-    must.push({
-      key: "subdomain",
-      match: {
-        value: subdomain,
-      },
-    });
+    must.push({ key: "subdomain", match: { value: subdomain } });
   }
 
   if (skill) {
-    must.push({
-      key: "skill",
-      match: {
-        value: skill,
-      },
-    });
+    must.push({ key: "skill", match: { value: skill } });
   }
 
   if (topic) {
-    must.push({
-      key: "topic",
-      match: {
-        value: topic,
-      },
-    });
+    must.push({ key: "topic", match: { value: topic } });
   }
 
-  const searchParams = {
-    vector: embedding,
+  return qdrant.query(COLLECTION_NAME, {
+    query: embedding,
     limit,
     with_payload: true,
-  };
-
-  if (must.length > 0) {
-    searchParams.filter = {
-      must,
-    };
-  }
-
- const results = await qdrant.query(COLLECTION_NAME, {
-  query: embedding,
-  limit,
-  with_payload: true,
-  ...(must.length > 0
-    ? {
-        filter: {
-          must,
-        },
-      }
-    : {}),
-});
-
-  return results;
+    ...(must.length > 0 ? { filter: { must } } : {}),
+  });
 };

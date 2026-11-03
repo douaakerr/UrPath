@@ -61,7 +61,7 @@ function Login() {
 
   return (
     <>
-      <Navbar />
+      <Navbar auth authPage="login" />
 
       <main className="auth-page">
         <div className="auth-overlay" />

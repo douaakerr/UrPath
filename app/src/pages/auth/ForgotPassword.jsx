@@ -36,16 +36,8 @@ function ForgotPassword() {
 
   return (
     <main className="auth-page">
-        <Navbar />
+        <Navbar auth />
       <div className="auth-overlay" />
-
-      <div className="auth-brand">
-        <Link to="/" className="auth-logo">
-          Ur<span>Path</span>
-        </Link>
-
-        <p>Develop yourself. Build your path.</p>
-      </div>
 
       <section className="auth-glass">
         <div className="auth-content">

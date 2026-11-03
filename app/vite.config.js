@@ -10,8 +10,4 @@ export default defineConfig({
       '@fullcalendar/react',
     ],
   },
-  resolve: {
-    // Ensures Vite properly respects FullCalendar's conditional module exports
-    mainFields: ['module', 'main'],
-  },
 });

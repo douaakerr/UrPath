@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "seed": "node seeds/seedDomains.js"
+    "seed": "node seeds/seedDomains.js",
+    "reindex-knowledge": "node scripts/reindexKnowledge.js"
   },
   "keywords": [],
   "author": "",

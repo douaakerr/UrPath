@@ -5,7 +5,7 @@ import { getProfile } from "../../services/profileService";
 import { useThemeStore } from "../../stores/themeStore";
 import "../../style/navbar.css";
 
-function Navbar({ app = false, auth = false, onMenu }) {
+function Navbar({ app = false, auth = false, authPage = "", onMenu }) {
   const theme = useThemeStore((state) => state.theme);
   const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const [profilePhoto, setProfilePhoto] = useState("");
@@ -47,17 +47,18 @@ function Navbar({ app = false, auth = false, onMenu }) {
         </div>
       )}
       {!app && (
-        <>
-          <Link to="/" className="navbar__brand" aria-label="UrPath home">
-            <span className="navbar__brand-word">Ur<span>Path</span></span>
-          </Link>
-          <nav className="navbar__links">
-            <a href="#the-problem">Why UrPath</a>
-            <a href="#domains">Explore skills</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#features">Features</a>
-          </nav>
-        </>
+        <Link to="/" className="navbar__brand" aria-label="UrPath home">
+          <span className="navbar__brand-word">Ur<span>Path</span></span>
+        </Link>
+      )}
+
+      {!app && !auth && (
+        <nav className="navbar__links" aria-label="Main navigation">
+          <a href="#what-is-urpath">About</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#domains">Explore</a>
+          <a href="#features">Features</a>
+        </nav>
       )}
 
       <div className="navbar__actions">
@@ -77,10 +78,21 @@ function Navbar({ app = false, auth = false, onMenu }) {
           {theme === "dark" ? <Sun size={19} strokeWidth={1.8} /> : <Moon size={19} strokeWidth={1.8} />}
         </button>
 
-        {!app && (
+        {!app && !auth && (
           <>
             <Link to="/login" className="navbar__login">Login</Link>
             <Link to="/register" className="navbar__get-started">Register</Link>
+          </>
+        )}
+
+        {auth && (
+          <>
+            <Link to="/login" className="navbar__login navbar__auth-login">
+              Login
+            </Link>
+            <Link to="/register" className="navbar__get-started navbar__auth-action">
+              Register
+            </Link>
           </>
         )}
 
