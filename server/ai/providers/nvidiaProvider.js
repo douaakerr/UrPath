@@ -6,7 +6,7 @@ const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 export const generateWithNvidia = async ({
   messages,
   temperature = 0.2,
-  maxTokens = 2500,
+  maxTokens = 25000,
   timeout = 240000,
 }) => {
   const apiKey = process.env.NVIDIA_API_KEY;
