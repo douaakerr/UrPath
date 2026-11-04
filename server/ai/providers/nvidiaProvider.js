@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
@@ -6,7 +5,7 @@ const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 export const generateWithNvidia = async ({
   messages,
   temperature = 0.2,
-  maxTokens = 25000,
+  maxTokens = 10000,
   timeout = 240000,
 }) => {
   const apiKey = process.env.NVIDIA_API_KEY;
@@ -14,6 +13,8 @@ export const generateWithNvidia = async ({
   if (!apiKey) {
     throw new Error("NVIDIA_API_KEY is not configured");
   }
+
+  let responseData;
 
   try {
     const response = await axios.post(
@@ -24,8 +25,11 @@ export const generateWithNvidia = async ({
           "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
         messages,
         temperature,
-        max_tokens: maxTokens,
+        max_tokens: Math.max(maxTokens, 10000),
         stream: false,
+        chat_template_kwargs: {
+          enable_thinking: false,
+        },
       },
       {
         timeout,
@@ -36,9 +40,28 @@ export const generateWithNvidia = async ({
       }
     );
 
-    const content = response.data?.choices?.[0]?.message?.content;
+    responseData = response.data;
+
+    const choice = responseData?.choices?.[0];
+    const message = choice?.message;
+    const content = message?.content;
+
+    console.log("NVIDIA RESPONSE DEBUG:", {
+      finish_reason: choice?.finish_reason,
+      content_type: typeof content,
+      content_length: typeof content === "string" ? content.length : 0,
+      reasoning_length:
+        typeof message?.reasoning_content === "string"
+          ? message.reasoning_content.length
+          : 0,
+      usage: responseData?.usage,
+    });
 
     if (typeof content !== "string" || !content.trim()) {
+      console.error(
+        "NVIDIA RAW RESPONSE:",
+        JSON.stringify(responseData, null, 2)
+      );
       throw new Error("NVIDIA returned an empty response");
     }
 
@@ -49,7 +72,7 @@ export const generateWithNvidia = async ({
     console.error("Status:", error.response?.status);
     console.error(
       "Response:",
-      error.response?.data
+      error.response?.data ?? responseData ?? "No response body received"
     );
     console.error("==================================");
 
