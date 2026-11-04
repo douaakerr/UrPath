@@ -3,7 +3,7 @@ import axios from "axios";
 const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/embeddings";
 const EMBEDDING_MODEL =
   process.env.NVIDIA_EMBEDDING_MODEL ||
-  "nvidia/llama-3.2-nv-embedqa-1b-v2";
+  "nvidia/nemotron-3-embed-1b";
 
 export const createEmbedding = async (text, inputType = "query") => {
   if (!text?.trim()) {
